@@ -9,7 +9,7 @@ package holidayreservationsystemcarmsclient;
  *
  * @author Elgin Patt
  */
-public class Main {
+public class HolidayReservationSystemCaRMSClient {
 
     /**
      * @param args the command line arguments
