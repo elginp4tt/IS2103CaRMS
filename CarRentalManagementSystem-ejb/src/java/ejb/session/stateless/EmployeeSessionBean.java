@@ -5,14 +5,24 @@
  */
 package ejb.session.stateless;
 
+import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Elgin Patt
  */
 @Stateless
+@Local(EmployeeSessionBeanLocal.class)
+@Remote(EmployeeSessionBeanRemote.class)
 public class EmployeeSessionBean implements EmployeeSessionBeanRemote, EmployeeSessionBeanLocal {
+
+    @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
+    private EntityManager em;
+
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
