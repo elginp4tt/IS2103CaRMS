@@ -2,6 +2,10 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/user/Desktop/IS2103PairProject/IS2013PairProject/IS2102CaRMS/CarRentalManagementSystemLibrary/src/ejb/session/stateless/DispatchSessionBeanRemote.java</file>
+            <file>file:/C:/Users/user/Desktop/IS2103PairProject/IS2013PairProject/IS2102CaRMS/CarRentalManagementSystemLibrary/src/ejb/session/singleton/RentalRateSessionBeanRemote.java</file>
+            <file>file:/C:/Users/user/Desktop/IS2103PairProject/IS2013PairProject/IS2102CaRMS/CarRentalManagementSystemLibrary/src/ejb/session/stateful/ReservationSessionBeanRemote.java</file>
+        </group>
     </open-files>
 </project-private>

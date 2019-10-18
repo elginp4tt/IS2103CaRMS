@@ -5,7 +5,6 @@
  */
 package ejb.session.singleton;
 
-import javax.ejb.Remote;
 
 public interface RentalRateSessionBeanRemote {
     
