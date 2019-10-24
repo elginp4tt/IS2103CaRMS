@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import util.enumeration.EmployeeAccessRightEnum;
 
 /**
  *
@@ -26,6 +27,7 @@ public class EmployeeEntity implements Serializable {
     private Long employeeId;
     private String username;
     private String password;
+    private EmployeeAccessRightEnum accessRight;
     
     @ManyToOne
     @Column(nullable = false)

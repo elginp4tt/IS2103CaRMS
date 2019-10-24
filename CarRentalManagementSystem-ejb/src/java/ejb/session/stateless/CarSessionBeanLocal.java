@@ -5,9 +5,15 @@
  */
 package ejb.session.stateless;
 
+import entity.CarEntity;
+import exception.CarNotFoundException;
 import javax.ejb.Local;
 
 
 public interface CarSessionBeanLocal {
+
+    public void deleteCarEntity(String licensePlate);
+
+    public CarEntity retrieveCarEntityByLicensePlate(String licensePlate) throws CarNotFoundException;
     
 }
