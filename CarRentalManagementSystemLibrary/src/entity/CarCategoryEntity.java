@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -22,6 +23,10 @@ public class CarCategoryEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carCategoryId;
+    private String carCategory;
+    
+    @OneToOne
+    private RentalRateEntity rentalRate;
 
     public Long getCarCategoryId() {
         return carCategoryId;
@@ -54,6 +59,20 @@ public class CarCategoryEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.CategoryEntity[ id=" + carCategoryId + " ]";
+    }
+
+    /**
+     * @return the carCategory
+     */
+    public String getCarCategory() {
+        return carCategory;
+    }
+
+    /**
+     * @param carCategory the carCategory to set
+     */
+    public void setCarCategory(String carCategory) {
+        this.carCategory = carCategory;
     }
     
 }

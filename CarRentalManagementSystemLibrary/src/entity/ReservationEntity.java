@@ -6,10 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -22,6 +25,27 @@ public class ReservationEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
+    private String customerName;
+    private boolean isPaid;
+    private String creditCardNumber;
+    private String cvv;
+    private Date date;
+    
+    @OneToOne
+    private OutletEntity pickupOutlet;
+    
+    @OneToOne
+    private CarEntity car;
+    
+    @OneToOne
+    private CustomerEntity customer;
+    
+    @OneToOne
+    private DispatchEntity dispatch;
+    
+    
+    @ManyToOne
+    private RentalRateEntity rentalRate;
 
     public Long getReservationId() {
         return reservationId;
@@ -54,6 +78,146 @@ public class ReservationEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.ReservationEntity[ id=" + reservationId + " ]";
+    }
+
+    /**
+     * @return the customerName
+     */
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    /**
+     * @param customerName the customerName to set
+     */
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    /**
+     * @return the isPaid
+     */
+    public boolean isIsPaid() {
+        return isPaid;
+    }
+
+    /**
+     * @param isPaid the isPaid to set
+     */
+    public void setIsPaid(boolean isPaid) {
+        this.isPaid = isPaid;
+    }
+
+    /**
+     * @return the creditCardNumber
+     */
+    public String getCreditCardNumber() {
+        return creditCardNumber;
+    }
+
+    /**
+     * @param creditCardNumber the creditCardNumber to set
+     */
+    public void setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
+    }
+
+    /**
+     * @return the cvv
+     */
+    public String getCvv() {
+        return cvv;
+    }
+
+    /**
+     * @param cvv the cvv to set
+     */
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
+    }
+
+    /**
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    /**
+     * @return the pickupOutlet
+     */
+    public OutletEntity getPickupOutlet() {
+        return pickupOutlet;
+    }
+
+    /**
+     * @param pickupOutlet the pickupOutlet to set
+     */
+    public void setPickupOutlet(OutletEntity pickupOutlet) {
+        this.pickupOutlet = pickupOutlet;
+    }
+
+    /**
+     * @return the car
+     */
+    public CarEntity getCar() {
+        return car;
+    }
+
+    /**
+     * @param car the car to set
+     */
+    public void setCar(CarEntity car) {
+        this.car = car;
+    }
+
+    /**
+     * @return the customer
+     */
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    /**
+     * @param customer the customer to set
+     */
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
+    /**
+     * @return the dispatch
+     */
+    public DispatchEntity getDispatch() {
+        return dispatch;
+    }
+
+    /**
+     * @param dispatch the dispatch to set
+     */
+    public void setDispatch(DispatchEntity dispatch) {
+        this.dispatch = dispatch;
+    }
+
+    /**
+     * @return the rentalRate
+     */
+    public RentalRateEntity getRentalRate() {
+        return rentalRate;
+    }
+
+    /**
+     * @param rentalRate the rentalRate to set
+     */
+    public void setRentalRate(RentalRateEntity rentalRate) {
+        this.rentalRate = rentalRate;
     }
     
 }

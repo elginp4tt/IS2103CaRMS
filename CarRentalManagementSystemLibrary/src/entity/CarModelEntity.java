@@ -18,10 +18,40 @@ import javax.persistence.Id;
 @Entity
 public class CarModelEntity implements Serializable {
 
+    /**
+     * @return the make
+     */
+    public String getMake() {
+        return make;
+    }
+
+    /**
+     * @param make the make to set
+     */
+    public void setMake(String make) {
+        this.make = make;
+    }
+
+    /**
+     * @return the model
+     */
+    public String getModel() {
+        return model;
+    }
+
+    /**
+     * @param model the model to set
+     */
+    public void setModel(String model) {
+        this.model = model;
+    }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carModelId;
+    private String make;
+    private String model;
 
     public Long getCarModelId() {
         return carModelId;

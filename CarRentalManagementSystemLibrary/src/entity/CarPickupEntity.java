@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +23,8 @@ public class CarPickupEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carPickupid;
+    private Date pickupDateTime; //can use for both date and time
+    private String location;
 
     public Long getCarPickupid() {
         return carPickupid;
@@ -54,6 +57,34 @@ public class CarPickupEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.CarPickupEntity[ id=" + carPickupid + " ]";
+    }
+
+    /**
+     * @return the pickupDateTime
+     */
+    public Date getPickupDateTime() {
+        return pickupDateTime;
+    }
+
+    /**
+     * @param pickupDateTime the pickupDateTime to set
+     */
+    public void setPickupDateTime(Date pickupDateTime) {
+        this.pickupDateTime = pickupDateTime;
+    }
+
+    /**
+     * @return the location
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(String location) {
+        this.location = location;
     }
     
 }

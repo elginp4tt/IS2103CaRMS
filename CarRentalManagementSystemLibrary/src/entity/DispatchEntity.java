@@ -6,10 +6,12 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -22,6 +24,22 @@ public class DispatchEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dispatchId;
+    private boolean isComplete;
+    
+    @OneToOne
+    @Column(nullable = false)
+    private CarEntity car;
+    
+    @OneToOne
+    @Column(nullable = false)
+    private EmployeeEntity transitDriver;
+    
+    @OneToOne
+    @Column(nullable = false)
+    private OutletEntity currentOutlet;
+    
+    @OneToOne
+    private OutletEntity endOutlet;
 
     public Long getDispatchId() {
         return dispatchId;

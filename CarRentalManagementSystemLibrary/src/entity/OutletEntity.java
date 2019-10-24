@@ -6,10 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Hashtable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,6 +26,15 @@ public class OutletEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long outletId;
+    private String name;
+    private String address;
+    private Hashtable<String, Hashtable<Date, Date>> openingHours;
+    
+    @OneToMany
+    private List<CarEntity> cars;
+    
+    @OneToMany
+    private List<EmployeeEntity> employees;
 
     public Long getOutletId() {
         return outletId;
@@ -54,6 +67,76 @@ public class OutletEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.OutletEntity[ id=" + outletId + " ]";
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the openingHours
+     */
+    public Hashtable getOpeningHours() {
+        return openingHours;
+    }
+
+    /**
+     * @param openingHours the openingHours to set
+     */
+    public void setOpeningHours(Hashtable openingHours) {
+        this.openingHours = openingHours;
+    }
+
+    /**
+     * @return the cars
+     */
+    public List<CarEntity> getCars() {
+        return cars;
+    }
+
+    /**
+     * @param cars the cars to set
+     */
+    public void setCars(List<CarEntity> cars) {
+        this.cars = cars;
+    }
+
+    /**
+     * @return the employees
+     */
+    public List<EmployeeEntity> getEmployees() {
+        return employees;
+    }
+
+    /**
+     * @param employees the employees to set
+     */
+    public void setEmployees(List<EmployeeEntity> employees) {
+        this.employees = employees;
     }
     
 }

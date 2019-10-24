@@ -6,10 +6,12 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -22,6 +24,13 @@ public class EmployeeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
+    private String username;
+    private String password;
+    
+    @ManyToOne
+    @Column(nullable = false)
+    private OutletEntity outlet;
+    
 
     public Long getEmployeeId() {
         return employeeId;
@@ -54,6 +63,48 @@ public class EmployeeEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.EmployeeEntity[ id=" + employeeId + " ]";
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @return the outlet
+     */
+    public OutletEntity getOutlet() {
+        return outlet;
+    }
+
+    /**
+     * @param outlet the outlet to set
+     */
+    public void setOutlet(OutletEntity outlet) {
+        this.outlet = outlet;
     }
     
 }
