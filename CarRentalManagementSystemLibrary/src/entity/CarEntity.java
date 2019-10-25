@@ -6,7 +6,10 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,11 +27,14 @@ public class CarEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carId;
+    @Column(nullable = false)
     private String licensePlate;
+    @Column(nullable = false)
     private String colour;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CarStatusEnum status;
-    
-    @OneToOne
+    @Column(nullable = false)
     private String location;
     
     @OneToOne

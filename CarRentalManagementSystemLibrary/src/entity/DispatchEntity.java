@@ -24,6 +24,7 @@ public class DispatchEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dispatchId;
+    @Column(nullable = false)
     private boolean isComplete;
     
     @OneToOne
@@ -39,6 +40,7 @@ public class DispatchEntity implements Serializable {
     private OutletEntity currentOutlet;
     
     @OneToOne
+    @Column(nullable = false)
     private OutletEntity endOutlet;
 
     public Long getDispatchId() {
@@ -72,6 +74,76 @@ public class DispatchEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.DispatchEntity[ id=" + dispatchId + " ]";
+    }
+
+    /**
+     * @return the isComplete
+     */
+    public boolean isIsComplete() {
+        return isComplete;
+    }
+
+    /**
+     * @param isComplete the isComplete to set
+     */
+    public void setIsComplete(boolean isComplete) {
+        this.isComplete = isComplete;
+    }
+
+    /**
+     * @return the car
+     */
+    public CarEntity getCar() {
+        return car;
+    }
+
+    /**
+     * @param car the car to set
+     */
+    public void setCar(CarEntity car) {
+        this.car = car;
+    }
+
+    /**
+     * @return the transitDriver
+     */
+    public EmployeeEntity getTransitDriver() {
+        return transitDriver;
+    }
+
+    /**
+     * @param transitDriver the transitDriver to set
+     */
+    public void setTransitDriver(EmployeeEntity transitDriver) {
+        this.transitDriver = transitDriver;
+    }
+
+    /**
+     * @return the currentOutlet
+     */
+    public OutletEntity getCurrentOutlet() {
+        return currentOutlet;
+    }
+
+    /**
+     * @param currentOutlet the currentOutlet to set
+     */
+    public void setCurrentOutlet(OutletEntity currentOutlet) {
+        this.currentOutlet = currentOutlet;
+    }
+
+    /**
+     * @return the endOutlet
+     */
+    public OutletEntity getEndOutlet() {
+        return endOutlet;
+    }
+
+    /**
+     * @param endOutlet the endOutlet to set
+     */
+    public void setEndOutlet(OutletEntity endOutlet) {
+        this.endOutlet = endOutlet;
     }
     
 }

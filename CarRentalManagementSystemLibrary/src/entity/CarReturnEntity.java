@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -23,7 +24,11 @@ public class CarReturnEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carReturnId;
+    
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date returnDateTime; //can use for both date and time
+    
+    
     private String location;
 
     public Long getCarReturnId() {

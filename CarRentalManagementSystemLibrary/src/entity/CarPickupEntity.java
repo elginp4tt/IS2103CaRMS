@@ -7,10 +7,12 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -23,7 +25,9 @@ public class CarPickupEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carPickupid;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date pickupDateTime; //can use for both date and time
+    @Column(nullable = false)
     private String location;
 
     public Long getCarPickupid() {

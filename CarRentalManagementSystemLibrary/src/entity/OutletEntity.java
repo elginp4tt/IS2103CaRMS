@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,8 +27,11 @@ public class OutletEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long outletId;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String address;
+    @Column(nullable = false)
     private Hashtable<String, Hashtable<Date, Date>> openingHours;
     
     @OneToMany

@@ -7,12 +7,15 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -25,10 +28,16 @@ public class ReservationEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
+    @Column(nullable = false)
     private String customerName;
+    @Column(nullable = false)
     private boolean isPaid;
+    @Column(nullable = false)
     private String creditCardNumber;
+    @Column(nullable = false)
     private String cvv;
+    @Column(nullable = false)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date date;
     
     @OneToOne
@@ -45,6 +54,7 @@ public class ReservationEntity implements Serializable {
     
     
     @ManyToOne
+    @JoinColumn(nullable = false)
     private RentalRateEntity rentalRate;
 
     public Long getReservationId() {

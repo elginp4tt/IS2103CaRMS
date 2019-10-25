@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,7 @@ public class CarCategoryEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carCategoryId;
+    @Column(nullable = false)
     private String carCategory;
     
     @OneToOne
@@ -73,6 +75,20 @@ public class CarCategoryEntity implements Serializable {
      */
     public void setCarCategory(String carCategory) {
         this.carCategory = carCategory;
+    }
+
+    /**
+     * @return the rentalRate
+     */
+    public RentalRateEntity getRentalRate() {
+        return rentalRate;
+    }
+
+    /**
+     * @param rentalRate the rentalRate to set
+     */
+    public void setRentalRate(RentalRateEntity rentalRate) {
+        this.rentalRate = rentalRate;
     }
     
 }

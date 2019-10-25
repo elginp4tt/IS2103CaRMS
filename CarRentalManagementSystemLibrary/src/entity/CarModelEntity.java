@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,14 @@ import javax.persistence.Id;
 @Entity
 public class CarModelEntity implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long carModelId;
+    @Column(nullable = false)
+    private String make;
+    @Column(nullable = false)
+    private String model;
     /**
      * @return the make
      */
@@ -45,13 +54,6 @@ public class CarModelEntity implements Serializable {
     public void setModel(String model) {
         this.model = model;
     }
-
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long carModelId;
-    private String make;
-    private String model;
 
     public Long getCarModelId() {
         return carModelId;

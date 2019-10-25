@@ -8,9 +8,12 @@ package entity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import util.enumeration.EmployeeAccessRightEnum;
 
@@ -25,12 +28,16 @@ public class EmployeeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private EmployeeAccessRightEnum accessRight;
     
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private OutletEntity outlet;
     
 
