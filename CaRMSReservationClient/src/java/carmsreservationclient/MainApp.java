@@ -5,10 +5,29 @@
  */
 package carmsreservationclient;
 
+import ejb.session.stateful.ReservationSessionBeanRemote;
+import ejb.session.stateless.CustomerSessionBeanRemote;
+import ejb.session.stateless.SearchSessionBeanRemote;
+import entity.CustomerEntity;
+
 /**
  *
  * @author Elgin Patt
  */
 public class MainApp {
+
+    private CustomerSessionBeanRemote customerSessionBeanRemote;
+    private ReservationSessionBeanRemote reservationSessionBean;
+    private SearchSessionBeanRemote searchSessionBeanRemote;
+    
+    private CustomerEntity currentCustomerEntity;
+
+    public MainApp(CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBean, SearchSessionBeanRemote searchSessionBeanRemote) {
+        this.customerSessionBeanRemote = customerSessionBeanRemote;
+        this.reservationSessionBean = reservationSessionBean;
+        this.searchSessionBeanRemote = searchSessionBeanRemote;
+    }
+    
+    
     
 }
