@@ -12,6 +12,7 @@ import ejb.session.stateless.EmployeeSessionBeanRemote;
 import ejb.session.stateless.OutletSessionBeanRemote;
 import ejb.session.stateless.PartnerSessionBeanRemote;
 import ejb.session.stateless.RentalRateSessionBeanRemote;
+import ejb.session.stateless.ReservationSessionBeanRemote;
 import entity.EmployeeEntity;
 import exception.InvalidLoginException;
 import java.util.Scanner;
@@ -25,11 +26,12 @@ public class MainApp {
     private DispatchSessionBeanRemote dispatchSessionBeanRemote;
     private CarSessionBeanRemote carSessionBeanRemote;
     private CustomerSessionBeanRemote customerSessionBeanRemote;
+    private ReservationSessionBeanRemote reservationSessionBeanRemote;
     
     private EmployeeEntity employeeEntity;
     
 
-    public MainApp(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, PartnerSessionBeanRemote partnerSessionBeanRemote, OutletSessionBeanRemote outletSessionBeanRemote, EmployeeSessionBeanRemote employeeSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote) {
+    public MainApp(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, PartnerSessionBeanRemote partnerSessionBeanRemote, OutletSessionBeanRemote outletSessionBeanRemote, EmployeeSessionBeanRemote employeeSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote) {
         this.rentalRateSessionBeanRemote = rentalRateSessionBeanRemote;
         this.partnerSessionBeanRemote = partnerSessionBeanRemote;
         this.outletSessionBeanRemote = outletSessionBeanRemote;
@@ -37,6 +39,7 @@ public class MainApp {
         this.dispatchSessionBeanRemote = dispatchSessionBeanRemote;
         this.carSessionBeanRemote = carSessionBeanRemote;
         this.customerSessionBeanRemote = customerSessionBeanRemote;
+        this.reservationSessionBeanRemote = reservationSessionBeanRemote;
     }
 
     public void runApp(){
@@ -55,7 +58,7 @@ public class MainApp {
             System.out.println(e.getMessage());
             }
         
-        CustomerServiceModule customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, employeeEntity);
+        CustomerServiceModule customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, employeeEntity);
         SalesManagementModule salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, employeeEntity);
         
         }

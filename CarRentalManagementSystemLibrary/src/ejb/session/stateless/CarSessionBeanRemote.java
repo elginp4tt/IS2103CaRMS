@@ -14,4 +14,5 @@ public interface CarSessionBeanRemote {
 
     public void deleteCarEntity(String licensePlate);
     
+    public void updateCarEntity(CarEntity carEntity);
 }

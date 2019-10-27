@@ -5,6 +5,12 @@
  */
 package ejb.session.stateless;
 
+import entity.ReservationEntity;
+import exception.ReservationNotFoundException;
+
 public interface ReservationSessionBeanRemote {
     
+    public ReservationEntity retrieveReservationEntityByReservationId(Long reservationId) throws ReservationNotFoundException;
+    
+    public void updateReservationEntity(ReservationEntity reservationEntity);
 }

@@ -31,7 +31,7 @@ public class ReservationEntity implements Serializable {
     @Column(nullable = false)
     private String customerName;
     @Column(nullable = false)
-    private boolean isPaid;
+    private boolean paid;
     @Column(nullable = false)
     private String creditCardNumber;
     @Column(nullable = false)
@@ -39,6 +39,23 @@ public class ReservationEntity implements Serializable {
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date date;
+
+    public ReservationEntity() {
+    }
+
+    public ReservationEntity(String customerName, boolean paid, String creditCardNumber, String cvv, Date date, OutletEntity pickupOutlet, CarEntity car, CustomerEntity customer, DispatchEntity dispatch, RentalRateEntity rentalRate) {
+        this();
+        this.customerName = customerName;
+        this.paid = paid;
+        this.creditCardNumber = creditCardNumber;
+        this.cvv = cvv;
+        this.date = date;
+        this.pickupOutlet = pickupOutlet;
+        this.car = car;
+        this.customer = customer;
+        this.dispatch = dispatch;
+        this.rentalRate = rentalRate;
+    }
     
     @OneToOne
     private OutletEntity pickupOutlet;
@@ -107,15 +124,15 @@ public class ReservationEntity implements Serializable {
     /**
      * @return the isPaid
      */
-    public boolean isIsPaid() {
-        return isPaid;
+    public boolean isPaid() {
+        return paid;
     }
 
     /**
-     * @param isPaid the isPaid to set
+     * @param paid the paid to set
      */
-    public void setIsPaid(boolean isPaid) {
-        this.isPaid = isPaid;
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     /**

@@ -34,6 +34,20 @@ public class CarEntity implements Serializable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CarStatusEnum status;
+
+    public CarEntity() {
+    }
+    
+
+    public CarEntity(String licensePlate, String colour, String location, CarCategoryEntity carCategory, CarModelEntity carModel) {
+        super();
+        this.licensePlate = licensePlate;
+        this.colour = colour;
+        this.location = location;
+        this.carCategory = carCategory;
+        this.carModel = carModel;
+        this.status = CarStatusEnum.INOUTLET;
+    }
     @Column(nullable = false)
     private String location;
     

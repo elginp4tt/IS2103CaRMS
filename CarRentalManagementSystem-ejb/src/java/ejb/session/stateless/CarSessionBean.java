@@ -52,6 +52,10 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
         System.out.println(e.getMessage());
         }
     }
+    
+    public void updateCarEntity(CarEntity carEntity){
+        em.merge(carEntity);
+    }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 }

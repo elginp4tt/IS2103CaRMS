@@ -13,5 +13,7 @@ public interface CarSessionBeanLocal {
     public CarEntity retrieveCarEntityByLicensePlate(String licensePlate) throws CarNotFoundException;
 
     public void deleteCarEntity(String licensePlate);
+
+    public void updateCarEntity(CarEntity carEntity);
     
 }

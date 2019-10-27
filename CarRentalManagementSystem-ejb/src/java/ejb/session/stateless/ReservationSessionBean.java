@@ -6,6 +6,8 @@
 package ejb.session.stateless;
 
 import ejb.session.stateless.ReservationSessionBeanRemote;
+import entity.ReservationEntity;
+import exception.ReservationNotFoundException;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -24,6 +26,17 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    @Override
+    public ReservationEntity retrieveReservationEntityByReservationId(Long reservationId) throws ReservationNotFoundException{
+        ReservationEntity reservationEntity = em.find(ReservationEntity.class, reservationId);
+        if (reservationEntity != null){
+            return reservationEntity;
+        } else {
+            throw new ReservationNotFoundException("Reservation not found");
+        }
+    }
+    
+    public void updateReservationEntity(ReservationEntity reservationEntity){
+        em.merge(reservationEntity);
+    }
 }
