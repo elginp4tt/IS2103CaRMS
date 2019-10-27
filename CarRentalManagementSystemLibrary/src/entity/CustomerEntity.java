@@ -7,7 +7,6 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,7 +37,7 @@ public class CustomerEntity implements Serializable {
     private String passportNumber;
     
     @OneToMany(mappedBy = "customer", orphanRemoval = true)
-    private List<ReservationEntity> reservations;
+    private ArrayList<ReservationEntity> reservations;
 
     public Long getCustomerId() {
         return customerId;
@@ -146,14 +145,14 @@ public class CustomerEntity implements Serializable {
     /**
      * @return the reservations
      */
-    public List<ReservationEntity> getReservations() {
+    public ArrayList<ReservationEntity> getReservations() {
         return reservations;
     }
 
     /**
      * @param reservations the reservations to set
      */
-    public void setReservations(List<ReservationEntity> reservations) {
+    public void setReservations(ArrayList<ReservationEntity> reservations) {
         this.reservations = reservations;
     }
     

@@ -5,6 +5,16 @@
  */
 package ejb.session.stateless;
 
+import entity.EmployeeEntity;
+import exception.EmployeeNotFoundException;
+import exception.InvalidLoginException;
+
 public interface EmployeeSessionBeanLocal {
+
+    public EmployeeEntity retrieveEmployeeEntityByUsername(String username) throws EmployeeNotFoundException;
+
+    public EmployeeEntity retrieveEmployeeEntityByEmployeeId(long employeeId) throws EmployeeNotFoundException;
+
+    public EmployeeEntity login(String username, String password) throws InvalidLoginException;
     
 }

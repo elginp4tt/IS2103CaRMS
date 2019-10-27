@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.stateful;
+package ejb.session.stateless;
 
+import ejb.session.stateless.ReservationSessionBeanRemote;
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -15,7 +16,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author Elgin Patt
  */
-@Stateful
+@Stateless
 @Local(ReservationSessionBeanLocal.class)
 @Remote(ReservationSessionBeanRemote.class)
 public class ReservationSessionBean implements ReservationSessionBeanRemote, ReservationSessionBeanLocal {
