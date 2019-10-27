@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.singleton;
+package ejb.session.stateless;
 
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author Elgin Patt
  */
-@Singleton
+@Stateless
 public class RentalRateSessionBean implements RentalRateSessionBeanRemote, RentalRateSessionBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose

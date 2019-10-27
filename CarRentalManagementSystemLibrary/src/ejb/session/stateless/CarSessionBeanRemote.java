@@ -8,10 +8,10 @@ package ejb.session.stateless;
 import entity.CarEntity;
 import exception.CarNotFoundException;
 
-
 public interface CarSessionBeanRemote {
-    public void deleteCarEntity(String licensePlate);
-
+    
     public CarEntity retrieveCarEntityByLicensePlate(String licensePlate) throws CarNotFoundException;
-   
+
+    public void deleteCarEntity(String licensePlate);
+    
 }

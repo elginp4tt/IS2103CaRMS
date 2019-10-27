@@ -5,8 +5,6 @@
  */
 package ejb.session.stateful;
 
-import javax.ejb.Local;
-
 public interface ReservationSessionBeanLocal {
     
 }

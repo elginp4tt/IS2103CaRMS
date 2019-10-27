@@ -8,15 +8,16 @@ package ejb.session.stateless;
 import entity.CustomerEntity;
 import exception.CustomerNotFoundException;
 
+
 public interface CustomerSessionBeanRemote {
-    
     public long createCustomerEntity(CustomerEntity newCustomerEntity);
 
     public CustomerEntity retrieveCustomerEntityByCustomerId(Long customerId);
 
     public CustomerEntity retrieveCustomerEntityByEmail(String email) throws CustomerNotFoundException;
-
+    
     public void updateCustomerEntity(CustomerEntity customerEntity);
 
     public void deleteCustomerEntity(long customerId);
+    
 }

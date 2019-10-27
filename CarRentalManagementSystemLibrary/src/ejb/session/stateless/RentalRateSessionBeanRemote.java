@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.singleton;
-
+package ejb.session.stateless;
 
 public interface RentalRateSessionBeanRemote {
     

@@ -8,7 +8,6 @@ package ejb.session.stateless;
 import entity.CustomerEntity;
 import exception.CustomerNotFoundException;
 
-
 public interface CustomerSessionBeanLocal {
 
     public long createCustomerEntity(CustomerEntity newCustomerEntity);

@@ -5,8 +5,6 @@
  */
 package ejb.session.stateful;
 
-
-
 public interface ReservationSessionBeanRemote {
     
 }
