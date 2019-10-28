@@ -26,10 +26,13 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
     
-    public CarEntity retrieveCarEntityByCarId(Long carId){
+    public CarEntity retrieveCarEntityByCarId(Long carId)throws CarNotFoundException{
         CarEntity carEntity = em.find(CarEntity.class, carId);
-        
-        return carEntity;
+        if (carEntity != null){
+            return carEntity;
+        } else {
+            throw new CarNotFoundException("Car not found");
+        }
     }
     
     @Override
