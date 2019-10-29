@@ -6,9 +6,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.HashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,13 +32,29 @@ public class OutletEntity implements Serializable {
     @Column(nullable = false)
     private String address;
     @Column(nullable = false)
-    private Hashtable<String, Hashtable<Date, Date>> openingHours;
+    private HashMap<String, HashMap<Date, Date>> openingHours;
     
     @OneToMany
-    private List<CarEntity> cars;
+    private ArrayList<CarEntity> cars;
     
     @OneToMany
-    private List<EmployeeEntity> employees;
+    private ArrayList<EmployeeEntity> employees;
+    
+    @OneToMany
+    private ArrayList<DispatchEntity> dispatches;
+
+    public OutletEntity() {
+        this.cars = new ArrayList<CarEntity>();
+        this.employees = new ArrayList<EmployeeEntity>();
+        this.dispatches = new ArrayList<DispatchEntity>();
+        this.openingHours = new HashMap<String, HashMap<Date, Date>>();
+    }
+
+    public OutletEntity(String name, String address) {
+        this();
+        this.name = name;
+        this.address = address;
+    }
 
     public Long getOutletId() {
         return outletId;
@@ -104,43 +120,57 @@ public class OutletEntity implements Serializable {
     /**
      * @return the openingHours
      */
-    public Hashtable getOpeningHours() {
+    public HashMap getOpeningHours() {
         return openingHours;
     }
 
     /**
      * @param openingHours the openingHours to set
      */
-    public void setOpeningHours(Hashtable openingHours) {
+    public void setOpeningHours(HashMap openingHours) {
         this.openingHours = openingHours;
     }
 
     /**
      * @return the cars
      */
-    public List<CarEntity> getCars() {
+    public ArrayList<CarEntity> getCars() {
         return cars;
     }
 
     /**
      * @param cars the cars to set
      */
-    public void setCars(List<CarEntity> cars) {
+    public void setCars(ArrayList<CarEntity> cars) {
         this.cars = cars;
     }
 
     /**
      * @return the employees
      */
-    public List<EmployeeEntity> getEmployees() {
+    public ArrayList<EmployeeEntity> getEmployees() {
         return employees;
     }
 
     /**
      * @param employees the employees to set
      */
-    public void setEmployees(List<EmployeeEntity> employees) {
+    public void setEmployees(ArrayList<EmployeeEntity> employees) {
         this.employees = employees;
+    }
+
+    /**
+     * @return the dispatches
+     */
+    public ArrayList<DispatchEntity> getDispatches() {
+        return dispatches;
+    }
+
+    /**
+     * @param dispatches the dispatches to set
+     */
+    public void setDispatches(ArrayList<DispatchEntity> dispatches) {
+        this.dispatches = dispatches;
     }
     
 }

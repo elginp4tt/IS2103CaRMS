@@ -6,11 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -27,6 +30,29 @@ public class CarModelEntity implements Serializable {
     private String make;
     @Column(nullable = false)
     private String model;
+    
+    @OneToMany
+    private ArrayList<CarEntity> cars;
+    
+    @ManyToOne(optional = false)
+    private CarCategoryEntity carCategory;
+    
+    @OneToMany
+    private ArrayList<ReservationEntity> reservations;
+
+    public CarModelEntity() {
+        this.cars = new ArrayList<CarEntity>();
+        this.reservations = new ArrayList<ReservationEntity>();
+    }
+
+    public CarModelEntity(String make, String model, CarCategoryEntity carCategory) {
+        this();
+        this.make = make;
+        this.model = model;
+        this.carCategory = carCategory;
+    }
+    
+    
     /**
      * @return the make
      */
@@ -86,6 +112,48 @@ public class CarModelEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.ModelEntity[ id=" + carModelId + " ]";
+    }
+
+    /**
+     * @return the cars
+     */
+    public ArrayList<CarEntity> getCars() {
+        return cars;
+    }
+
+    /**
+     * @param cars the cars to set
+     */
+    public void setCars(ArrayList<CarEntity> cars) {
+        this.cars = cars;
+    }
+
+    /**
+     * @return the carCategory
+     */
+    public CarCategoryEntity getCarCategory() {
+        return carCategory;
+    }
+
+    /**
+     * @param carCategory the carCategory to set
+     */
+    public void setCarCategory(CarCategoryEntity carCategory) {
+        this.carCategory = carCategory;
+    }
+
+    /**
+     * @return the reservations
+     */
+    public ArrayList<ReservationEntity> getReservations() {
+        return reservations;
+    }
+
+    /**
+     * @param reservations the reservations to set
+     */
+    public void setReservations(ArrayList<ReservationEntity> reservations) {
+        this.reservations = reservations;
     }
     
 }

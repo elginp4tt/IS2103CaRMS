@@ -7,10 +7,12 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -24,12 +26,22 @@ public class CarReturnEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carReturnId;
-    
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date returnDateTime; //can use for both date and time
-    
-    
+    @Column(nullable = false)
     private String location;
+    
+    @OneToOne(optional = true)
+    private OutletEntity outlet;
+
+    public CarReturnEntity() {
+    }
+
+    public CarReturnEntity(Date returnDateTime, String location) {
+        this();
+        this.returnDateTime = returnDateTime;
+        this.location = location;
+    }
 
     public Long getCarReturnId() {
         return carReturnId;
@@ -90,6 +102,20 @@ public class CarReturnEntity implements Serializable {
      */
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    /**
+     * @return the outlet
+     */
+    public OutletEntity getOutlet() {
+        return outlet;
+    }
+
+    /**
+     * @param outlet the outlet to set
+     */
+    public void setOutlet(OutletEntity outlet) {
+        this.outlet = outlet;
     }
     
 }

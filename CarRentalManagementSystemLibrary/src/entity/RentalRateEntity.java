@@ -34,10 +34,19 @@ public class RentalRateEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date validityPeriod;
     
-    
-    
     @OneToOne
     private CarEntity car;
+
+    public RentalRateEntity() {
+    }
+
+    public RentalRateEntity(String name, String dailyRate, Date validityPeriod, CarEntity car) {
+        this();
+        this.name = name;
+        this.dailyRate = dailyRate;
+        this.validityPeriod = validityPeriod;
+        this.car = car;
+    }
 
     public Long getRentalRateId() {
         return rentalRateId;

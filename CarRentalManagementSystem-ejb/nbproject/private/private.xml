@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/Users/Elgin%20Patt/Desktop/NUS/1920/IS2103/Project/CarRentalManagementSystem/CarRentalManagementSystem-ejb/src/java/ejb/session/stateless/CustomerSessionBean.java</file>
             <file>file:/C:/Users/Elgin%20Patt/Desktop/NUS/1920/IS2103/Project/CarRentalManagementSystem/CarRentalManagementSystem-ejb/src/java/ejb/session/stateless/ReservationSessionBean.java</file>
+            <file>file:/C:/Users/Elgin%20Patt/Desktop/NUS/1920/IS2103/Project/CarRentalManagementSystem/CarRentalManagementSystem-ejb/src/java/ejb/session/stateless/CarSessionBean.java</file>
         </group>
     </open-files>
 </project-private>

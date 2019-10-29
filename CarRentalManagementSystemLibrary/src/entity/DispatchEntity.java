@@ -27,21 +27,38 @@ public class DispatchEntity implements Serializable {
     @Column(nullable = false)
     private boolean isComplete;
     
-    @OneToOne
+    @OneToOne(optional = false)
+    @Column(nullable = false)
+    private ReservationEntity reservation;
+    
+    @OneToOne(optional = false)
     @Column(nullable = false)
     private CarEntity car;
     
-    @OneToOne
+    @OneToOne(optional = false)
     @Column(nullable = false)
     private EmployeeEntity transitDriver;
     
-    @OneToOne
+    @OneToOne(optional = false)
     @Column(nullable = false)
     private OutletEntity currentOutlet;
     
-    @OneToOne
+    @OneToOne(optional = false)
     @Column(nullable = false)
     private OutletEntity endOutlet;
+
+    public DispatchEntity() {
+    }
+
+    public DispatchEntity(boolean isComplete, ReservationEntity reservation, CarEntity car, EmployeeEntity transitDriver, OutletEntity currentOutlet, OutletEntity endOutlet) {
+        this();
+        this.isComplete = isComplete;
+        this.reservation = reservation;
+        this.car = car;
+        this.transitDriver = transitDriver;
+        this.currentOutlet = currentOutlet;
+        this.endOutlet = endOutlet;
+    }
 
     public Long getDispatchId() {
         return dispatchId;
@@ -144,6 +161,20 @@ public class DispatchEntity implements Serializable {
      */
     public void setEndOutlet(OutletEntity endOutlet) {
         this.endOutlet = endOutlet;
+    }
+
+    /**
+     * @return the reservation
+     */
+    public ReservationEntity getReservation() {
+        return reservation;
+    }
+
+    /**
+     * @param reservation the reservation to set
+     */
+    public void setReservation(ReservationEntity reservation) {
+        this.reservation = reservation;
     }
     
 }

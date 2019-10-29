@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -29,6 +30,18 @@ public class CarPickupEntity implements Serializable {
     private Date pickupDateTime; //can use for both date and time
     @Column(nullable = false)
     private String location;
+    
+    @OneToOne(optional = true)
+    private OutletEntity outlet;
+
+    public CarPickupEntity() {
+    }
+
+    public CarPickupEntity(Date pickupDateTime, String location) {
+        this();
+        this.pickupDateTime = pickupDateTime;
+        this.location = location;
+    }
 
     public Long getCarPickupid() {
         return carPickupid;
@@ -89,6 +102,20 @@ public class CarPickupEntity implements Serializable {
      */
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    /**
+     * @return the outlet
+     */
+    public OutletEntity getOutlet() {
+        return outlet;
+    }
+
+    /**
+     * @param outlet the outlet to set
+     */
+    public void setOutlet(OutletEntity outlet) {
+        this.outlet = outlet;
     }
     
 }

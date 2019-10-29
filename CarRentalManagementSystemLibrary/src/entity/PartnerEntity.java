@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -29,6 +31,24 @@ public class PartnerEntity implements Serializable {
     private String password;
     @Column(nullable = false)
     private String name;
+    
+    @OneToMany
+    private ArrayList<CustomerEntity> customers;
+    
+    @OneToMany
+    private ArrayList<ReservationEntity> reservations;
+
+    public PartnerEntity() {
+        this.customers = new ArrayList<CustomerEntity>();
+        this.reservations = new ArrayList<ReservationEntity>();
+    }
+
+    public PartnerEntity(String username, String password, String name) {
+        this();
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }
 
     public Long getPartnerId() {
         return partnerId;
@@ -103,6 +123,34 @@ public class PartnerEntity implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the customers
+     */
+    public ArrayList<CustomerEntity> getCustomers() {
+        return customers;
+    }
+
+    /**
+     * @param customers the customers to set
+     */
+    public void setCustomers(ArrayList<CustomerEntity> customers) {
+        this.customers = customers;
+    }
+
+    /**
+     * @return the reservations
+     */
+    public ArrayList<ReservationEntity> getReservations() {
+        return reservations;
+    }
+
+    /**
+     * @param reservations the reservations to set
+     */
+    public void setReservations(ArrayList<ReservationEntity> reservations) {
+        this.reservations = reservations;
     }
     
 }

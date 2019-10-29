@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -38,6 +39,22 @@ public class CustomerEntity implements Serializable {
     
     @OneToMany(mappedBy = "customer", orphanRemoval = true)
     private ArrayList<ReservationEntity> reservations;
+    
+    @OneToOne(optional = true)
+    private PartnerEntity partner;
+
+    public CustomerEntity() {
+        this.reservations = new ArrayList<ReservationEntity>();
+    }
+
+    public CustomerEntity(String username, String password, String email) {
+        this();
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+    
+    
 
     public Long getCustomerId() {
         return customerId;
@@ -154,6 +171,20 @@ public class CustomerEntity implements Serializable {
      */
     public void setReservations(ArrayList<ReservationEntity> reservations) {
         this.reservations = reservations;
+    }
+
+    /**
+     * @return the partner
+     */
+    public PartnerEntity getPartner() {
+        return partner;
+    }
+
+    /**
+     * @param partner the partner to set
+     */
+    public void setPartner(PartnerEntity partner) {
+        this.partner = partner;
     }
     
 }
