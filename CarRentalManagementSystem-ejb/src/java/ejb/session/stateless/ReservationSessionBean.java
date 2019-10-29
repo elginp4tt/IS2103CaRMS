@@ -36,6 +36,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         }
     }
     
+    @Override
     public void updateReservationEntity(ReservationEntity reservationEntity){
         em.merge(reservationEntity);
     }

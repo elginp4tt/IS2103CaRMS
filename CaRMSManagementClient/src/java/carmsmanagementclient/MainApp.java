@@ -5,6 +5,7 @@
  */
 package carmsmanagementclient;
 
+import ejb.session.stateless.CarPickupReturnSessionBeanRemote;
 import ejb.session.stateless.CarSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
 import ejb.session.stateless.DispatchSessionBeanRemote;
@@ -27,11 +28,12 @@ public class MainApp {
     private CarSessionBeanRemote carSessionBeanRemote;
     private CustomerSessionBeanRemote customerSessionBeanRemote;
     private ReservationSessionBeanRemote reservationSessionBeanRemote;
+    private CarPickupReturnSessionBeanRemote carPickupReturnSessionBeanRemote;
     
     private EmployeeEntity employeeEntity;
     
 
-    public MainApp(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, PartnerSessionBeanRemote partnerSessionBeanRemote, OutletSessionBeanRemote outletSessionBeanRemote, EmployeeSessionBeanRemote employeeSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote) {
+    public MainApp(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, PartnerSessionBeanRemote partnerSessionBeanRemote, OutletSessionBeanRemote outletSessionBeanRemote, EmployeeSessionBeanRemote employeeSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote, CarPickupReturnSessionBeanRemote carPickupReturnSessionBeanRemote) {
         this.rentalRateSessionBeanRemote = rentalRateSessionBeanRemote;
         this.partnerSessionBeanRemote = partnerSessionBeanRemote;
         this.outletSessionBeanRemote = outletSessionBeanRemote;
@@ -40,6 +42,7 @@ public class MainApp {
         this.carSessionBeanRemote = carSessionBeanRemote;
         this.customerSessionBeanRemote = customerSessionBeanRemote;
         this.reservationSessionBeanRemote = reservationSessionBeanRemote;
+        this.carPickupReturnSessionBeanRemote = carPickupReturnSessionBeanRemote; 
     }
 
     public void runApp(){
@@ -58,7 +61,7 @@ public class MainApp {
             System.out.println(e.getMessage());
             }
         
-        CustomerServiceModule customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, employeeEntity);
+        CustomerServiceModule customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, carPickupReturnSessionBeanRemote, outletSessionBeanRemote, employeeEntity);
         SalesManagementModule salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, employeeEntity);
         
         }

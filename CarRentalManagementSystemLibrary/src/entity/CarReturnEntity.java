@@ -28,8 +28,6 @@ public class CarReturnEntity implements Serializable {
     private Long carReturnId;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date returnDateTime; //can use for both date and time
-    @Column(nullable = false)
-    private String location;
     
     @OneToOne(optional = true)
     private OutletEntity outlet;
@@ -37,10 +35,10 @@ public class CarReturnEntity implements Serializable {
     public CarReturnEntity() {
     }
 
-    public CarReturnEntity(Date returnDateTime, String location) {
+    public CarReturnEntity(Date returnDateTime, OutletEntity outlet) {
         this();
         this.returnDateTime = returnDateTime;
-        this.location = location;
+        this.outlet = outlet;
     }
 
     public Long getCarReturnId() {
@@ -88,20 +86,6 @@ public class CarReturnEntity implements Serializable {
      */
     public void setReturnDateTime(Date returnDateTime) {
         this.returnDateTime = returnDateTime;
-    }
-
-    /**
-     * @return the location
-     */
-    public String getLocation() {
-        return location;
-    }
-
-    /**
-     * @param location the location to set
-     */
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     /**

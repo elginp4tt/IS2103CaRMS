@@ -5,10 +5,14 @@
  */
 package carmsmanagementclient;
 
+import ejb.session.stateless.CarPickupReturnSessionBeanRemote;
 import ejb.session.stateless.CarSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
+import ejb.session.stateless.OutletSessionBeanRemote;
 import ejb.session.stateless.ReservationSessionBeanRemote;
 import entity.CarEntity;
+import entity.CarPickupEntity;
+import entity.CarReturnEntity;
 import entity.CustomerEntity;
 import entity.EmployeeEntity;
 import entity.OutletEntity;
@@ -23,25 +27,26 @@ import util.enumeration.CarStatusEnum;
  * @author Elgin Patt
  */
 public class CustomerServiceModule {
-    private ReservationSessionBeanRemote reservationSessionBeanRemote;
     private CarSessionBeanRemote carSessionBeanRemote;
     private EmployeeEntity employeeEntity;
     private OutletEntity outletEntity;
-    private final CustomerSessionBeanRemote customerSessionBeanRemote;
+    private CustomerSessionBeanRemote customerSessionBeanRemote;
+    private ReservationSessionBeanRemote reservationSessionBeanRemote;
+    private CarPickupReturnSessionBeanRemote carPickupReturnSessionBeanRemote;
+    private OutletSessionBeanRemote outletSessionBeanRemote;
 
-    public CustomerServiceModule(CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, EmployeeEntity employeeEntity) {
+    public CustomerServiceModule(CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, CarPickupReturnSessionBeanRemote carPickupReturnSessionBeanRemote, OutletSessionBeanRemote outletSessionBeanRemote, EmployeeEntity employeeEntity) {
         this.customerSessionBeanRemote = customerSessionBeanRemote;
         this.reservationSessionBeanRemote = reservationSessionBeanRemote;
+        this.carPickupReturnSessionBeanRemote = carPickupReturnSessionBeanRemote;
         this.carSessionBeanRemote = carSessionBeanRemote;
+        this.outletSessionBeanRemote = outletSessionBeanRemote;
         this.employeeEntity = employeeEntity;
         this.outletEntity = employeeEntity.getOutlet();
     }
     
-    public void recordPickupCar(){
+    public void doPickupCar(){
         Scanner sc = new Scanner(System.in);
-        
-        System.out.println("Please key in the ID of the reservation");
-        long reservationId = sc.nextLong();
         int option = 0;
         
         try{
@@ -49,7 +54,10 @@ public class CustomerServiceModule {
             String email = sc.next();
             CustomerEntity customerEntity = customerSessionBeanRemote.retrieveCustomerEntityByEmail(email);
             
+            System.out.println("Please key in the ID of the reservation");
+            long reservationId = sc.nextLong();
             ReservationEntity reservationEntity = reservationSessionBeanRemote.retrieveReservationEntityByReservationId(reservationId);
+            
             if (!reservationEntity.isPaid()){
                 System.out.println("Payment has not been made");
                 System.out.println("Please recieve payment before allowing for car collection");
@@ -71,12 +79,59 @@ public class CustomerServiceModule {
                 CarEntity carEntity = reservationEntity.getCar();
                 carEntity.setLocation(customerEntity.getUsername());
                 carEntity.setStatus(CarStatusEnum.ONRENTAL);
+                carEntity.setCurrentOutlet(null);
                 carSessionBeanRemote.updateCarEntity(carEntity);
+                
+                outletEntity.getCars().remove(carEntity);
+                outletSessionBeanRemote.updateOutletEntity(outletEntity);
+                
+                CarPickupEntity carPickupEntity = new CarPickupEntity(reservationEntity.getStartDate(), outletEntity);
+                carPickupReturnSessionBeanRemote.createCarPickupEntity(carPickupEntity);
+                
+                reservationEntity.setCarPickup(carPickupEntity);
+                reservationSessionBeanRemote.updateReservationEntity(reservationEntity);
+                
                 System.out.println("Pickup operation has been completed, car location and status have been updated");
-                }
+                System.out.println("CarPickup entry with id " + carPickupEntity.getCarPickupId() + " has been created");
+                
+            }
+                
             
             } catch (ReservationNotFoundException | CustomerNotFoundException e){
                 System.out.println(e.getMessage());
+        }
+    }
+    
+    public void doReturnCar(){
+        Scanner sc = new Scanner(System.in);
+        
+        try {
+            System.out.println("Please key in the ID of the reservation");
+            long reservationId = sc.nextLong();
+            ReservationEntity reservationEntity = reservationSessionBeanRemote.retrieveReservationEntityByReservationId(reservationId);
+            
+            CarEntity carEntity = reservationEntity.getCar();
+            carEntity.setLocation(outletEntity.getName());
+            carEntity.setStatus(CarStatusEnum.INOUTLET);
+            carEntity.setCurrentReservation(null);
+            carSessionBeanRemote.updateCarEntity(carEntity);
+            
+            if (!outletEntity.getCars().contains(carEntity)){
+                outletEntity.getCars().add(carEntity);
+                outletSessionBeanRemote.updateOutletEntity(outletEntity);
+            }
+            
+            CarReturnEntity carReturnEntity = new CarReturnEntity(reservationEntity.getEndDate(), outletEntity);
+            carPickupReturnSessionBeanRemote.createCarReturnEntity(carReturnEntity);
+            
+            reservationEntity.setCarReturn(carReturnEntity);
+            reservationSessionBeanRemote.updateReservationEntity(reservationEntity);
+            
+            System.out.println("Return operation has been completed, car location and status have been updated");
+            System.out.println("CarReturn entry with id " + carReturnEntity.getCarReturnId() + " has been created");
+        
+        } catch (ReservationNotFoundException e){
+            System.out.println(e.getMessage());
         }
     }
 }

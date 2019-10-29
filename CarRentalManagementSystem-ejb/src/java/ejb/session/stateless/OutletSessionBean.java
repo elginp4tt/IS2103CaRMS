@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.OutletEntity;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -24,6 +25,9 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
     private EntityManager em;
 
 
+    public void updateOutletEntity(OutletEntity outletEntity){
+        em.merge(outletEntity);
+    }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 }

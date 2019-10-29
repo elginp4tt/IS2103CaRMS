@@ -5,6 +5,10 @@
  */
 package ejb.session.stateless;
 
+import entity.OutletEntity;
+
 public interface OutletSessionBeanLocal {
+    
+    public void updateOutletEntity(OutletEntity outletEntity);
     
 }

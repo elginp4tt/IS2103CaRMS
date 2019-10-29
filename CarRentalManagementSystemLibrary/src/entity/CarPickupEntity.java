@@ -25,11 +25,9 @@ public class CarPickupEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long carPickupid;
+    private Long carPickupId;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date pickupDateTime; //can use for both date and time
-    @Column(nullable = false)
-    private String location;
     
     @OneToOne(optional = true)
     private OutletEntity outlet;
@@ -37,24 +35,24 @@ public class CarPickupEntity implements Serializable {
     public CarPickupEntity() {
     }
 
-    public CarPickupEntity(Date pickupDateTime, String location) {
+    public CarPickupEntity(Date pickupDateTime, OutletEntity outlet) {
         this();
         this.pickupDateTime = pickupDateTime;
-        this.location = location;
+        this.outlet = outlet;
     }
 
-    public Long getCarPickupid() {
-        return carPickupid;
+    public Long getCarPickupId() {
+        return carPickupId;
     }
 
-    public void setCarPickupid(Long carPickupid) {
-        this.carPickupid = carPickupid;
+    public void setCarPickupId(Long carPickupId) {
+        this.carPickupId = carPickupId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (carPickupid != null ? carPickupid.hashCode() : 0);
+        hash += (carPickupId != null ? carPickupId.hashCode() : 0);
         return hash;
     }
 
@@ -65,7 +63,7 @@ public class CarPickupEntity implements Serializable {
             return false;
         }
         CarPickupEntity other = (CarPickupEntity) object;
-        if ((this.carPickupid == null && other.carPickupid != null) || (this.carPickupid != null && !this.carPickupid.equals(other.carPickupid))) {
+        if ((this.carPickupId == null && other.carPickupId != null) || (this.carPickupId != null && !this.carPickupId.equals(other.carPickupId))) {
             return false;
         }
         return true;
@@ -73,7 +71,7 @@ public class CarPickupEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.CarPickupEntity[ id=" + carPickupid + " ]";
+        return "entity.CarPickupEntity[ id=" + carPickupId + " ]";
     }
 
     /**
@@ -88,20 +86,6 @@ public class CarPickupEntity implements Serializable {
      */
     public void setPickupDateTime(Date pickupDateTime) {
         this.pickupDateTime = pickupDateTime;
-    }
-
-    /**
-     * @return the location
-     */
-    public String getLocation() {
-        return location;
-    }
-
-    /**
-     * @param location the location to set
-     */
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     /**

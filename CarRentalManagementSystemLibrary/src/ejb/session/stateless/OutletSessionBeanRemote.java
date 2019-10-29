@@ -5,6 +5,10 @@
  */
 package ejb.session.stateless;
 
+import entity.OutletEntity;
+
 public interface OutletSessionBeanRemote {
+
+    public void updateOutletEntity(OutletEntity outletEntity);
     
 }
