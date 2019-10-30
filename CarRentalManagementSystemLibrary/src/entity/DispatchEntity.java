@@ -25,7 +25,7 @@ public class DispatchEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dispatchId;
     @Column(nullable = false)
-    private boolean isComplete;
+    private boolean isComplete = false;
     
     @OneToOne(optional = false)
     @Column(nullable = false)
@@ -50,12 +50,10 @@ public class DispatchEntity implements Serializable {
     public DispatchEntity() {
     }
 
-    public DispatchEntity(boolean isComplete, ReservationEntity reservation, CarEntity car, EmployeeEntity transitDriver, OutletEntity currentOutlet, OutletEntity endOutlet) {
+    public DispatchEntity(ReservationEntity reservation, CarEntity car, OutletEntity currentOutlet, OutletEntity endOutlet) {
         this();
-        this.isComplete = isComplete;
         this.reservation = reservation;
         this.car = car;
-        this.transitDriver = transitDriver;
         this.currentOutlet = currentOutlet;
         this.endOutlet = endOutlet;
     }

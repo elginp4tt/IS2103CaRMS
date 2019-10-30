@@ -8,7 +8,16 @@ package carmsmanagementclient;
 import ejb.session.stateless.CarSessionBeanRemote;
 import ejb.session.stateless.DispatchSessionBeanRemote;
 import ejb.session.stateless.RentalRateSessionBeanRemote;
+import ejb.session.stateless.ReservationSessionBeanRemote;
 import entity.EmployeeEntity;
+import entity.OutletEntity;
+import entity.ReservationEntity;
+import exception.NoCarsException;
+import exception.NoReservationsException;
+import exception.NullCurrentOutletException;
+import exception.ReservationNoModelNoCategoryException;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -19,13 +28,19 @@ public class SalesManagementModule {
     private RentalRateSessionBeanRemote rentalRateSessionBeanRemote;
     private CarSessionBeanRemote carSessionBeanRemote;
     private DispatchSessionBeanRemote dispatchSessionBeanRemote;
+    private ReservationSessionBeanRemote reservationSessionBeanRemote;
     private EmployeeEntity employeeEntity;
+    private OutletEntity outletEntity;
+    private Date currentDate;
 
-    public SalesManagementModule(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, EmployeeEntity employeeEntity) {
+    public SalesManagementModule(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote, EmployeeEntity employeeEntity, Date currentDate) {
         this.rentalRateSessionBeanRemote = rentalRateSessionBeanRemote;
         this.carSessionBeanRemote = carSessionBeanRemote;
         this.dispatchSessionBeanRemote = dispatchSessionBeanRemote;
+        this.reservationSessionBeanRemote = reservationSessionBeanRemote;
         this.employeeEntity = employeeEntity;
+        this.outletEntity = employeeEntity.getOutlet();
+        this.currentDate = currentDate;
     }
     
     public void menu() {
@@ -86,6 +101,24 @@ public class SalesManagementModule {
                 case 5:
                     break;
             }
+        }
+    }
+    
+    public void allocateCarsToCurrentDayReservations() throws NoReservationsException{
+        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByDate(currentDate);
+        
+        if (!reservations.isEmpty()){
+            for (ReservationEntity reservationEntity : reservations){
+                if (reservationEntity.getCar() != null){
+                    try {
+                    reservationSessionBeanRemote.autoAllocateCarToReservation(reservationEntity, outletEntity);
+                    } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        } else {
+            throw new NoReservationsException("No reservations found for the day");
         }
     }
     
