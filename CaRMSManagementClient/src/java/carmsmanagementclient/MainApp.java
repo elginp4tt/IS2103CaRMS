@@ -32,6 +32,10 @@ public class MainApp {
     
     private EmployeeEntity employeeEntity;
     
+    private CustomerServiceModule customerServiceModule;
+    private SalesManagementModule salesManagementModule;
+    
+    
 
     public MainApp(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, PartnerSessionBeanRemote partnerSessionBeanRemote, OutletSessionBeanRemote outletSessionBeanRemote, EmployeeSessionBeanRemote employeeSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote, CarPickupReturnSessionBeanRemote carPickupReturnSessionBeanRemote) {
         this.rentalRateSessionBeanRemote = rentalRateSessionBeanRemote;
@@ -61,8 +65,10 @@ public class MainApp {
             System.out.println(e.getMessage());
             }
         
-        CustomerServiceModule customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, carPickupReturnSessionBeanRemote, outletSessionBeanRemote, employeeEntity);
-        SalesManagementModule salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, employeeEntity);
+        this.customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, carPickupReturnSessionBeanRemote, outletSessionBeanRemote, employeeEntity);
+        this.salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, employeeEntity);
+        
+        mainMenu();
         
         }
         
@@ -79,6 +85,29 @@ public class MainApp {
         password = sc.next();
         
         employeeEntity = employeeSessionBeanRemote.login(username, password);
+    }
+    
+    public void mainMenu() {
+        Scanner sc = new Scanner(System.in);
+        int option = 0;      
+        
+        while(option != 3){
+            System.out.println("*****Select module to access*****");
+            System.out.println("1 : Sales Management Module");
+            System.out.println("2 : Customer Service Module");
+            System.out.println("3 : Exit");
+            option = sc.nextInt();
+            
+            switch (option){
+                case 1:
+                    salesManagementModule.menu();
+                    break;
+                case 2:
+                    customerServiceModule.menu();
+                    break;
+            }
+        }
+          
     }
     
 }

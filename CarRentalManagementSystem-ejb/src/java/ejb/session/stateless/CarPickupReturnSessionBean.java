@@ -30,7 +30,7 @@ public class CarPickupReturnSessionBean implements CarPickupReturnSessionBeanRem
         em.persist(carPickupEntity);
         em.flush();
         
-        return carPickupEntity.getCarPickupid();
+        return carPickupEntity.getCarPickupId();
     }
     
     @Override

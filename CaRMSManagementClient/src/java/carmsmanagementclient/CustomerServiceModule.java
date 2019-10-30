@@ -45,6 +45,28 @@ public class CustomerServiceModule {
         this.outletEntity = employeeEntity.getOutlet();
     }
     
+    public void menu(){
+        Scanner sc = new Scanner(System.in);
+        int option = 0;
+        
+        while (option != 3){
+            System.out.println("*****Select scenario to access*****");
+            System.out.println("1 : Customer Pickup Car");
+            System.out.println("2 : Customer Return Car");
+            System.out.println("3 : Exit");
+            option = sc.nextInt();
+            
+            switch (option) {
+                case 1:
+                    doPickupCar();
+                    break;
+                case 2:
+                    doReturnCar();
+                    break;
+            }
+        }
+    }
+    
     public void doPickupCar(){
         Scanner sc = new Scanner(System.in);
         int option = 0;
