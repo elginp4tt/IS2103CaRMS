@@ -5,6 +5,20 @@
  */
 package ejb.session.stateless;
 
+import entity.DispatchEntity;
+import entity.OutletEntity;
+import java.util.Date;
+import java.util.List;
+
+
 public interface DispatchSessionBeanLocal {
+
+    public long createDispatchEntity(DispatchEntity dispatchEntity);
+
+    public void updateDispatchEntity(DispatchEntity dispatchEntity);
+
+    public List<DispatchEntity> retrieveDispatchesByDate(Date date);
+    
+    public List<DispatchEntity> retrieveDispatchesByDateToOutlet(Date date, OutletEntity outletEntity);
     
 }

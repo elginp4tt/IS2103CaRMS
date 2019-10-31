@@ -32,7 +32,7 @@ public class CarCategoryEntity implements Serializable {
     @OneToMany
     private ArrayList<CarModelEntity> carModels;
     
-    @OneToOne
+    @OneToMany
     private RentalRateEntity rentalRate;
     
     @OneToMany
@@ -96,20 +96,6 @@ public class CarCategoryEntity implements Serializable {
     }
 
     /**
-     * @return the rentalRate
-     */
-    public RentalRateEntity getRentalRate() {
-        return rentalRate;
-    }
-
-    /**
-     * @param rentalRate the rentalRate to set
-     */
-    public void setRentalRate(RentalRateEntity rentalRate) {
-        this.rentalRate = rentalRate;
-    }
-
-    /**
      * @return the carModels
      */
     public ArrayList<CarModelEntity> getCarModels() {
@@ -135,6 +121,20 @@ public class CarCategoryEntity implements Serializable {
      */
     public void setReservations(ArrayList<ReservationEntity> reservations) {
         this.reservations = reservations;
+    }
+
+    /**
+     * @return the rentalRate
+     */
+    public RentalRateEntity getRentalRate() {
+        return rentalRate;
+    }
+
+    /**
+     * @param rentalRate the rentalRate to set
+     */
+    public void setRentalRate(RentalRateEntity rentalRate) {
+        this.rentalRate = rentalRate;
     }
     
 }

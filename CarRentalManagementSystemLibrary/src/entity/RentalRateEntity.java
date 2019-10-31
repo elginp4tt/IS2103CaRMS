@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -29,23 +30,26 @@ public class RentalRateEntity implements Serializable {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private String dailyRate;
+    private double dailyRate;
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date validityPeriod;
+    private Date validityPeriodStart;
+    @Column(nullable = false)
+    private int validityPeriod;
     
-    @OneToOne
-    private CarEntity car;
+    @ManyToOne
+    private CarCategoryEntity carCategory;
 
     public RentalRateEntity() {
     }
 
-    public RentalRateEntity(String name, String dailyRate, Date validityPeriod, CarEntity car) {
+    public RentalRateEntity(String name, double dailyRate, Date validityPeriodStart, int validityPeriod, CarCategoryEntity carCategory) {
         this();
         this.name = name;
         this.dailyRate = dailyRate;
+        this.validityPeriodStart = validityPeriodStart;
         this.validityPeriod = validityPeriod;
-        this.car = car;
+        this.carCategory = carCategory;
     }
 
     public Long getRentalRateId() {
@@ -98,43 +102,58 @@ public class RentalRateEntity implements Serializable {
     /**
      * @return the dailyRate
      */
-    public String getDailyRate() {
+    public double getDailyRate() {
         return dailyRate;
     }
 
     /**
      * @param dailyRate the dailyRate to set
      */
-    public void setDailyRate(String dailyRate) {
+    public void setDailyRate(double dailyRate) {
         this.dailyRate = dailyRate;
+    }
+
+    /**
+     * @return the car
+     */
+    public CarCategoryEntity getCarCategory() {
+        return carCategory;
+    }
+
+    /**
+     * @param car the car to set
+     */
+    public void setCar(CarCategoryEntity carCategory) {
+        this.carCategory = carCategory;
+    }
+
+    /**
+     * @return the validityPeriodStart
+     */
+    public Date getValidityPeriodStart() {
+        return validityPeriodStart;
+    }
+
+    /**
+     * @param validityPeriodStart the validityPeriodStart to set
+     */
+    public void setValidityPeriodStart(Date validityPeriodStart) {
+        this.validityPeriodStart = validityPeriodStart;
     }
 
     /**
      * @return the validityPeriod
      */
-    public Date getValidityPeriod() {
+    public int getValidityPeriod() {
         return validityPeriod;
     }
 
     /**
      * @param validityPeriod the validityPeriod to set
      */
-    public void setValidityPeriod(Date validityPeriod) {
+    public void setValidityPeriod(int validityPeriod) {
         this.validityPeriod = validityPeriod;
     }
 
-    /**
-     * @return the car
-     */
-    public CarEntity getCar() {
-        return car;
-    }
 
-    /**
-     * @param car the car to set
-     */
-    public void setCar(CarEntity car) {
-        this.car = car;
-    }
-    
 }

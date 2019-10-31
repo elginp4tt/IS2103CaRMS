@@ -16,5 +16,7 @@ public interface EmployeeSessionBeanLocal {
     public EmployeeEntity retrieveEmployeeEntityByEmployeeId(long employeeId) throws EmployeeNotFoundException;
 
     public EmployeeEntity login(String username, String password) throws InvalidLoginException;
+
+    public long createEmployeeEntity(EmployeeEntity employeeEntity);
     
 }

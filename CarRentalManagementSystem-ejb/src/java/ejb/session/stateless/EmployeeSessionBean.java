@@ -28,6 +28,13 @@ public class EmployeeSessionBean implements EmployeeSessionBeanRemote, EmployeeS
 
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
+    
+    public long createEmployeeEntity(EmployeeEntity employeeEntity){
+        em.persist(employeeEntity);
+        em.flush();
+        
+        return employeeEntity.getEmployeeId();
+    }
 
     @Override
     public EmployeeEntity retrieveEmployeeEntityByEmployeeId(long employeeId) throws EmployeeNotFoundException{

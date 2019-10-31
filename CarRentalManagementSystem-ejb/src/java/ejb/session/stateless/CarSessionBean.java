@@ -20,6 +20,8 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
@@ -37,6 +39,12 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
     
+    public long createCarCategoryEntity(CarCategoryEntity carCategoryEntity) {
+        em.persist(carCategoryEntity);
+        em.flush();
+        
+        return carCategoryEntity.getCarCategoryId();
+    }
     
     @Override
     public CarEntity retrieveCarEntityByCarId(long carId)throws CarNotFoundException{
@@ -65,6 +73,18 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
             return carCategoryEntity;
         } else {
             throw new CarCategoryNotFoundException("Car model not found");
+        }
+    }
+    
+    @Override
+    public CarCategoryEntity retrieveCarCategoryEntityByCarCategory(String carCategory)throws CarCategoryNotFoundException {
+        Query query = em.createQuery("SELECT c FROM CarCategoryEntity c WHERE c.carCategory = :inCarCategory");
+        query.setParameter("inCarCategory", carCategory);
+        
+        try {
+            return (CarCategoryEntity)query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e){
+            throw new CarCategoryNotFoundException("Car category not found");
         }
     }
     

@@ -10,5 +10,7 @@ import entity.OutletEntity;
 public interface OutletSessionBeanLocal {
     
     public void updateOutletEntity(OutletEntity outletEntity);
+
+    public long createOutletEntity(OutletEntity outletEntity);
     
 }

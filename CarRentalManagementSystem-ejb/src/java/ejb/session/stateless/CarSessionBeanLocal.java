@@ -53,4 +53,6 @@ public interface CarSessionBeanLocal {
     public List<CarEntity> retrieveAvailableCarsByCarCategoryIdWithCustomerButReturnedOnTimeOtherOutlet(long carCategoryId, long outletId, Date date) throws NoCarModelsException;
 
     public List<CarEntity> retrieveAvailableCarsByCarModelIdWithCustomerButReturnedOnTimeOtherOutlet(long carModelId, long outletId, Date date);
+
+    public CarCategoryEntity retrieveCarCategoryEntityByCarCategory(String carCategory) throws CarCategoryNotFoundException;
 }

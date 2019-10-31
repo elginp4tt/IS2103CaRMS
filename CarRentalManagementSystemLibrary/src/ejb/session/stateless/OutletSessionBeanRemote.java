@@ -11,4 +11,6 @@ public interface OutletSessionBeanRemote {
 
     public void updateOutletEntity(OutletEntity outletEntity);
     
+    public long createOutletEntity(OutletEntity outletEntity);
+    
 }

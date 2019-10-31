@@ -43,6 +43,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     private EntityManager em;
     
     private CarSessionBeanLocal carSessionBeanLocal;
+    private DispatchSessionBeanLocal dispatchSessionBeanLocal;
 
     @Override
     public ReservationEntity retrieveReservationEntityByReservationId(Long reservationId) throws ReservationNotFoundException{
@@ -91,6 +92,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         return cars;
     }
     
+    @Override
     public List<CarEntity> getBackupCarsForReservation(ReservationEntity reservationEntity, OutletEntity outletEntity) throws ReservationNoModelNoCategoryException{
         CarCategoryEntity carCategory = reservationEntity.getCarCategory();
         CarModelEntity carModel = reservationEntity.getCarModel();
@@ -130,6 +132,9 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
                     reservationEntity.setCar(carEntity);
                     carEntity.setCurrentReservation(reservationEntity);
                     carEntity.setReturnOutlet(reservationEntity.getCarReturn().getOutlet());
+                    
+                    updateReservationEntity(reservationEntity);
+                    carSessionBeanLocal.updateCarEntity(carEntity);
                     break;
             } else if (carEntity.getCurrentOutlet() == null && carEntity.getStatus().equals(CarStatusEnum.INOUTLET)){
                 throw new NullCurrentOutletException("Car " + carEntity.getCarId() + " has a null current outlet but is INOUTLET");
@@ -139,11 +144,19 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         if (reservationEntity.getCar() == null){
             List<CarEntity> backupCars = getBackupCarsForReservation(reservationEntity, outletEntity);
             for (CarEntity carEntity : cars){
-            if (carEntity.getCurrentReservation() != null)
+                if (carEntity.getCurrentReservation() != null)
                     reservationEntity.setCar(carEntity);
                     carEntity.setCurrentReservation(reservationEntity);
                     carEntity.setReturnOutlet(reservationEntity.getCarReturn().getOutlet());
                     DispatchEntity dispatchEntity = new DispatchEntity(reservationEntity, carEntity, carEntity.getCurrentOutlet(), outletEntity);
+                    
+                    dispatchSessionBeanLocal.createDispatchEntity(dispatchEntity);
+                    reservationEntity.setDispatch(dispatchEntity);
+                    
+                    updateReservationEntity(reservationEntity);
+                    carSessionBeanLocal.updateCarEntity(carEntity);
+                    dispatchSessionBeanLocal.updateDispatchEntity(dispatchEntity);
+                    
                     break;
             }
         }

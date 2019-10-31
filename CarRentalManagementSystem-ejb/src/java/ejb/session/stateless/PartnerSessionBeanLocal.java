@@ -5,6 +5,10 @@
  */
 package ejb.session.stateless;
 
+import entity.PartnerEntity;
+
 public interface PartnerSessionBeanLocal {
+
+    public long createPartnerEntity(PartnerEntity partnerEntity);
     
 }

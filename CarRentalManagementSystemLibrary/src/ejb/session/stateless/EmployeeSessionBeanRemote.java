@@ -16,4 +16,5 @@ public interface EmployeeSessionBeanRemote {
     
     public EmployeeEntity login(String username, String password) throws InvalidLoginException;
     
+    public long createEmployeeEntity(EmployeeEntity employeeEntity);
 }

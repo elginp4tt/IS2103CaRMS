@@ -11,7 +11,9 @@ import ejb.session.stateless.RentalRateSessionBeanRemote;
 import ejb.session.stateless.ReservationSessionBeanRemote;
 import entity.EmployeeEntity;
 import entity.OutletEntity;
+import entity.RentalRateEntity;
 import entity.ReservationEntity;
+import exception.CarCategoryNotFoundException;
 import exception.NoCarsException;
 import exception.NoReservationsException;
 import exception.NullCurrentOutletException;
@@ -91,6 +93,7 @@ public class SalesManagementModule {
             
             switch(option) {
                 case 1:
+                    doCreateRentalRate();
                     break;
                 case 2:
                     break;
@@ -104,22 +107,36 @@ public class SalesManagementModule {
         }
     }
     
-    public void allocateCarsToCurrentDayReservations() throws NoReservationsException{
-        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByDate(currentDate);
-        
-        if (!reservations.isEmpty()){
-            for (ReservationEntity reservationEntity : reservations){
-                if (reservationEntity.getCar() != null){
-                    try {
-                    reservationSessionBeanRemote.autoAllocateCarToReservation(reservationEntity, outletEntity);
-                    } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e){
-                        System.out.println(e.getMessage());
-                    }
-                }
-            }
-        } else {
-            throw new NoReservationsException("No reservations found for the day");
+    public void doCreateRentalRate(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*****Create a new rental rate*****");
+        System.out.println("*****Enter the name for the new rental rate*****");
+        String name = sc.next();
+        System.out.println("*****Enter the name of the car category for the new rental rate*****");
+        String carCategory = sc.next();
+        System.out.println("*****Enter the daily rate for the rental rate (in dollars)*****");
+        double dailyRate = sc.nextDouble();
+        System.out.println("*****Enter the start date for the new rental rate*****");
+        System.out.println("*****Enter 1 to use today's date, else use DD MM YY*****");
+        int dateOption = sc.nextInt();
+        Date date = new Date();
+        if (dateOption != 1){
+            int day = dateOption/10000;
+            int month = dateOption/100;
+            month = month%100;
+            int year = dateOption%100;
+            date = new Date(year, month, day);
         }
+        System.out.println("*****Enter the number of days this rental rate is valid for*****");
+        System.out.println("*****i.e Enter 1 if the rate is only valid for the start day*****");
+        int validityPeriod = sc.nextInt();
+        try {
+            rentalRateSessionBeanRemote.createRentalRateEntity(new RentalRateEntity(name, dailyRate, date, validityPeriod, carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategory)));
+        } catch (CarCategoryNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+        
+        System.out.println("*****New rental rate has been successfully created");
     }
     
     public void carModelMenu() {
@@ -203,4 +220,22 @@ public class SalesManagementModule {
         }
     }
     
+    public void allocateCarsToCurrentDayReservationsAndGenerateDispatch() throws NoReservationsException{
+        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByDate(currentDate);
+        
+        if (!reservations.isEmpty()){
+            for (ReservationEntity reservationEntity : reservations){
+                if (reservationEntity.getCar() != null){
+                    try {
+                    reservationSessionBeanRemote.autoAllocateCarToReservation(reservationEntity, outletEntity);
+                    } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        } else {
+            throw new NoReservationsException("No reservations found for the day");
+        }
+    }
+        
 }

@@ -25,9 +25,18 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
     private EntityManager em;
 
 
+    @Override
     public void updateOutletEntity(OutletEntity outletEntity){
         em.merge(outletEntity);
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    
+    @Override
+    public long createOutletEntity(OutletEntity outletEntity){
+        em.persist(outletEntity);
+        em.flush();
+        
+        return outletEntity.getOutletId();
+    }
 }
