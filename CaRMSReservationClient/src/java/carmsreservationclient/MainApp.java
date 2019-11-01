@@ -19,7 +19,7 @@ public class MainApp {
     private CustomerSessionBeanRemote customerSessionBeanRemote;
     private ReservationSessionBeanRemote reservationSessionBean;
     private SearchSessionBeanRemote searchSessionBeanRemote;
-    
+
     private CustomerEntity currentCustomerEntity;
 
     public MainApp(CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBean, SearchSessionBeanRemote searchSessionBeanRemote) {
@@ -27,7 +27,9 @@ public class MainApp {
         this.reservationSessionBean = reservationSessionBean;
         this.searchSessionBeanRemote = searchSessionBeanRemote;
     }
-    
-    
-    
+
+    public void run() {
+
+    }
+
 }
