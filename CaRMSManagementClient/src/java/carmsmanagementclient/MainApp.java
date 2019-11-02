@@ -131,10 +131,6 @@ public class MainApp {
             loggedIn = false;
         }
     }
-    
-    public void doCreateNewOutlet() {
-        
-    }
 
     private void setCurrentDate() {
         Scanner sc = new Scanner(System.in);
@@ -143,7 +139,7 @@ public class MainApp {
         System.out.println("Please specify the current date");
         System.out.println("1: Manual Entry");
         System.out.println("2: Automatically retrieve according to system clock");
-        
+        option = sc.nextInt();
         switch (option) {
             case 1:
                 System.out.println("Please enter current year");
