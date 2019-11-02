@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,7 +14,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 import util.enumeration.CarStatusEnum;
 
 /**
@@ -36,12 +40,37 @@ public class CarEntity implements Serializable {
     private CarStatusEnum status;
     @Column(nullable = false)
     private String location;
+    @Column(nullable = true)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date returnTime;
     
-    @OneToOne
-    private CarCategoryEntity carCategory;
-    
-    @OneToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private CarModelEntity carModel;
+    
+    @OneToOne(optional = true)
+    private ReservationEntity currentReservation;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = false)
+    private OutletEntity currentOutlet;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = false)
+    private OutletEntity returnOutlet;
+    
+
+    public CarEntity() {
+    }
+
+    public CarEntity(String licensePlate, String colour, CarStatusEnum status, String location, CarModelEntity carModel) {
+        this();
+        this.licensePlate = licensePlate;
+        this.colour = colour;
+        this.status = status;
+        this.location = location;
+        this.carModel = carModel;
+    }
 
     public Long getCarId() {
         return carId;
@@ -118,21 +147,6 @@ public class CarEntity implements Serializable {
         this.status = status;
     }
 
-
-    /**
-     * @return the carCategory
-     */
-    public CarCategoryEntity getCarCategory() {
-        return carCategory;
-    }
-
-    /**
-     * @param carCategory the carCategory to set
-     */
-    public void setCarCategory(CarCategoryEntity carCategory) {
-        this.carCategory = carCategory;
-    }
-
     /**
      * @return the carModel
      */
@@ -160,5 +174,61 @@ public class CarEntity implements Serializable {
     public void setLocation(String location) {
         this.location = location;
     }
-    
+
+    /**
+     * @return the currentReservation
+     */
+    public ReservationEntity getCurrentReservation() {
+        return currentReservation;
+    }
+
+    /**
+     * @param currentReservation the currentReservation to set
+     */
+    public void setCurrentReservation(ReservationEntity currentReservation) {
+        this.currentReservation = currentReservation;
+    }
+
+    /**
+     * @return the currentOutlet
+     */
+    public OutletEntity getCurrentOutlet() {
+        return currentOutlet;
+    }
+
+    /**
+     * @param currentOutlet the currentOutlet to set
+     */
+    public void setCurrentOutlet(OutletEntity currentOutlet) {
+        this.currentOutlet = currentOutlet;
+    }
+
+    /**
+     * @return the returnOutlet
+     */
+    public OutletEntity getReturnOutlet() {
+        return returnOutlet;
+    }
+
+    /**
+     * @param returnOutlet the returnOutlet to set
+     */
+    public void setReturnOutlet(OutletEntity returnOutlet) {
+        this.returnOutlet = returnOutlet;
+    }
+
+    /**
+     * @return the returnTime
+     */
+    public Date getReturnTime() {
+        return returnTime;
+    }
+
+    /**
+     * @param returnTime the returnTime to set
+     */
+    public void setReturnTime(Date returnTime) {
+        this.returnTime = returnTime;
+    }
+
 }

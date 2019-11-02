@@ -4,7 +4,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/user/Desktop/IS2103PairProject/IS2013PairProject/IS2102CaRMS/CarRentalManagementSystem-ejb/src/java/ejb/session/stateless/OutletSessionBean.java</file>
-            <file>file:/C:/Users/user/Desktop/IS2103PairProject/IS2013PairProject/IS2102CaRMS/CarRentalManagementSystem-ejb/src/java/ejb/session/stateless/CustomerSessionBean.java</file>
+            <file>file:/C:/Users/user/Desktop/IS2103PairProject/IS2013PairProject/IS2102CaRMS/CarRentalManagementSystem-ejb/src/java/ejb/session/stateless/OutletSessionBeanLocal.java</file>
         </group>
     </open-files>
 </project-private>

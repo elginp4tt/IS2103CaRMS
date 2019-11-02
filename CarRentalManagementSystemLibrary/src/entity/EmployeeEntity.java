@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import util.enumeration.EmployeeAccessRightEnum;
 
 /**
@@ -40,7 +42,21 @@ public class EmployeeEntity implements Serializable {
     @JoinColumn(nullable = false)
     private OutletEntity outlet;
     
+    @OneToMany
+    private ArrayList<DispatchEntity> dispatches;;
 
+    public EmployeeEntity() {
+        this.dispatches = new ArrayList<DispatchEntity>();
+    }
+
+    public EmployeeEntity(String username, String password, EmployeeAccessRightEnum accessRight, OutletEntity outlet) {
+        this();
+        this.username = username;
+        this.password = password;
+        this.accessRight = accessRight;
+        this.outlet = outlet;
+    }
+    
     public Long getEmployeeId() {
         return employeeId;
     }
@@ -114,6 +130,34 @@ public class EmployeeEntity implements Serializable {
      */
     public void setOutlet(OutletEntity outlet) {
         this.outlet = outlet;
+    }
+
+    /**
+     * @return the accessRight
+     */
+    public EmployeeAccessRightEnum getAccessRight() {
+        return accessRight;
+    }
+
+    /**
+     * @param accessRight the accessRight to set
+     */
+    public void setAccessRight(EmployeeAccessRightEnum accessRight) {
+        this.accessRight = accessRight;
+    }
+
+    /**
+     * @return the dispatches
+     */
+    public ArrayList<DispatchEntity> getDispatches() {
+        return dispatches;
+    }
+
+    /**
+     * @param dispatches the dispatches to set
+     */
+    public void setDispatches(ArrayList<DispatchEntity> dispatches) {
+        this.dispatches = dispatches;
     }
     
 }

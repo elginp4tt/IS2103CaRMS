@@ -3,12 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package util.enumeration;
+package exception;
 
 /**
  *
  * @author Elgin Patt
  */
-public enum CarStatusEnum {
-    INOUTLET, ONRENTAL
+public class NoCarsException extends Exception{
+
+    public NoCarsException() {
+    }
+
+    public NoCarsException(String message) {
+        super(message);
+    }
+    
 }

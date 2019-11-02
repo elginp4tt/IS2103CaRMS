@@ -12,7 +12,7 @@ public interface CustomerSessionBeanLocal {
 
     public long createCustomerEntity(CustomerEntity newCustomerEntity);
 
-    public CustomerEntity retrieveCustomerEntityByCustomerId(Long customerId);
+    public CustomerEntity retrieveCustomerEntityByCustomerId(Long customerId) throws CustomerNotFoundException;
 
     public CustomerEntity retrieveCustomerEntityByEmail(String email) throws CustomerNotFoundException;
 

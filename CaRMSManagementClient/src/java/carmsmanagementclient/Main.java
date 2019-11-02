@@ -5,17 +5,54 @@
  */
 package carmsmanagementclient;
 
+import ejb.session.stateless.CarPickupReturnSessionBeanRemote;
+import ejb.session.stateless.CarSessionBeanRemote;
+import ejb.session.stateless.CustomerSessionBeanRemote;
+import ejb.session.stateless.DispatchSessionBeanRemote;
+import ejb.session.stateless.EmployeeSessionBeanRemote;
+import ejb.session.stateless.OutletSessionBeanRemote;
+import ejb.session.stateless.PartnerSessionBeanRemote;
+import ejb.session.stateless.RentalRateSessionBeanRemote;
+import ejb.session.stateless.ReservationSessionBeanRemote;
+import javax.ejb.EJB;
+
 /**
  *
  * @author Elgin Patt
  */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
+    @EJB
+    private static CarPickupReturnSessionBeanRemote carPickupReturnSessionBean;
+
+    @EJB
+    private static ReservationSessionBeanRemote reservationSessionBean;
+
+    @EJB
+    private static CustomerSessionBeanRemote customerSessionBean;
+
+    @EJB
+    private static RentalRateSessionBeanRemote rentalRateSessionBean;
+
+    @EJB
+    private static PartnerSessionBeanRemote partnerSessionBean;
+
+    @EJB
+    private static OutletSessionBeanRemote outletSessionBean;
+
+    @EJB
+    private static EmployeeSessionBeanRemote employeeSessionBean;
+
+    @EJB
+    private static DispatchSessionBeanRemote dispatchSessionBean;
+
+    @EJB
+    private static CarSessionBeanRemote carSessionBean;
+
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        MainApp mainApp = new MainApp(rentalRateSessionBean, partnerSessionBean, outletSessionBean, employeeSessionBean, dispatchSessionBean, carSessionBean, customerSessionBean, reservationSessionBean, carPickupReturnSessionBean);
+        mainApp.runApp();
     }
     
 }

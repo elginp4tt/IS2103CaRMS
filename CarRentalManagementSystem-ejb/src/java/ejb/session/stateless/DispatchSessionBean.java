@@ -5,11 +5,17 @@
  */
 package ejb.session.stateless;
 
+import entity.DispatchEntity;
+import entity.OutletEntity;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -23,6 +29,41 @@ public class DispatchSessionBean implements DispatchSessionBeanRemote, DispatchS
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
 
+    
+    
+    @Override
+    public long createDispatchEntity(DispatchEntity dispatchEntity) {
+        em.persist(dispatchEntity);
+        em.flush();
+        
+        return dispatchEntity.getDispatchId();
+    }
+    
+    @Override
+    public void updateDispatchEntity(DispatchEntity dispatchEntity) {
+        em.merge(dispatchEntity);
+    }
+    
+    @Override
+    public List<DispatchEntity> retrieveDispatchesByDate(Date date) {
+        Query query = em.createQuery("SELECT d FROM DispatchEntity d JOIN ReservationEntity r WHERE d.reservation = r AND r.startDate = :inDate");
+        query.setParameter("indate", date, TemporalType.DATE);
+        
+        List<DispatchEntity> dispatches = query.getResultList();
+        
+        return dispatches;
+    }
+    
+    @Override
+    public List<DispatchEntity> retrieveDispatchesByDateToOutlet(Date date, OutletEntity outletEntity) {
+        Query query = em.createQuery("SELECT d FROM DispatchEntity d JOIN ReservationEntity r WHERE d.reservation = r AND r.startDate = :inDate AND d.endOutlet = :inOutlet");
+        query.setParameter("inDate", date, TemporalType.DATE);
+        query.setParameter("inoutlet", outletEntity.getOutletId());
+        
+        List<DispatchEntity> dispatches = query.getResultList();
+        
+        return dispatches;
+    }
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

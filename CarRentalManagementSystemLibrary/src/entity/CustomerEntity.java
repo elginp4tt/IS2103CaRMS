@@ -7,13 +7,13 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -38,7 +38,23 @@ public class CustomerEntity implements Serializable {
     private String passportNumber;
     
     @OneToMany(mappedBy = "customer", orphanRemoval = true)
-    private List<ReservationEntity> reservations;
+    private ArrayList<ReservationEntity> reservations;
+    
+    @OneToOne(optional = true)
+    private PartnerEntity partner;
+
+    public CustomerEntity() {
+        this.reservations = new ArrayList<ReservationEntity>();
+    }
+
+    public CustomerEntity(String username, String password, String email) {
+        this();
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+    
+    
 
     public Long getCustomerId() {
         return customerId;
@@ -146,15 +162,29 @@ public class CustomerEntity implements Serializable {
     /**
      * @return the reservations
      */
-    public List<ReservationEntity> getReservations() {
+    public ArrayList<ReservationEntity> getReservations() {
         return reservations;
     }
 
     /**
      * @param reservations the reservations to set
      */
-    public void setReservations(List<ReservationEntity> reservations) {
+    public void setReservations(ArrayList<ReservationEntity> reservations) {
         this.reservations = reservations;
+    }
+
+    /**
+     * @return the partner
+     */
+    public PartnerEntity getPartner() {
+        return partner;
+    }
+
+    /**
+     * @param partner the partner to set
+     */
+    public void setPartner(PartnerEntity partner) {
+        this.partner = partner;
     }
     
 }

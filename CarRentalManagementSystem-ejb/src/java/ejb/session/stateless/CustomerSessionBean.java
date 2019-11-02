@@ -35,10 +35,13 @@ public class CustomerSessionBean implements CustomerSessionBeanRemote, CustomerS
     }
     
     @Override
-    public CustomerEntity retrieveCustomerEntityByCustomerId(Long customerId){
+    public CustomerEntity retrieveCustomerEntityByCustomerId(Long customerId) throws CustomerNotFoundException{
         CustomerEntity customerEntity = em.find(CustomerEntity.class, customerId);
-    
-        return customerEntity;
+        if (customerEntity != null){
+            return customerEntity;
+        } else {
+            throw new CustomerNotFoundException("Customer not found");
+        }
     }
     
     @Override
@@ -52,6 +55,8 @@ public class CustomerSessionBean implements CustomerSessionBeanRemote, CustomerS
         }
     }
     
+    
+    
     @Override
     public void updateCustomerEntity(CustomerEntity customerEntity){
         em.merge(customerEntity);
@@ -59,8 +64,12 @@ public class CustomerSessionBean implements CustomerSessionBeanRemote, CustomerS
     
     @Override
     public void deleteCustomerEntity(long customerId){
+        try {
         CustomerEntity customerEntity = retrieveCustomerEntityByCustomerId(customerId);
         em.remove(customerEntity);
+        } catch (CustomerNotFoundException e){
+        System.out.println(e.getMessage());
+        }
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

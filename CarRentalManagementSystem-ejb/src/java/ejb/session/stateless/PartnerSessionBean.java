@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.PartnerEntity;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -22,6 +23,14 @@ public class PartnerSessionBean implements PartnerSessionBeanRemote, PartnerSess
 
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
+    
+    @Override
+    public long createPartnerEntity(PartnerEntity partnerEntity){
+        em.merge(partnerEntity);
+        em.flush();
+        
+        return partnerEntity.getPartnerId();    
+    }
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

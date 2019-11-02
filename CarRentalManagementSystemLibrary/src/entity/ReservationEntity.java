@@ -7,13 +7,12 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -29,33 +28,58 @@ public class ReservationEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
     @Column(nullable = false)
-    private String customerName;
-    @Column(nullable = false)
-    private boolean isPaid;
+    private boolean paid;
     @Column(nullable = false)
     private String creditCardNumber;
     @Column(nullable = false)
     private String cvv;
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date date;
+    private Date startDate;
+    @Column(nullable = false)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date endDate;
+    @Column
+    private HashMap<Date, RentalRateEntity> rentalRates;
     
-    @OneToOne
-    private OutletEntity pickupOutlet;
+    @OneToOne(optional = true)
+    private CarCategoryEntity carCategory;
     
-    @OneToOne
+    @OneToOne(optional = true)
+    private CarModelEntity carModel;
+    
+    @OneToOne(optional = false)
     private CarEntity car;
     
-    @OneToOne
+    @OneToOne(optional = false)
     private CustomerEntity customer;
     
-    @OneToOne
+    @OneToOne(optional = true)
+    private PartnerEntity partner;
+    
+    @OneToOne(optional = false)
     private DispatchEntity dispatch;
     
+    @OneToOne(optional = false)
+    private CarPickupEntity carPickup;
     
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private RentalRateEntity rentalRate;
+    @OneToOne(optional = false)
+    private CarReturnEntity carReturn;
+
+    public ReservationEntity() {
+    }
+
+    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, HashMap<Date, RentalRateEntity> rentalRates, CarEntity car, CustomerEntity customer) {
+        this();
+        this.paid = paid;
+        this.creditCardNumber = creditCardNumber;
+        this.cvv = cvv;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.rentalRates = rentalRates;
+        this.car = car;
+        this.customer = customer;
+    }
 
     public Long getReservationId() {
         return reservationId;
@@ -91,31 +115,17 @@ public class ReservationEntity implements Serializable {
     }
 
     /**
-     * @return the customerName
-     */
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    /**
-     * @param customerName the customerName to set
-     */
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    /**
      * @return the isPaid
      */
-    public boolean isIsPaid() {
-        return isPaid;
+    public boolean isPaid() {
+        return paid;
     }
 
     /**
-     * @param isPaid the isPaid to set
+     * @param paid the paid to set
      */
-    public void setIsPaid(boolean isPaid) {
-        this.isPaid = isPaid;
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     /**
@@ -145,35 +155,7 @@ public class ReservationEntity implements Serializable {
     public void setCvv(String cvv) {
         this.cvv = cvv;
     }
-
-    /**
-     * @return the date
-     */
-    public Date getDate() {
-        return date;
-    }
-
-    /**
-     * @param date the date to set
-     */
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    /**
-     * @return the pickupOutlet
-     */
-    public OutletEntity getPickupOutlet() {
-        return pickupOutlet;
-    }
-
-    /**
-     * @param pickupOutlet the pickupOutlet to set
-     */
-    public void setPickupOutlet(OutletEntity pickupOutlet) {
-        this.pickupOutlet = pickupOutlet;
-    }
-
+    
     /**
      * @return the car
      */
@@ -217,17 +199,115 @@ public class ReservationEntity implements Serializable {
     }
 
     /**
-     * @return the rentalRate
+     * @return the carPickup
      */
-    public RentalRateEntity getRentalRate() {
-        return rentalRate;
+    public CarPickupEntity getCarPickup() {
+        return carPickup;
     }
 
     /**
-     * @param rentalRate the rentalRate to set
+     * @param carPickup the carPickup to set
      */
-    public void setRentalRate(RentalRateEntity rentalRate) {
-        this.rentalRate = rentalRate;
+    public void setCarPickup(CarPickupEntity carPickup) {
+        this.carPickup = carPickup;
+    }
+
+    /**
+     * @return the carReturn
+     */
+    public CarReturnEntity getCarReturn() {
+        return carReturn;
+    }
+
+    /**
+     * @param carReturn the carReturn to set
+     */
+    public void setCarReturn(CarReturnEntity carReturn) {
+        this.carReturn = carReturn;
+    }
+
+    /**
+     * @return the startDate
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * @return the endDate
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    /**
+     * @return the rentalRates
+     */
+    public HashMap<Date, RentalRateEntity> getRentalRates() {
+        return rentalRates;
+    }
+
+    /**
+     * @param rentalRates the rentalRates to set
+     */
+    public void setRentalRates(HashMap<Date, RentalRateEntity> rentalRates) {
+        this.rentalRates = rentalRates;
+    }
+
+    /**
+     * @return the carCategory
+     */
+    public CarCategoryEntity getCarCategory() {
+        return carCategory;
+    }
+
+    /**
+     * @param carCategory the carCategory to set
+     */
+    public void setCarCategory(CarCategoryEntity carCategory) {
+        this.carCategory = carCategory;
+    }
+
+    /**
+     * @return the carModel
+     */
+    public CarModelEntity getCarModel() {
+        return carModel;
+    }
+
+    /**
+     * @param carModel the carModel to set
+     */
+    public void setCarModel(CarModelEntity carModel) {
+        this.carModel = carModel;
+    }
+
+    /**
+     * @return the partner
+     */
+    public PartnerEntity getPartner() {
+        return partner;
+    }
+
+    /**
+     * @param partner the partner to set
+     */
+    public void setPartner(PartnerEntity partner) {
+        this.partner = partner;
     }
     
 }

@@ -5,6 +5,9 @@
  */
 package ejb.session.stateless;
 
+import entity.RentalRateEntity;
+
 public interface RentalRateSessionBeanRemote {
     
+    public long createRentalRateEntity(RentalRateEntity rentalRateEntity);
 }

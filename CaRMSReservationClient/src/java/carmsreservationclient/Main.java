@@ -5,7 +5,7 @@
  */
 package carmsreservationclient;
 
-import ejb.session.stateful.ReservationSessionBeanRemote;
+import ejb.session.stateless.ReservationSessionBeanRemote;
 import ejb.session.stateless.CarSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
 import ejb.session.stateless.SearchSessionBeanRemote;
