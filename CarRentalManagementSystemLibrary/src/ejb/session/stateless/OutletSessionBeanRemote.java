@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.OutletEntity;
+import exception.OutletNotFoundException;
 
 public interface OutletSessionBeanRemote {
 
@@ -13,4 +14,7 @@ public interface OutletSessionBeanRemote {
     
     public long createOutletEntity(OutletEntity outletEntity);
     
+    public OutletEntity retrieveOutletEntityByOutletId(long outletId) throws OutletNotFoundException;
+    
+    public OutletEntity retrieveOutletEntityByOutletName(String name) throws OutletNotFoundException;
 }

@@ -12,7 +12,6 @@ import exception.CarCategoryNotFoundException;
 import exception.CarModelNotFoundException;
 import exception.CarNotFoundException;
 import exception.NoCarModelsException;
-import exception.NoCarsException;
 import java.util.Date;
 import java.util.List;
 
@@ -69,4 +68,8 @@ public interface CarSessionBeanRemote {
     public void updateCarCategoryEntity(CarCategoryEntity carCategoryEntity);
     
     public void deleteCarModelEntity(String make, String model) throws CarModelNotFoundException;
+    
+    public long createCarEntity(CarEntity carEntity);
+    
+    public List<CarEntity> retrieveCarsByCategoryThenMakeThenModelThenLicensePlate();
 }

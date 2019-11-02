@@ -6,11 +6,16 @@
 package ejb.session.stateless;
 
 import entity.OutletEntity;
+import exception.OutletNotFoundException;
 
 public interface OutletSessionBeanLocal {
     
     public void updateOutletEntity(OutletEntity outletEntity);
 
     public long createOutletEntity(OutletEntity outletEntity);
+
+    public OutletEntity retrieveOutletEntityByOutletId(long outletId) throws OutletNotFoundException;
+
+    public OutletEntity retrieveOutletEntityByOutletName(String name) throws OutletNotFoundException;
     
 }

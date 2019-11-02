@@ -69,4 +69,8 @@ public interface CarSessionBeanLocal {
     public void updateCarCategoryEntity(CarCategoryEntity carCategoryEntity);
 
     public void deleteCarModelEntity(String make, String model) throws CarModelNotFoundException;
+
+    public long createCarEntity(CarEntity carEntity);
+
+    public List<CarEntity> retrieveCarsByCategoryThenMakeThenModelThenLicensePlate();
 }

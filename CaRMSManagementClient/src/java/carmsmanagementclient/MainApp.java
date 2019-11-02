@@ -70,7 +70,7 @@ public class MainApp {
         setCurrentDate();
         
         this.customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, carPickupReturnSessionBeanRemote, outletSessionBeanRemote, employeeEntity);
-        this.salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, reservationSessionBeanRemote, employeeEntity, currentDate);
+        this.salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, reservationSessionBeanRemote, outletSessionBeanRemote, employeeEntity, currentDate);
         
         mainMenu();
         

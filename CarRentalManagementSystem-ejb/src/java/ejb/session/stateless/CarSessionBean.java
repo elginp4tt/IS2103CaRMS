@@ -12,7 +12,6 @@ import exception.CarCategoryNotFoundException;
 import exception.CarModelNotFoundException;
 import exception.CarNotFoundException;
 import exception.NoCarModelsException;
-import exception.NoCarsException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +52,14 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
         em.flush();
         
         return carModelEntity.getCarModelId();
+    }
+    
+    @Override
+    public long createCarEntity(CarEntity carEntity) {
+        em.persist(carEntity);
+        em.flush();
+        
+        return carEntity.getCarId();
     }
     
     @Override
@@ -304,10 +311,23 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     }
     
     @Override
+    public List<CarEntity> retrieveCarsByCategoryThenMakeThenModelThenLicensePlate() {
+        Query query = em.createQuery("SELECT c FROM CarEntity c JOIN c.carModel cm JOIN cm.carCategory cc ORDER BY cc.carCategory, cm.make, cm.model, c.licensePlate");
+        return query.getResultList();
+    }
+    
+    @Override
     public void deleteCarEntity(String licensePlate){
         try {
             CarEntity carEntity = retrieveCarEntityByLicensePlate(licensePlate);
-            em.remove(carEntity);
+            if (carEntity.isUsed()){
+                carEntity.setDisabled(true);
+                updateCarEntity(carEntity);
+                System.out.println("*****Car has been updated to disabled*****");
+            } else {
+                em.remove(carEntity);
+                System.out.println("*****Car has been deleted*****");
+            }
         } catch (CarNotFoundException e){
             System.out.println(e.getMessage());
         }

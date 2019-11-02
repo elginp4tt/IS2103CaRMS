@@ -37,12 +37,16 @@ public class CarEntity implements Serializable {
     private String colour;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private CarStatusEnum status;
+    private CarStatusEnum status = CarStatusEnum.INOUTLET;
     @Column(nullable = false)
     private String location;
     @Column(nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date returnTime;
+    @Column(nullable = false)
+    private boolean disabled = false;
+    @Column(nullable = false)
+    private boolean used = false;
     
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -56,20 +60,20 @@ public class CarEntity implements Serializable {
     private OutletEntity currentOutlet;
     
     @ManyToOne(optional = true)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private OutletEntity returnOutlet;
     
 
     public CarEntity() {
     }
 
-    public CarEntity(String licensePlate, String colour, CarStatusEnum status, String location, CarModelEntity carModel) {
+    public CarEntity(String licensePlate, String colour, CarModelEntity carModel, OutletEntity currentOutlet) {
         this();
         this.licensePlate = licensePlate;
         this.colour = colour;
-        this.status = status;
-        this.location = location;
         this.carModel = carModel;
+        this.currentOutlet = currentOutlet;
+        this.location = currentOutlet.getName();
     }
 
     public Long getCarId() {
@@ -102,7 +106,7 @@ public class CarEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.CarEntity[ id=" + getCarId() + " ]";
+        return ("Car Id: " + carId + " " + licensePlate + " " + colour + " " + status + " " + location + "/n" + carModel + " " + currentOutlet);
     }
 
     /**
@@ -229,6 +233,34 @@ public class CarEntity implements Serializable {
      */
     public void setReturnTime(Date returnTime) {
         this.returnTime = returnTime;
+    }
+
+    /**
+     * @return the disabled
+     */
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    /**
+     * @param disabled the disabled to set
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    /**
+     * @return the used
+     */
+    public boolean isUsed() {
+        return used;
+    }
+
+    /**
+     * @param used the used to set
+     */
+    public void setUsed(boolean used) {
+        this.used = used;
     }
 
 }
