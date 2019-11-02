@@ -19,5 +19,5 @@ public interface RentalRateSessionBeanRemote {
     
     public void updateRentalRateEntity(RentalRateEntity rentalRateEntity);
     
-    public void deleteRentalRateEntity(RentalRateEntity rentalRateEntity);
+    public void deleteRentalRateEntity(long rentalRateId) throws RentalRateNotFoundException;
 }

@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 /**
  *
@@ -33,7 +32,7 @@ public class CarCategoryEntity implements Serializable {
     private ArrayList<CarModelEntity> carModels;
     
     @OneToMany
-    private RentalRateEntity rentalRate;
+    private ArrayList<RentalRateEntity> rentalRates;
     
     @OneToMany
     private ArrayList<ReservationEntity> reservations;
@@ -78,7 +77,7 @@ public class CarCategoryEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.CategoryEntity[ id=" + carCategoryId + " ]";
+        return carCategory;
     }
 
     /**
@@ -124,17 +123,18 @@ public class CarCategoryEntity implements Serializable {
     }
 
     /**
-     * @return the rentalRate
+     * @return the rentalRates
      */
-    public RentalRateEntity getRentalRate() {
-        return rentalRate;
+    public ArrayList<RentalRateEntity> getRentalRates() {
+        return rentalRates;
     }
 
     /**
-     * @param rentalRate the rentalRate to set
+     * @param rentalRates the rentalRates to set
      */
-    public void setRentalRate(RentalRateEntity rentalRate) {
-        this.rentalRate = rentalRate;
+    public void setRentalRates(ArrayList<RentalRateEntity> rentalRates) {
+        this.rentalRates = rentalRates;
     }
+
     
 }

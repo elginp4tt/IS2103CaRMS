@@ -55,4 +55,18 @@ public interface CarSessionBeanLocal {
     public List<CarEntity> retrieveAvailableCarsByCarModelIdWithCustomerButReturnedOnTimeOtherOutlet(long carModelId, long outletId, Date date);
 
     public CarCategoryEntity retrieveCarCategoryEntityByCarCategory(String carCategory) throws CarCategoryNotFoundException;
+
+    public long createCarCategoryEntity(CarCategoryEntity carCategoryEntity);
+
+    public long createCarModelEntity(CarModelEntity carModelEntity);
+
+    public List<CarModelEntity> retrieveAllCarModelsByCategoryThenMakeThenModel();
+
+    public CarModelEntity retrieveCarModelEntityByMakeAndModel(String make, String model) throws CarModelNotFoundException;
+
+    public void updateCarModelEntity(CarModelEntity carModelEntity);
+
+    public void updateCarCategoryEntity(CarCategoryEntity carCategoryEntity);
+
+    public void deleteCarModelEntity(String make, String model) throws CarModelNotFoundException;
 }

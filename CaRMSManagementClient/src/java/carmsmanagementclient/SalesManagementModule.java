@@ -10,11 +10,13 @@ import ejb.session.stateless.DispatchSessionBeanRemote;
 import ejb.session.stateless.RentalRateSessionBeanRemote;
 import ejb.session.stateless.ReservationSessionBeanRemote;
 import entity.CarCategoryEntity;
+import entity.CarModelEntity;
 import entity.EmployeeEntity;
 import entity.OutletEntity;
 import entity.RentalRateEntity;
 import entity.ReservationEntity;
 import exception.CarCategoryNotFoundException;
+import exception.CarModelNotFoundException;
 import exception.NoCarsException;
 import exception.NoReservationsException;
 import exception.NullCurrentOutletException;
@@ -179,6 +181,7 @@ public class SalesManagementModule {
         System.out.println("*****Key in the ID of the rental rate you want to update*****");
         long rentalRateId = sc.nextLong();
         int option = 0;
+        CarCategoryEntity carCategoryEntity = null;
         
         try {
             RentalRateEntity rentalRateEntity = rentalRateSessionBeanRemote.retrieveRentalRateEntityByRentalRateId(rentalRateId);
@@ -202,8 +205,12 @@ public class SalesManagementModule {
                         System.out.println("Please key in the new car category");
                         String carCategory = sc.nextLine();
                         try {
-                            CarCategoryEntity carCategoryEntity = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategory);
+                            carCategoryEntity = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategory);
+                            if(rentalRateEntity.getCarCategory().getRentalRates().contains(rentalRateEntity)){
+                                rentalRateEntity.getCarCategory().getRentalRates().remove(rentalRateEntity);
+                            }
                             rentalRateEntity.setCarCategory(carCategoryEntity);
+                            carCategoryEntity.getRentalRates().add(rentalRateEntity);
                         } catch (CarCategoryNotFoundException e){
                             System.out.println(e.getMessage());
                         }
@@ -231,6 +238,9 @@ public class SalesManagementModule {
                         break;
                     case 6:
                         rentalRateSessionBeanRemote.updateRentalRateEntity(rentalRateEntity);
+                        if (carCategoryEntity != null){
+                            carSessionBeanRemote.updateCarCategoryEntity(carCategoryEntity);
+                        }
                         break;
                 }
             }
@@ -244,15 +254,8 @@ public class SalesManagementModule {
         System.out.println("*****Delete Rental Rate*****");
         System.out.println("*****Key in the ID of the rental rate you want to update*****");
         long rentalRateId = sc.nextLong();
-        
-        try {
-            RentalRateEntity rentalRateEntity = rentalRateSessionBeanRemote.retrieveRentalRateEntityByRentalRateId(rentalRateId);
-            if (rentalRateEntity.isUsed()){
-                rentalRateEntity.setDisabled(true);
-                rentalRateSessionBeanRemote.updateRentalRateEntity(rentalRateEntity);
-            } else {
-                rentalRateSessionBeanRemote.deleteRentalRateEntity(rentalRateEntity);
-            }
+        try{
+            rentalRateSessionBeanRemote.deleteRentalRateEntity(rentalRateId);
         } catch (RentalRateNotFoundException e){
             System.out.println(e.getMessage());
         }
@@ -275,14 +278,120 @@ public class SalesManagementModule {
             
             switch(option) {
                 case 1:
+                    doCreateNewModel();
                     break;
                 case 2:
+                    doViewAllModels();
                     break;
                 case 3:
+                    doUpdateModel();
                     break;
                 case 4:
+                    doDeleteModel();
                     break;
             }
+        }
+    }
+    
+    public void doCreateNewModel() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*****Create new car model*****");
+        System.out.println("*****Key in the make of the new car model*****");
+        String make = sc.next();
+        System.out.println("*****Key in the model of the new car model*****");
+        String model = sc.next();
+        System.out.println("*****Key in an existing car category to add the new car model to*****");
+        String category = sc.nextLine();
+        try {
+            CarCategoryEntity carCategoryEntity = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(category);
+            long carModelId = carSessionBeanRemote.createCarModelEntity(new CarModelEntity(make, model, carCategoryEntity));
+            System.out.println("Car Model Entity with ID: " + carModelId + " has been created");
+        } catch (CarCategoryNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+        
+    }
+    
+    public void doViewAllModels(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*****View all car models*****");
+        List<CarModelEntity> carModels = carSessionBeanRemote.retrieveAllCarModelsByCategoryThenMakeThenModel();
+        
+        for (CarModelEntity carModelEntity : carModels){
+            System.out.println(carModelEntity);
+        }
+    }
+    
+    public void doUpdateModel(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*****Update Model*****");
+        System.out.println("*****Enter the make of the car model*****");
+        String make = sc.next();
+        System.out.println("*****Enter the model of the car model*****");
+        String model = sc.next();
+        try {
+            CarModelEntity carModelEntity = carSessionBeanRemote.retrieveCarModelEntityByMakeAndModel(make, model);
+            CarCategoryEntity carCategoryEntity = null;
+            int option = 0;
+            
+            while (option != 4){
+                System.out.println("Select field of car model to edit");
+                System.out.println("1: Make");
+                System.out.println("2: Model");
+                System.out.println("3: Category");
+                System.out.println("4: Exit and Update");
+                option = sc.nextInt();
+                
+                switch (option) {
+                    case 1:
+                        System.out.println("Please key in the new make");
+                        String newMake = sc.nextLine();
+                        carModelEntity.setMake(newMake);
+                        break;
+                    case 2:
+                        System.out.println("Please key in the new model");
+                        String newModel = sc.nextLine();
+                        carModelEntity.setModel(newModel);
+                        break;
+                    case 3:
+                        System.out.println("Please key in an existing car category for the car model");
+                        String carCategoryString = sc.nextLine();
+                        try {
+                            CarCategoryEntity CarCategory = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategoryString);
+                            if (carModelEntity.getCarCategory().getCarModels().contains(carModelEntity)){
+                                carModelEntity.getCarCategory().getCarModels().remove(carModelEntity);
+                            }
+                            carModelEntity.setCarCategory(CarCategory);
+                            carModelEntity.getCarCategory().getCarModels().add(carModelEntity);
+                        } catch (CarCategoryNotFoundException e){
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case 4:
+                        carSessionBeanRemote.updateCarModelEntity(carModelEntity);
+                        if (carCategoryEntity != null){
+                        carSessionBeanRemote.updateCarCategoryEntity(carCategoryEntity);
+                        }
+                        break;
+                }
+            }
+        } catch (CarModelNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void doDeleteModel() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*****Delete Model*****");
+        System.out.println("*****Enter the make of the car model*****");
+        String make = sc.next();
+        System.out.println("*****Enter the model of the car model*****");
+        String model = sc.next();
+        
+        try {
+            carSessionBeanRemote.deleteCarModelEntity(make, model);
+        } catch (CarModelNotFoundException e){
+            System.out.println(e.getMessage());
         }
     }
     

@@ -30,19 +30,19 @@ public class CarModelEntity implements Serializable {
     private String make;
     @Column(nullable = false)
     private String model;
+    @Column(nullable = false)
+    private boolean disabled;
     
     @OneToMany
-    private ArrayList<CarEntity> cars;
+    private ArrayList<CarEntity> cars = new ArrayList<CarEntity>();;
     
     @ManyToOne(optional = false)
     private CarCategoryEntity carCategory;
     
     @OneToMany
-    private ArrayList<ReservationEntity> reservations;
+    private ArrayList<ReservationEntity> reservations = new ArrayList<ReservationEntity>();
 
     public CarModelEntity() {
-        this.cars = new ArrayList<CarEntity>();
-        this.reservations = new ArrayList<ReservationEntity>();
     }
 
     public CarModelEntity(String make, String model, CarCategoryEntity carCategory) {
@@ -111,7 +111,7 @@ public class CarModelEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.ModelEntity[ id=" + carModelId + " ]";
+        return ("Car Model is: " + make + " " + model + " in category: " + carCategory);
     }
 
     /**
@@ -154,6 +154,20 @@ public class CarModelEntity implements Serializable {
      */
     public void setReservations(ArrayList<ReservationEntity> reservations) {
         this.reservations = reservations;
+    }
+
+    /**
+     * @return the disabled
+     */
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    /**
+     * @param disabled the disabled to set
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
     
 }

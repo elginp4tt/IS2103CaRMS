@@ -41,8 +41,16 @@ public class RentalRateSessionBean implements RentalRateSessionBeanRemote, Renta
     }
     
     @Override
-    public void deleteRentalRateEntity(RentalRateEntity rentalRateEntity){
-        em.remove(rentalRateEntity);
+    public void deleteRentalRateEntity(long rentalRateId) throws RentalRateNotFoundException{
+            RentalRateEntity rentalRateEntity = retrieveRentalRateEntityByRentalRateId(rentalRateId);
+            if (rentalRateEntity.isUsed()){
+                rentalRateEntity.setDisabled(true);
+                updateRentalRateEntity(rentalRateEntity);
+                System.out.println("*****Rental Rate has been updated to disabled*****");
+            } else {
+                em.remove(rentalRateEntity);
+                System.out.println("*****Rental Rate has been deleted*****");
+            }
     }
     
     @Override
