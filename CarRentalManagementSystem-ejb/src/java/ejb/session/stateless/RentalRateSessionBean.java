@@ -6,11 +6,14 @@
 package ejb.session.stateless;
 
 import entity.RentalRateEntity;
+import exception.RentalRateNotFoundException;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -31,10 +34,31 @@ public class RentalRateSessionBean implements RentalRateSessionBeanRemote, Renta
         
         return rentalRateEntity.getRentalRateId();
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-
-    public void persist(Object object) {
-        em.persist(object);
+    
+    @Override
+    public void updateRentalRateEntity(RentalRateEntity rentalRateEntity){
+        em.merge(rentalRateEntity);
+    }
+    
+    @Override
+    public void deleteRentalRateEntity(RentalRateEntity rentalRateEntity){
+        em.remove(rentalRateEntity);
+    }
+    
+    @Override
+    public RentalRateEntity retrieveRentalRateEntityByRentalRateId(long rentalRateId) throws RentalRateNotFoundException {
+        RentalRateEntity rentalRateEntity = em.find(RentalRateEntity.class, rentalRateId);
+        if (rentalRateEntity != null){
+            return rentalRateEntity;
+        } else {
+            throw new RentalRateNotFoundException("Rental rate is not found");
+        }
+    }
+    
+    @Override
+    public List<RentalRateEntity> retrieveAllRentalRatesByCarCategoryThenDate(){
+        Query query = em.createQuery("SELECT r FROM RentalRateEntity r ORDER BY r.carCategory, r.validityPeriodStart");
+        
+        return query.getResultList();
     }
 }
