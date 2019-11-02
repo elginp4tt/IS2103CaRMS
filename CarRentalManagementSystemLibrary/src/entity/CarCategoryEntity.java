@@ -28,13 +28,13 @@ public class CarCategoryEntity implements Serializable {
     @Column(nullable = false)
     private String carCategory;
     
-    @OneToMany
+    @OneToMany(mappedBy = "carCategory")
     private ArrayList<CarModelEntity> carModels;
     
-    @OneToMany
+    @OneToMany(mappedBy = "carCategory")
     private ArrayList<RentalRateEntity> rentalRates;
     
-    @OneToMany
+    @OneToMany(mappedBy = "carCategory")
     private ArrayList<ReservationEntity> reservations;
 
     public CarCategoryEntity() {

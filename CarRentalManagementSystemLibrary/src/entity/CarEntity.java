@@ -52,7 +52,8 @@ public class CarEntity implements Serializable {
     @JoinColumn(nullable = false)
     private CarModelEntity carModel;
     
-    @OneToOne(optional = true)
+    @OneToOne(mappedBy = "car", optional = true)
+    @JoinColumn(nullable = true)
     private ReservationEntity currentReservation;
     
     @ManyToOne(optional = true)

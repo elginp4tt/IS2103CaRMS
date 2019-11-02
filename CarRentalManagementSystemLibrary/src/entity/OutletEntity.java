@@ -34,13 +34,13 @@ public class OutletEntity implements Serializable {
     @Column(nullable = false)
     private HashMap<String, HashMap<Date, Date>> openingHours;
     
-    @OneToMany
+    @OneToMany(mappedBy = "currentOutlet")
     private ArrayList<CarEntity> cars;
     
-    @OneToMany
+    @OneToMany(mappedBy = "outlet")
     private ArrayList<EmployeeEntity> employees;
     
-    @OneToMany
+    @OneToMany(mappedBy = "currentOutlet")
     private ArrayList<DispatchEntity> dispatches;
 
     public OutletEntity() {

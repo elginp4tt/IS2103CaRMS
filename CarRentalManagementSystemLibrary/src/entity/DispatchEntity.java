@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -28,23 +30,23 @@ public class DispatchEntity implements Serializable {
     private boolean isComplete = false;
     
     @OneToOne(optional = false)
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private ReservationEntity reservation;
     
     @OneToOne(optional = false)
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private CarEntity car;
     
-    @OneToOne(optional = false)
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
     private EmployeeEntity transitDriver;
     
     @OneToOne(optional = false)
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private OutletEntity currentOutlet;
     
     @OneToOne(optional = false)
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private OutletEntity endOutlet;
 
     public DispatchEntity() {

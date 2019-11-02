@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 
@@ -44,7 +45,8 @@ public class RentalRateEntity implements Serializable {
     @Column(nullable = false)
     private boolean used = false;
     
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn
     private CarCategoryEntity carCategory;
 
     public RentalRateEntity() {

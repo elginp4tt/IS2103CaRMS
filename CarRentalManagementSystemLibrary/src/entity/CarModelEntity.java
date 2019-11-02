@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -33,13 +34,14 @@ public class CarModelEntity implements Serializable {
     @Column(nullable = false)
     private boolean disabled;
     
-    @OneToMany
+    @OneToMany(mappedBy = "carModel")
     private ArrayList<CarEntity> cars = new ArrayList<CarEntity>();;
     
     @ManyToOne(optional = false)
+    @JoinColumn
     private CarCategoryEntity carCategory;
     
-    @OneToMany
+    @OneToMany(mappedBy = "carModel")
     private ArrayList<ReservationEntity> reservations = new ArrayList<ReservationEntity>();
 
     public CarModelEntity() {
