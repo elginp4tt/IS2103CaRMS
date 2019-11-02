@@ -6,13 +6,18 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -39,46 +44,59 @@ public class ReservationEntity implements Serializable {
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date endDate;
-    @Column
-    private HashMap<Date, RentalRateEntity> rentalRates;
+    
+    @OneToMany
+    @JoinColumn
+    private List<RentalRateEntity> rentalRates = new ArrayList<RentalRateEntity>();
     
     @OneToOne(optional = true)
+    @JoinColumn
     private CarCategoryEntity carCategory;
     
     @OneToOne(optional = true)
+    @JoinColumn
     private CarModelEntity carModel;
     
     @OneToOne(optional = false)
+    @JoinColumn
     private CarEntity car;
     
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
+    @JoinColumn
     private CustomerEntity customer;
     
-    @OneToOne(optional = true)
+    @ManyToOne(optional = true)
+    @JoinColumn
     private PartnerEntity partner;
     
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, mappedBy = "reservation")
     private DispatchEntity dispatch;
     
     @OneToOne(optional = false)
+    @JoinColumn
+    private OutletEntity outlet;
+    
+    @OneToOne(optional = false)
+    @JoinColumn
     private CarPickupEntity carPickup;
     
     @OneToOne(optional = false)
+    @JoinColumn
     private CarReturnEntity carReturn;
 
     public ReservationEntity() {
     }
 
-    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, HashMap<Date, RentalRateEntity> rentalRates, CarEntity car, CustomerEntity customer) {
+    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CarEntity car, CustomerEntity customer, OutletEntity outlet) {
         this();
         this.paid = paid;
         this.creditCardNumber = creditCardNumber;
         this.cvv = cvv;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.rentalRates = rentalRates;
         this.car = car;
         this.customer = customer;
+        this.outlet = outlet;
     }
 
     public Long getReservationId() {
@@ -255,20 +273,6 @@ public class ReservationEntity implements Serializable {
     }
 
     /**
-     * @return the rentalRates
-     */
-    public HashMap<Date, RentalRateEntity> getRentalRates() {
-        return rentalRates;
-    }
-
-    /**
-     * @param rentalRates the rentalRates to set
-     */
-    public void setRentalRates(HashMap<Date, RentalRateEntity> rentalRates) {
-        this.rentalRates = rentalRates;
-    }
-
-    /**
      * @return the carCategory
      */
     public CarCategoryEntity getCarCategory() {
@@ -308,6 +312,34 @@ public class ReservationEntity implements Serializable {
      */
     public void setPartner(PartnerEntity partner) {
         this.partner = partner;
+    }
+
+    /**
+     * @return the outlet
+     */
+    public OutletEntity getOutlet() {
+        return outlet;
+    }
+
+    /**
+     * @param outlet the outlet to set
+     */
+    public void setOutlet(OutletEntity outlet) {
+        this.outlet = outlet;
+    }
+
+    /**
+     * @return the rentalRates
+     */
+    public List<RentalRateEntity> getRentalRates() {
+        return rentalRates;
+    }
+
+    /**
+     * @param rentalRates the rentalRates to set
+     */
+    public void setRentalRates(List<RentalRateEntity> rentalRates) {
+        this.rentalRates = rentalRates;
     }
     
 }

@@ -2,9 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/C:/Users/user/Desktop/IS2103PairProject/IS2013PairProject/IS2102CaRMS/CarRentalManagementSystem-ejb/src/java/ejb/session/stateless/OutletSessionBean.java</file>
             <file>file:/C:/Users/user/Desktop/IS2103PairProject/IS2013PairProject/IS2102CaRMS/CarRentalManagementSystem-ejb/src/java/ejb/session/stateless/OutletSessionBeanLocal.java</file>
         </group>
+=======
+        <group/>
+>>>>>>> refs/remotes/origin/master
     </open-files>
 </project-private>

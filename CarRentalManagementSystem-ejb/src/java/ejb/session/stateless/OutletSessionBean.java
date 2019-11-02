@@ -9,15 +9,22 @@ import entity.CarEntity;
 import entity.DispatchEntity;
 import entity.EmployeeEntity;
 import entity.OutletEntity;
+<<<<<<< HEAD
 import exception.CarNotFoundException;
 import exception.EmployeeNotFoundException;
 import exception.OutletNotFoundException;
 import exception.OutletUpdateException;
 import javax.ejb.EJB;
+=======
+import exception.OutletNotFoundException;
+import java.util.List;
+>>>>>>> refs/remotes/origin/master
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -140,5 +147,34 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
         } catch (OutletNotFoundException ex){
             throw new OutletUpdateException ("Dispatch record is not added to the current and end outlet");
         }
+    }
+    
+    @Override
+    public OutletEntity retrieveOutletEntityByOutletId(long outletId) throws OutletNotFoundException{
+        OutletEntity outletEntity = em.find(OutletEntity.class, outletId);
+        if (outletEntity != null){
+            return outletEntity;
+        } else {
+            throw new OutletNotFoundException("Outlet not found");
+        }
+    }
+    
+    @Override
+    public OutletEntity retrieveOutletEntityByOutletName(String name) throws OutletNotFoundException{
+        Query query = em.createQuery("SELECT o FROM OutletEntity o WHERE o.name = :inName");
+        query.setParameter("inName", name);
+        
+        try{
+            return (OutletEntity)query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e){
+            throw new OutletNotFoundException("Outlet not found");
+        }
+    }
+    
+    @Override
+    public List<OutletEntity> retrieveAllOutletEntities(){
+        Query query = em.createQuery("SELECT o FROM OutletEntity o");
+        
+        return query.getResultList();
     }
 }

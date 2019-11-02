@@ -12,7 +12,6 @@ import exception.CarCategoryNotFoundException;
 import exception.CarModelNotFoundException;
 import exception.CarNotFoundException;
 import exception.NoCarModelsException;
-import exception.NoCarsException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,11 +38,28 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
     
+    @Override
     public long createCarCategoryEntity(CarCategoryEntity carCategoryEntity) {
         em.persist(carCategoryEntity);
         em.flush();
         
         return carCategoryEntity.getCarCategoryId();
+    }
+    
+    @Override
+    public long createCarModelEntity(CarModelEntity carModelEntity) {
+        em.persist(carModelEntity);
+        em.flush();
+        
+        return carModelEntity.getCarModelId();
+    }
+    
+    @Override
+    public long createCarEntity(CarEntity carEntity) {
+        em.persist(carEntity);
+        em.flush();
+        
+        return carEntity.getCarId();
     }
     
     @Override
@@ -275,18 +291,74 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     }
     
     @Override
+    public List<CarModelEntity> retrieveAllCarModelsByCategoryThenMakeThenModel(){
+        Query query = em.createQuery("SELECT c FROM CarModelEntity c ORDER BY c.carCategory, c.make, c.model");
+        
+        return query.getResultList();
+    }
+    
+    @Override
+    public CarModelEntity retrieveCarModelEntityByMakeAndModel(String make, String model) throws CarModelNotFoundException{
+        Query query = em.createQuery("SELECT c FROM CarModelEntity c WHERE c.make = :inMake AND c.model = :inModel");
+        query.setParameter("inMake", make);
+        query.setParameter("inModel", model);
+        
+        try{
+            return (CarModelEntity) query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e){
+            throw new CarModelNotFoundException("Car model entity not found");
+        }
+    }
+    
+    @Override
+    public List<CarEntity> retrieveCarsByCategoryThenMakeThenModelThenLicensePlate() {
+        Query query = em.createQuery("SELECT c FROM CarEntity c JOIN c.carModel cm JOIN cm.carCategory cc ORDER BY cc.carCategory, cm.make, cm.model, c.licensePlate");
+        return query.getResultList();
+    }
+    
+    @Override
     public void deleteCarEntity(String licensePlate){
         try {
-        CarEntity carEntity = retrieveCarEntityByLicensePlate(licensePlate);
-        em.remove(carEntity);
+            CarEntity carEntity = retrieveCarEntityByLicensePlate(licensePlate);
+            if (carEntity.isUsed()){
+                carEntity.setDisabled(true);
+                updateCarEntity(carEntity);
+                System.out.println("*****Car has been updated to disabled*****");
+            } else {
+                em.remove(carEntity);
+                System.out.println("*****Car has been deleted*****");
+            }
         } catch (CarNotFoundException e){
-        System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
+    }
+    
+    @Override
+    public void deleteCarModelEntity(String make, String model) throws CarModelNotFoundException{
+            CarModelEntity carModelEntity = retrieveCarModelEntityByMakeAndModel(make, model);
+            if (carModelEntity.getCars().isEmpty()){
+                em.remove(carModelEntity);
+                System.out.println("*****Car Model has been deleted*****");
+            } else {
+                carModelEntity.setDisabled(true);
+                updateCarModelEntity(carModelEntity);
+                System.out.println("*****Car Model has updated to disabled*****");
+            }
     }
     
     @Override
     public void updateCarEntity(CarEntity carEntity){
         em.merge(carEntity);
+    }
+    
+    @Override
+    public void updateCarModelEntity(CarModelEntity carModelEntity){
+        em.merge(carModelEntity);
+    }
+    
+    @Override
+    public void updateCarCategoryEntity(CarCategoryEntity carCategoryEntity){
+        em.merge(carCategoryEntity);
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

@@ -6,14 +6,15 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -35,9 +36,17 @@ public class RentalRateEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date validityPeriodStart;
     @Column(nullable = false)
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date validityPeriodEnd;
+    @Column(nullable = false)
     private int validityPeriod;
+    @Column(nullable = false)
+    private boolean disabled = false;
+    @Column(nullable = false)
+    private boolean used = false;
     
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn
     private CarCategoryEntity carCategory;
 
     public RentalRateEntity() {
@@ -50,6 +59,8 @@ public class RentalRateEntity implements Serializable {
         this.validityPeriodStart = validityPeriodStart;
         this.validityPeriod = validityPeriod;
         this.carCategory = carCategory;
+        
+        generateValidityPeriodEnd(validityPeriod);
     }
 
     public Long getRentalRateId() {
@@ -82,7 +93,7 @@ public class RentalRateEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.RentalRateEntity[ id=" + rentalRateId + " ]";
+        return ("rentalRateId: " + rentalRateId + " " + name + " " + carCategory + " " + dailyRate + " " + validityPeriodStart + " " + validityPeriod);
     }
 
     /**
@@ -121,9 +132,9 @@ public class RentalRateEntity implements Serializable {
     }
 
     /**
-     * @param car the car to set
+     * @param carCategory the carCategory to set
      */
-    public void setCar(CarCategoryEntity carCategory) {
+    public void setCarCategory(CarCategoryEntity carCategory) {
         this.carCategory = carCategory;
     }
 
@@ -153,7 +164,56 @@ public class RentalRateEntity implements Serializable {
      */
     public void setValidityPeriod(int validityPeriod) {
         this.validityPeriod = validityPeriod;
+        generateValidityPeriodEnd(validityPeriod);
     }
 
+    /**
+     * @return the disabled
+     */
+    public boolean isDisabled() {
+        return disabled;
+    }
 
-}
+    /**
+     * @param disabled the disabled to set
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    /**
+     * @return the validityPeriodEnd
+     */
+    public Date getValidityPeriodEnd() {
+        return validityPeriodEnd;
+    }
+
+    /**
+     * @param validityPeriodEnd the validityPeriodEnd to set
+     */
+    public void setValidityPeriodEnd(Date validityPeriodEnd) {
+        this.validityPeriodEnd = validityPeriodEnd;
+    }
+    
+    public void generateValidityPeriodEnd(int validityPeriod){
+        Calendar c = Calendar.getInstance();
+        c.setTime(validityPeriodStart);
+        c.add(Calendar.DATE, validityPeriod - 1);
+        this.validityPeriodEnd = c.getTime();
+    }
+
+    /**
+     * @return the used
+     */
+    public boolean isUsed() {
+        return used;
+    }
+
+    /**
+     * @param used the used to set
+     */
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
+
+}   

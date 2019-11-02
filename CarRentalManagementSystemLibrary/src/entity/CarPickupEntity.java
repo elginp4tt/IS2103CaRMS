@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -30,6 +31,7 @@ public class CarPickupEntity implements Serializable {
     private Date pickupDateTime; //can use for both date and time
     
     @OneToOne(optional = true)
+    @JoinColumn
     private OutletEntity outlet;
 
     public CarPickupEntity() {

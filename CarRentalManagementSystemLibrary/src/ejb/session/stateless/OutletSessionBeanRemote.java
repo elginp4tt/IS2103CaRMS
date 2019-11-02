@@ -9,7 +9,11 @@ import entity.CarEntity;
 import entity.DispatchEntity;
 import entity.OutletEntity;
 import exception.OutletNotFoundException;
+<<<<<<< HEAD
 import exception.OutletUpdateException;
+=======
+import java.util.List;
+>>>>>>> refs/remotes/origin/master
 
 public interface OutletSessionBeanRemote {
 
@@ -29,4 +33,9 @@ public interface OutletSessionBeanRemote {
 
     public OutletEntity addDispatchToOutletEntity(DispatchEntity dispatchRecord) throws OutletUpdateException;
     
+    public OutletEntity retrieveOutletEntityByOutletId(long outletId) throws OutletNotFoundException;
+    
+    public OutletEntity retrieveOutletEntityByOutletName(String name) throws OutletNotFoundException;
+    
+    public List<OutletEntity> retrieveAllOutletEntities();
 }

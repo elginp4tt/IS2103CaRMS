@@ -38,12 +38,12 @@ public class EmployeeEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private EmployeeAccessRightEnum accessRight;
     
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private OutletEntity outlet;
     
-    @OneToMany
-    private ArrayList<DispatchEntity> dispatches;;
+    @OneToMany(mappedBy = "transitDriver")
+    private ArrayList<DispatchEntity> dispatches;
 
     public EmployeeEntity() {
         this.dispatches = new ArrayList<DispatchEntity>();
