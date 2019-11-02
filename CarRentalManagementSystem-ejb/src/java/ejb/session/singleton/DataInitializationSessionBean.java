@@ -5,10 +5,21 @@
  */
 package ejb.session.singleton;
 
+import ejb.session.stateless.CarSessionBeanLocal;
+import ejb.session.stateless.EmployeeSessionBeanLocal;
+import ejb.session.stateless.OutletSessionBeanLocal;
+import ejb.session.stateless.PartnerSessionBeanLocal;
+import entity.CarCategoryEntity;
+import entity.EmployeeEntity;
+import entity.OutletEntity;
+import entity.PartnerEntity;
+import exception.EmployeeNotFoundException;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
+import util.enumeration.EmployeeAccessRightEnum;
 
 /**
  *
@@ -19,21 +30,35 @@ import javax.ejb.Startup;
 @Startup
 public class DataInitializationSessionBean {
 
+    @EJB
+    private CarSessionBeanLocal carSessionBean;
+
+    @EJB
+    private PartnerSessionBeanLocal partnerSessionBean;
+
+    @EJB
+    private EmployeeSessionBeanLocal employeeSessionBean;
+
+    @EJB
+    private OutletSessionBeanLocal outletSessionBean;
+
     public DataInitializationSessionBean() {
     }
 
     @PostConstruct
     public void postConstruct(){
         try {
-        
-        } catch (Exception e) {
+            employeeSessionBean.retrieveEmployeeEntityByUsername("manager");
+        } catch (EmployeeNotFoundException e) {
             initializeData();
         }
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 
     private void initializeData() {
-        
+        OutletEntity outletEntity = new OutletEntity("Outlet0", "0 Outlet Road #00-00");
+        outletSessionBean.createOutletEntity(outletEntity);
+        employeeSessionBean.createEmployeeEntity(new EmployeeEntity("manager", "password", EmployeeAccessRightEnum.MANAGER, outletEntity));
+        partnerSessionBean.createPartnerEntity(new PartnerEntity("partner", "password", "partner"));
+        carSessionBean.createCarCategoryEntity(new CarCategoryEntity("0"));
     }
 }

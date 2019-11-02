@@ -729,22 +729,22 @@ public class SalesManagementModule {
         System.out.println("*****Transit is updated as completed, car is now recorded as within this outlet*****");
     }
     
-//    public void allocateCarsToCurrentDayReservationsAndGenerateDispatch() throws NoReservationsException{
-//        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByDate(currentDate);
-//        
-//        if (!reservations.isEmpty()){
-//            for (ReservationEntity reservationEntity : reservations){
-//                if (reservationEntity.getCar() != null){
-//                    try {
-//                    reservationSessionBeanRemote.autoAllocateCarToReservation(reservationEntity);
-//                    } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e){
-//                        System.out.println(e.getMessage());
-//                    }
-//                }
-//            }
-//        } else {
-//            throw new NoReservationsException("No reservations found for the day");
-//        }
-//    }
+    public void allocateCarsToCurrentDayReservationsAndGenerateDispatch() throws NoReservationsException{
+        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByDate(currentDate);
+        
+        if (!reservations.isEmpty()){
+            for (ReservationEntity reservationEntity : reservations){
+                if (reservationEntity.getCar() != null){
+                    try {
+                    reservationSessionBeanRemote.autoAllocateCarToReservation(reservationEntity);
+                    } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        } else {
+            throw new NoReservationsException("No reservations found for the day");
+        }
+    }
         
 }

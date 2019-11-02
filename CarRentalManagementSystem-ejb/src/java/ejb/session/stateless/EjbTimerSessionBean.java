@@ -36,7 +36,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanRemote, EjbTimerS
             for (ReservationEntity reservationEntity : reservations){
                 if (reservationEntity.getCar() != null){
                     try {
-                        reservationSessionBean.autoAllocateCarToReservation(reservationEntity, outletEntity);
+                        reservationSessionBean.autoAllocateCarToReservation(reservationEntity);
                     } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e){
                         System.out.println(e.getMessage());
                     }
