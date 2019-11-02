@@ -125,8 +125,9 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         return cars;
     }
     
-    public void autoAllocateCarToReservation(ReservationEntity reservationEntity, OutletEntity outletEntity) throws ReservationNoModelNoCategoryException, NullCurrentOutletException, NoCarsException {
-        List<CarEntity> cars = getCarsForReservation(reservationEntity, outletEntity);
+    @Override
+    public void autoAllocateCarToReservation(ReservationEntity reservationEntity) throws ReservationNoModelNoCategoryException, NullCurrentOutletException, NoCarsException {
+        List<CarEntity> cars = getCarsForReservation(reservationEntity, reservationEntity.getOutlet());
         for (CarEntity carEntity : cars){
             if (carEntity.getCurrentReservation() == null){
                     reservationEntity.setCar(carEntity);
@@ -142,13 +143,13 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         }
         
         if (reservationEntity.getCar() == null){
-            List<CarEntity> backupCars = getBackupCarsForReservation(reservationEntity, outletEntity);
-            for (CarEntity carEntity : cars){
+            List<CarEntity> backupCars = getBackupCarsForReservation(reservationEntity, reservationEntity.getOutlet());
+            for (CarEntity carEntity : backupCars){
                 if (carEntity.getCurrentReservation() != null)
                     reservationEntity.setCar(carEntity);
                     carEntity.setCurrentReservation(reservationEntity);
                     carEntity.setReturnOutlet(reservationEntity.getCarReturn().getOutlet());
-                    DispatchEntity dispatchEntity = new DispatchEntity(reservationEntity, carEntity, carEntity.getCurrentOutlet(), outletEntity);
+                    DispatchEntity dispatchEntity = new DispatchEntity(reservationEntity, carEntity, carEntity.getCurrentOutlet(), reservationEntity.getOutlet());
                     
                     dispatchSessionBeanLocal.createDispatchEntity(dispatchEntity);
                     reservationEntity.setDispatch(dispatchEntity);

@@ -3,19 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package exception;
+package ejb.session.stateless;
+
+import javax.ejb.Remote;
 
 /**
  *
  * @author Elgin Patt
  */
-public class DispatchNotFoundException extends Exception{
-
-    public DispatchNotFoundException() {
-    }
-
-    public DispatchNotFoundException(String message) {
-        super(message);
-    }
+@Remote
+public interface EjbTimerSessionBeanRemote {
     
 }

@@ -61,6 +61,9 @@ public class ReservationEntity implements Serializable {
     private DispatchEntity dispatch;
     
     @OneToOne(optional = false)
+    private OutletEntity outlet;
+    
+    @OneToOne(optional = false)
     private CarPickupEntity carPickup;
     
     @OneToOne(optional = false)
@@ -69,7 +72,7 @@ public class ReservationEntity implements Serializable {
     public ReservationEntity() {
     }
 
-    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, HashMap<Date, RentalRateEntity> rentalRates, CarEntity car, CustomerEntity customer) {
+    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, HashMap<Date, RentalRateEntity> rentalRates, CarEntity car, CustomerEntity customer, OutletEntity outlet) {
         this();
         this.paid = paid;
         this.creditCardNumber = creditCardNumber;
@@ -79,6 +82,7 @@ public class ReservationEntity implements Serializable {
         this.rentalRates = rentalRates;
         this.car = car;
         this.customer = customer;
+        this.outlet = outlet;
     }
 
     public Long getReservationId() {
@@ -308,6 +312,20 @@ public class ReservationEntity implements Serializable {
      */
     public void setPartner(PartnerEntity partner) {
         this.partner = partner;
+    }
+
+    /**
+     * @return the outlet
+     */
+    public OutletEntity getOutlet() {
+        return outlet;
+    }
+
+    /**
+     * @param outlet the outlet to set
+     */
+    public void setOutlet(OutletEntity outlet) {
+        this.outlet = outlet;
     }
     
 }
