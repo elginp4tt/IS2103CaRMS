@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.DispatchEntity;
 import entity.OutletEntity;
+import exception.DispatchNotFoundException;
 import java.util.Date;
 import java.util.List;
 
@@ -20,5 +21,8 @@ public interface DispatchSessionBeanLocal {
     public List<DispatchEntity> retrieveDispatchesByDate(Date date);
     
     public List<DispatchEntity> retrieveDispatchesByDateToOutlet(Date date, OutletEntity outletEntity);
-    
+
+    public List<DispatchEntity> retrieveDispatchesByDateFromOutlet(Date date, OutletEntity outletEntity);
+
+    public DispatchEntity retrieveDispatchEntityByDispatchId(long dispatchId) throws DispatchNotFoundException;
 }

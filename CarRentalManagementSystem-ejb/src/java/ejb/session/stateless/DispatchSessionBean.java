@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.DispatchEntity;
 import entity.OutletEntity;
+import exception.DispatchNotFoundException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -45,6 +46,17 @@ public class DispatchSessionBean implements DispatchSessionBeanRemote, DispatchS
     }
     
     @Override
+    public DispatchEntity retrieveDispatchEntityByDispatchId(long dispatchId) throws DispatchNotFoundException{
+        DispatchEntity dispatchEntity = em.find(DispatchEntity.class, dispatchId);
+        
+        if (dispatchEntity != null){
+            return dispatchEntity;
+        } else {
+            throw new DispatchNotFoundException("Dispatch not found");
+        }
+    }
+    
+    @Override
     public List<DispatchEntity> retrieveDispatchesByDate(Date date) {
         Query query = em.createQuery("SELECT d FROM DispatchEntity d JOIN ReservationEntity r WHERE d.reservation = r AND r.startDate = :inDate");
         query.setParameter("indate", date, TemporalType.DATE);
@@ -57,6 +69,17 @@ public class DispatchSessionBean implements DispatchSessionBeanRemote, DispatchS
     @Override
     public List<DispatchEntity> retrieveDispatchesByDateToOutlet(Date date, OutletEntity outletEntity) {
         Query query = em.createQuery("SELECT d FROM DispatchEntity d JOIN ReservationEntity r WHERE d.reservation = r AND r.startDate = :inDate AND d.endOutlet = :inOutlet");
+        query.setParameter("inDate", date, TemporalType.DATE);
+        query.setParameter("inoutlet", outletEntity.getOutletId());
+        
+        List<DispatchEntity> dispatches = query.getResultList();
+        
+        return dispatches;
+    }
+    
+    @Override
+    public List<DispatchEntity> retrieveDispatchesByDateFromOutlet(Date date, OutletEntity outletEntity) {
+        Query query = em.createQuery("SELECT d FROM DispatchEntity d JOIN ReservationEntity r WHERE d.reservation = r AND r.startDate = :inDate AND d.currentOutlet = :inOutlet");
         query.setParameter("inDate", date, TemporalType.DATE);
         query.setParameter("inoutlet", outletEntity.getOutletId());
         

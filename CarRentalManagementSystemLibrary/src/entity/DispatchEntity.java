@@ -88,7 +88,7 @@ public class DispatchEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.DispatchEntity[ id=" + dispatchId + " ]";
+        return ("Dispatch Id: " + dispatchId + " " + reservation + " " + car + " " + endOutlet);
     }
 
     /**

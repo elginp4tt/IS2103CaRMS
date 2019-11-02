@@ -7,12 +7,14 @@ package carmsmanagementclient;
 
 import ejb.session.stateless.CarSessionBeanRemote;
 import ejb.session.stateless.DispatchSessionBeanRemote;
+import ejb.session.stateless.EmployeeSessionBeanRemote;
 import ejb.session.stateless.OutletSessionBeanRemote;
 import ejb.session.stateless.RentalRateSessionBeanRemote;
 import ejb.session.stateless.ReservationSessionBeanRemote;
 import entity.CarCategoryEntity;
 import entity.CarEntity;
 import entity.CarModelEntity;
+import entity.DispatchEntity;
 import entity.EmployeeEntity;
 import entity.OutletEntity;
 import entity.RentalRateEntity;
@@ -21,6 +23,8 @@ import exception.CarCategoryNotFoundException;
 import exception.CarModelIsDisabledException;
 import exception.CarModelNotFoundException;
 import exception.CarNotFoundException;
+import exception.DispatchNotFoundException;
+import exception.EmployeeNotFoundException;
 import exception.NoCarsException;
 import exception.NoReservationsException;
 import exception.NullCurrentOutletException;
@@ -42,16 +46,18 @@ public class SalesManagementModule {
     private DispatchSessionBeanRemote dispatchSessionBeanRemote;
     private ReservationSessionBeanRemote reservationSessionBeanRemote;
     private OutletSessionBeanRemote outletSessionBeanRemote;
+    private EmployeeSessionBeanRemote employeeSessionBeanRemote;
     private EmployeeEntity employeeEntity;
     private OutletEntity outletEntity;
     private Date currentDate;
 
-    public SalesManagementModule(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote, OutletSessionBeanRemote outletSessionBeanRemote, EmployeeEntity employeeEntity, Date currentDate) {
+    public SalesManagementModule(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote, OutletSessionBeanRemote outletSessionBeanRemote, EmployeeSessionBeanRemote employeeSessionBeanRemote, EmployeeEntity employeeEntity, Date currentDate) {
         this.rentalRateSessionBeanRemote = rentalRateSessionBeanRemote;
         this.carSessionBeanRemote = carSessionBeanRemote;
         this.dispatchSessionBeanRemote = dispatchSessionBeanRemote;
         this.reservationSessionBeanRemote = reservationSessionBeanRemote;
         this.outletSessionBeanRemote = outletSessionBeanRemote;
+        this.employeeSessionBeanRemote = employeeSessionBeanRemote;
         this.employeeEntity = employeeEntity;
         this.outletEntity = employeeEntity.getOutlet();
         this.currentDate = currentDate;
@@ -653,13 +659,74 @@ public class SalesManagementModule {
             
             switch(option) {
                 case 1:
+                    doViewTransitDriverRecordsForCurrentDayReservations();
                     break;
                 case 2:
+                    doAssignTransitDriver();
                     break;
                 case 3:
+                    doUpdateTransitAsCompleted();
                     break;
             }
         }
+    }
+    
+    public void doViewTransitDriverRecordsForCurrentDayReservations(){
+        System.out.println("*****View Transit Driver Records For Current Day Reservations*****");
+        List<DispatchEntity> dispatches = dispatchSessionBeanRemote.retrieveDispatchesByDateFromOutlet(currentDate, outletEntity);
+        
+        for (DispatchEntity dispatchEntity : dispatches){
+            System.out.println(dispatchEntity);
+        }
+        
+    }
+    
+    public void doAssignTransitDriver() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*****Assign Transit Driver*****");
+        System.out.println("*****Please key in the dispatch id*****");
+        long dispatchId = sc.nextLong();
+        
+        try {
+            DispatchEntity dispatchEntity = dispatchSessionBeanRemote.retrieveDispatchEntityByDispatchId(dispatchId);
+            System.out.println("*****Please key in the employee id for dispatch*****");
+            long employeeId = sc.nextLong();
+            EmployeeEntity dispatchEmployee = employeeSessionBeanRemote.retrieveEmployeeEntityByEmployeeId(employeeId);
+            if (dispatchEntity.getTransitDriver() != null && dispatchEntity.getTransitDriver().getDispatches().contains(dispatchEntity)){
+                dispatchEntity.getTransitDriver().getDispatches().remove(dispatchEntity);
+            }
+            dispatchEntity.setTransitDriver(dispatchEmployee);
+            if (!employeeEntity.getDispatches().contains(dispatchEntity)){
+                employeeEntity.getDispatches().add(dispatchEntity);
+            }
+            System.out.println("Employee with ID: " + dispatchEmployee.getEmployeeId() + " has been assigned to Dispatch with ID: " + dispatchEntity.getDispatchId());
+        } catch (DispatchNotFoundException | EmployeeNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+        
+    }
+    
+    public void doUpdateTransitAsCompleted() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("*****Update Transit as Completed*****");
+        System.out.println("*****Please key in the dispatch id*****");
+        long dispatchId = sc.nextLong();
+        
+        try {
+            DispatchEntity dispatchEntity = dispatchSessionBeanRemote.retrieveDispatchEntityByDispatchId(dispatchId);
+            dispatchEntity.setIsComplete(true);
+            dispatchEntity.getCar().setCurrentOutlet(outletEntity);
+            if (!outletEntity.getCars().contains(dispatchEntity.getCar())){
+                outletEntity.getCars().add(dispatchEntity.getCar());
+                outletSessionBeanRemote.updateOutletEntity(outletEntity);
+            }
+            dispatchSessionBeanRemote.updateDispatchEntity(dispatchEntity);
+            carSessionBeanRemote.updateCarEntity(dispatchEntity.getCar());
+            
+        } catch (DispatchNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println("*****Transit is updated as completed, car is now recorded as within this outlet*****");
     }
     
     public void allocateCarsToCurrentDayReservationsAndGenerateDispatch() throws NoReservationsException{
