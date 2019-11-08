@@ -7,15 +7,6 @@ package exception;
 
 /**
  *
-<<<<<<< HEAD
- * @author user
- */
-public class OutletNotFoundException extends Exception{
-    public OutletNotFoundException (){
-    }
-    
-    public OutletNotFoundException (String message){
-=======
  * @author Elgin Patt
  */
 public class OutletNotFoundException extends Exception{
@@ -24,8 +15,6 @@ public class OutletNotFoundException extends Exception{
     }
 
     public OutletNotFoundException(String message) {
->>>>>>> refs/remotes/origin/master
         super(message);
-    }
-    
+    }    
 }

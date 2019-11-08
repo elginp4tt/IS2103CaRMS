@@ -9,15 +9,12 @@ import entity.CarEntity;
 import entity.DispatchEntity;
 import entity.OutletEntity;
 import exception.OutletNotFoundException;
-<<<<<<< HEAD
+
 import exception.OutletUpdateException;
-=======
 import java.util.List;
->>>>>>> refs/remotes/origin/master
 
 public interface OutletSessionBeanLocal {
 
-<<<<<<< HEAD
     public long createOutletEntity(OutletEntity newOutletEntity);
 
     public OutletEntity retrieveOutletEntityById(long outletId) throws OutletNotFoundException;
@@ -26,23 +23,12 @@ public interface OutletSessionBeanLocal {
 
     public void updateOutletEntity(OutletEntity outletEntity) throws OutletNotFoundException, OutletUpdateException;
 
-    public void deleteOutletEntity(long outletId);
+    public void deleteOutletEntity(long outletId) throws OutletUpdateException;
 
     public OutletEntity addCarToOutletEntity(String outletName, CarEntity car) throws OutletUpdateException;
 
     public OutletEntity addEmployeeToOutletEntity(String outletName, long EmployeeId) throws OutletUpdateException;
 
     public OutletEntity addDispatchToOutletEntity(DispatchEntity dispatchRecord) throws OutletUpdateException;
-    
-    
-=======
-    public long createOutletEntity(OutletEntity outletEntity);
-
-    public OutletEntity retrieveOutletEntityByOutletId(long outletId) throws OutletNotFoundException;
-
-    public OutletEntity retrieveOutletEntityByOutletName(String name) throws OutletNotFoundException;
-
-    public List<OutletEntity> retrieveAllOutletEntities();
->>>>>>> refs/remotes/origin/master
-    
+        
 }

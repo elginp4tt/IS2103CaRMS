@@ -9,11 +9,8 @@ import entity.CarEntity;
 import entity.DispatchEntity;
 import entity.OutletEntity;
 import exception.OutletNotFoundException;
-<<<<<<< HEAD
 import exception.OutletUpdateException;
-=======
 import java.util.List;
->>>>>>> refs/remotes/origin/master
 
 public interface OutletSessionBeanRemote {
 
@@ -25,7 +22,7 @@ public interface OutletSessionBeanRemote {
 
     public void updateOutletEntity(OutletEntity outletEntity) throws OutletNotFoundException, OutletUpdateException;
 
-    public void deleteOutletEntity(long outletId);
+    public void deleteOutletEntity(long outletId) throws OutletUpdateException;
 
     public OutletEntity addCarToOutletEntity(String outletName, CarEntity car) throws OutletUpdateException;
 

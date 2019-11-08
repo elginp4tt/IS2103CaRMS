@@ -9,16 +9,13 @@ import entity.CarEntity;
 import entity.DispatchEntity;
 import entity.EmployeeEntity;
 import entity.OutletEntity;
-<<<<<<< HEAD
 import exception.CarNotFoundException;
 import exception.EmployeeNotFoundException;
 import exception.OutletNotFoundException;
 import exception.OutletUpdateException;
 import javax.ejb.EJB;
-=======
 import exception.OutletNotFoundException;
 import java.util.List;
->>>>>>> refs/remotes/origin/master
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -90,12 +87,13 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
         }
     }
 
-    public void deleteOutletEntity(long outletId) {
+    public void deleteOutletEntity(long outletId) throws OutletUpdateException {
         try {
             OutletEntity outletEntity = retrieveOutletEntityById(outletId);
             em.remove(outletEntity);
-        } catch (Exception e) {
-            System.out.println("");
+        } catch (OutletNotFoundException e) {
+            System.out.println(e.getMessage());
+            throw new OutletUpdateException("Outlet ID provided is not found and not delete");
         }
     }
 
