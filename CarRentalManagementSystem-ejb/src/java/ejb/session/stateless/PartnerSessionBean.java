@@ -76,28 +76,6 @@ public class PartnerSessionBean implements PartnerSessionBeanRemote, PartnerSess
         }
     }
     
-    
-    public void reserveCar(String make, String model, CustomerEntity customerEntity, ReservationEntity reservationEntity) throws InvalidReservationException{
-        try {
-            Scanner sc = new Scanner(System.in);
-            
-            CarModelEntity carModelEntity = carSessionBean.retrieveCarModelEntityByMakeAndModel(make, model);
-            System.out.println("Key in customer credit card number");
-            String creditCardNumber = sc.next();
-            System.out.println("Key in customer credit card cvv");
-            String creditCardCvv = sc.next();
-            
-            customerEntity.setCreditCardNumber(creditCardNumber);
-            customerEntity.setCreditCardCvv(creditCardCvv);
-            customerSessionBean.updateCustomerEntity(customerEntity);
-            
-            carModelEntity.getReservations().add(reservationEntity);
-            
-        } catch (CarModelNotFoundException e) {
-            throw new InvalidReservationException("Car Model is not found, reservation is invalid");
-        }
-    }
-    
     @Override
     public void updatePartnerEntity(PartnerEntity partnerEntity){
         em.merge(partnerEntity);

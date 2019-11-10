@@ -76,7 +76,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
 
         return query.getResultList();
     }
-    
+
     @Override
     public List<ReservationEntity> retrieveReservationsByPartnerId(Long partnerId) {
         Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.partner.partnerId = :inPartner");
@@ -491,14 +491,16 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
             }
         }
 
-        System.out.println("To continue to reserve the car you selected, please press 1");
-        System.out.println("Press 2 to go back to the main menu");
-        int reserve = 0;
-        while (reserve != 2) {
-            reserve = sc.nextInt();
+        if (customerEntity != null) {
+            System.out.println("To continue to reserve the car you selected, please press 1");
+            System.out.println("Press 2 to go back to the main menu");
+            int reserve = 0;
+            while (reserve != 2) {
+                reserve = sc.nextInt();
 
-            if (reserve == 1) {
-                reserveAvailableCar(carCategory, carModel, startDate, endDate, customerEntity, incPickupOutlet, incReturnOutlet, partnerEntity);
+                if (reserve == 1) {
+                    reserveAvailableCar(carCategory, carModel, startDate, endDate, customerEntity, incPickupOutlet, incReturnOutlet, partnerEntity);
+                }
             }
         }
 

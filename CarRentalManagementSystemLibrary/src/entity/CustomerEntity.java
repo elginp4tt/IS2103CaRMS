@@ -39,10 +39,6 @@ public class CustomerEntity implements Serializable {
     private String mobilePhoneNumber;
     @Column(nullable = false)
     private String passportNumber;
-    @Column(nullable = false)
-    private String creditCardNumber;
-    @Column(nullable = false)
-    private String creditCardCvv;
     
     @OneToMany(mappedBy = "customer", orphanRemoval = true)
     private ArrayList<ReservationEntity> reservations;
@@ -195,33 +191,4 @@ public class CustomerEntity implements Serializable {
     public void setPartner(PartnerEntity partner) {
         this.partner = partner;
     }
-
-    /**
-     * @return the creditCardNumber
-     */
-    public String getCreditCardNumber() {
-        return creditCardNumber;
-    }
-
-    /**
-     * @param creditCardNumber the creditCardNumber to set
-     */
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
-    }
-
-    /**
-     * @return the creditCardCvv
-     */
-    public String getCreditCardCvv() {
-        return creditCardCvv;
-    }
-
-    /**
-     * @param creditCardCvv the creditCardCvv to set
-     */
-    public void setCreditCardCvv(String creditCardCvv) {
-        this.creditCardCvv = creditCardCvv;
-    }
-    
 }

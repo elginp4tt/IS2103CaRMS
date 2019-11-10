@@ -28,9 +28,8 @@ public class MainApp {
 
     private CustomerSessionBeanRemote customerSessionBeanRemote;
     private ReservationSessionBeanRemote reservationSessionBean;
-    private CustomerEntity customer;
 
-    private CustomerEntity customerEntity;
+    private CustomerEntity customerEntity = null;
     private boolean isLoggedin = false;
 
     public MainApp(CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBean) {
@@ -46,23 +45,26 @@ public class MainApp {
         while (true) {
             System.out.println("1: Register As Customer");
             System.out.println("2: Customer Login");
-            System.out.println("3: Customer Logout");
+            System.out.println("3: Search Car");
+            System.out.println("4: Customer Logout");
             option = sc.nextInt();
 
             switch (option) {
                 case 1:
                     registerCustomer();
                     break;
-                case 2: {
+                case 2:
                     try {
                         customerLogin();
                         mainMenu();
                     } catch (InvalidLoginException ex) {
                         System.out.println("Login failed, please try again");
                     }
-                }
-                break;
+                    break;
                 case 3:
+                    doSearchForCar();
+                    break;
+                case 4:
                     doLogout();
                     break;
             }
@@ -117,7 +119,7 @@ public class MainApp {
         int option = 0;
 
         while (isLoggedin) {
-            System.out.println("1: Search and Then Reserve Car");
+            System.out.println("1: Search and Reserve Car");
             System.out.println("2: Cancel Reservation");
             System.out.println("3: View Reservation Details");
             System.out.println("4: View All My Reservations");
@@ -141,12 +143,12 @@ public class MainApp {
                     doLogout();
                     break;
             }
-            if (option == 5){
+            if (option == 5) {
                 break;
             }
         }
     }
-    
+
     private void doSearchForCar() {
         try {
             reservationSessionBean.searchForAvailableCars(null, customerEntity);
@@ -154,7 +156,7 @@ public class MainApp {
             System.out.println(ex.getMessage());
         }
     }
-    
+
     private void doCancelReservation() {
         Date currentDate = new Date();
         reservationSessionBean.cancelReservation(currentDate);
@@ -205,8 +207,8 @@ public class MainApp {
     private void doViewAllMyReservations() {
         System.out.print("Viewing all past reservations");
         List<ReservationEntity> reservations = reservationSessionBean.retrieveReservationsByCustomerId(customerEntity.getCustomerId());
-        
-        for (ReservationEntity reservation : reservations){
+
+        for (ReservationEntity reservation : reservations) {
             System.out.println("Reservation ID: " + reservation.getReservationId() + " Start Date: " + reservation.getStartDate() + " End Date: " + reservation.getEndDate());
             System.out.println("    Car Category: " + reservation.getCarCategory().getCarCategory() + " Pickup Outlet: " + reservation.getPickupOutlet().getName() + " Return Outlet: " + reservation.getReturnOutlet().getName());
         }

@@ -73,23 +73,6 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
             throw new OutletNotFoundException("Outlet not found");
         }
     }
-
-//    @Override
-//    public void updateOutletEntity(OutletEntity outletEntity) throws OutletNotFoundException, OutletUpdateException {
-//        if (outletEntity != null && outletEntity.getOutletId() != null) {
-//            OutletEntity outletEntityToUpdate = retrieveOutletEntityById(outletEntity.getOutletId());
-//            if (outletEntityToUpdate.getName().equals(outletEntity.getName())) {
-//                outletEntityToUpdate.setAddress(outletEntity.getAddress());
-//                outletEntityToUpdate.setName(outletEntity.getName());
-//                outletEntityToUpdate.setOpeningHours(outletEntity.getOpeningHours());
-//                em.merge(outletEntityToUpdate);
-//            } else {
-//                throw new OutletUpdateException("Name of outlet to be updated does not match the existing record");
-//            }
-//        } else {
-//            throw new OutletNotFoundException("Outlet ID not provided for Outler to be updated");
-//        }
-//    }
     
     @Override
     public void updateOutletEntity(OutletEntity outletEntity){
