@@ -11,11 +11,10 @@ package holidayreservationsystemcarmsclient;
  */
 public class HolidayReservationSystemCaRMSClient {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        HolidayReservationSystemCaRMSClientApp app = new HolidayReservationSystemCaRMSClientApp();
+        app.runApp();
     }
-    
+
+
 }
