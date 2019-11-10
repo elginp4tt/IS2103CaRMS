@@ -50,4 +50,6 @@ public interface ReservationSessionBeanRemote {
     public void searchForAvailableCars(PartnerEntity partnerEntity, CustomerEntity customerEntity) throws NoCarsException, NoRentalRatesFoundException;
     
     public List<ReservationEntity> retrieveReservationsByCustomerId(Long customerId);
+    
+    public void cancelReservation(Date currentDate);
 }

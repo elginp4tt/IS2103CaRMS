@@ -14,6 +14,7 @@ import exception.InvalidLoginException;
 import exception.NoCarsException;
 import exception.NoRentalRatesFoundException;
 import exception.ReservationNotFoundException;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -155,7 +156,8 @@ public class MainApp {
     }
     
     private void doCancelReservation() {
-        
+        Date currentDate = new Date();
+        reservationSessionBean.cancelReservation(currentDate);
     }
 
     private void doLogout() {

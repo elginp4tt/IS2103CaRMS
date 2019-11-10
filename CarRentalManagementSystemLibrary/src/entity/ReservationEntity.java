@@ -35,6 +35,8 @@ public class ReservationEntity implements Serializable {
     @Column(nullable = false)
     private boolean paid;
     @Column(nullable = false)
+    private boolean cancelled = false;
+    @Column(nullable = false)
     private String creditCardNumber;
     @Column(nullable = false)
     private String cvv;
@@ -360,6 +362,20 @@ public class ReservationEntity implements Serializable {
      */
     public void setReturnOutlet(OutletEntity returnOutlet) {
         this.returnOutlet = returnOutlet;
+    }
+
+    /**
+     * @return the cancelled
+     */
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    /**
+     * @param cancelled the cancelled to set
+     */
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
     
 }
