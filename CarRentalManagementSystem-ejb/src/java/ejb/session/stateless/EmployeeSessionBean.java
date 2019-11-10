@@ -58,6 +58,7 @@ public class EmployeeSessionBean implements EmployeeSessionBeanRemote, EmployeeS
         }
     }
     
+    @Override
     public EmployeeEntity login(String username, String password) throws InvalidLoginException{
         try{
         EmployeeEntity employeeEntity = retrieveEmployeeEntityByUsername(username);

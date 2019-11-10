@@ -26,11 +26,11 @@ public interface OutletSessionBeanRemote {
     
     public void deleteOutletEntity(long outletId) throws OutletUpdateException;
 
-    public OutletEntity addCarToOutletEntity(String outletName, CarEntity car) throws OutletUpdateException;
-
-    public OutletEntity addEmployeeToOutletEntity(String outletName, long EmployeeId) throws OutletUpdateException;
-
-    public OutletEntity addDispatchToOutletEntity(DispatchEntity dispatchRecord) throws OutletUpdateException;
+//    public OutletEntity addCarToOutletEntity(String outletName, CarEntity car) throws OutletUpdateException;
+//
+//    public OutletEntity addEmployeeToOutletEntity(String outletName, long EmployeeId) throws OutletUpdateException;
+//
+//    public OutletEntity addDispatchToOutletEntity(DispatchEntity dispatchRecord) throws OutletUpdateException;
     
     public OutletEntity retrieveOutletEntityByOutletId(long outletId) throws OutletNotFoundException;
     

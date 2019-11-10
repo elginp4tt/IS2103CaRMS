@@ -85,62 +85,62 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
             em.remove(outletEntity);
         } catch (OutletNotFoundException e) {
             System.out.println(e.getMessage());
-            throw new OutletUpdateException("Outlet ID provided is not found and not delete");
+            throw new OutletUpdateException("Outlet ID provided is not found and not deleted");
         }
     }
 
-    @Override
-    public OutletEntity addCarToOutletEntity(String outletName, CarEntity car) throws OutletUpdateException {
-
-        try {
-            OutletEntity outletEntityToUpdate = retrieveOutletEntityByName(outletName);
-            CarEntity carToUpdate = carSessionBeanLocal.retrieveCarEntityByCarId(car.getCarId());
-
-            carToUpdate.setCurrentOutlet(outletEntityToUpdate);
-            outletEntityToUpdate.getCars().add(carToUpdate);
-
-            em.flush();
-
-            return outletEntityToUpdate;
-        } catch (OutletNotFoundException | CarNotFoundException ex) {
-            throw new OutletUpdateException("Car is not added to the Outlet");
-        }
-    }
-
-    @Override
-    public OutletEntity addEmployeeToOutletEntity(String outletName, long EmployeeId) throws OutletUpdateException {
-        try {
-            EmployeeEntity employeeEntityToUpdate = employeeSessionBeanLocal.retrieveEmployeeEntityByEmployeeId(EmployeeId);
-            OutletEntity outletEntityToUpdate = retrieveOutletEntityByName(outletName);
-
-            employeeEntityToUpdate.setOutlet(outletEntityToUpdate);
-            outletEntityToUpdate.getEmployees().add(employeeEntityToUpdate);
-
-            em.flush();
-            
-            return new OutletEntity();
-        } catch (EmployeeNotFoundException | OutletNotFoundException ex) {
-            throw new OutletUpdateException("Employee is not added to the Outlet");
-        }
-    }
-
-    @Override
-    public OutletEntity addDispatchToOutletEntity (DispatchEntity dispatchRecord) throws OutletUpdateException{
-        try {
-            OutletEntity fromOutletEntityToUpdate = retrieveOutletEntityByName(dispatchRecord.getCurrentOutlet().getName());
-            OutletEntity toOutletEntityToUpdate = retrieveOutletEntityByName(dispatchRecord.getEndOutlet().getName());
-            
-            fromOutletEntityToUpdate.getDispatches().add(dispatchRecord);
-            toOutletEntityToUpdate.getDispatches().add(dispatchRecord);
-            
-            em.persist(dispatchRecord);
-            em.flush();
-           
-            return fromOutletEntityToUpdate;
-        } catch (OutletNotFoundException ex){
-            throw new OutletUpdateException ("Dispatch record is not added to the current and end outlet");
-        }
-    }
+//    @Override
+//    public OutletEntity addCarToOutletEntity(String outletName, CarEntity car) throws OutletUpdateException {
+//
+//        try {
+//            OutletEntity outletEntityToUpdate = retrieveOutletEntityByName(outletName);
+//            CarEntity carToUpdate = carSessionBeanLocal.retrieveCarEntityByCarId(car.getCarId());
+//
+//            carToUpdate.setCurrentOutlet(outletEntityToUpdate);
+//            outletEntityToUpdate.getCars().add(carToUpdate);
+//
+//            em.flush();
+//
+//            return outletEntityToUpdate;
+//        } catch (OutletNotFoundException | CarNotFoundException ex) {
+//            throw new OutletUpdateException("Car is not added to the Outlet");
+//        }
+//    }
+//
+//    @Override
+//    public OutletEntity addEmployeeToOutletEntity(String outletName, long EmployeeId) throws OutletUpdateException {
+//        try {
+//            EmployeeEntity employeeEntityToUpdate = employeeSessionBeanLocal.retrieveEmployeeEntityByEmployeeId(EmployeeId);
+//            OutletEntity outletEntityToUpdate = retrieveOutletEntityByName(outletName);
+//
+//            employeeEntityToUpdate.setOutlet(outletEntityToUpdate);
+//            outletEntityToUpdate.getEmployees().add(employeeEntityToUpdate);
+//
+//            em.flush();
+//            
+//            return new OutletEntity();
+//        } catch (EmployeeNotFoundException | OutletNotFoundException ex) {
+//            throw new OutletUpdateException("Employee is not added to the Outlet");
+//        }
+//    }
+//
+//    @Override
+//    public OutletEntity addDispatchToOutletEntity (DispatchEntity dispatchRecord) throws OutletUpdateException{
+//        try {
+//            OutletEntity fromOutletEntityToUpdate = retrieveOutletEntityByName(dispatchRecord.getCurrentOutlet().getName());
+//            OutletEntity toOutletEntityToUpdate = retrieveOutletEntityByName(dispatchRecord.getEndOutlet().getName());
+//            
+//            fromOutletEntityToUpdate.getDispatches().add(dispatchRecord);
+//            toOutletEntityToUpdate.getDispatches().add(dispatchRecord);
+//            
+//            em.persist(dispatchRecord);
+//            em.flush();
+//           
+//            return fromOutletEntityToUpdate;
+//        } catch (OutletNotFoundException ex){
+//            throw new OutletUpdateException ("Dispatch record is not added to the current and end outlet");
+//        }
+//    }
     
     @Override
     public OutletEntity retrieveOutletEntityByOutletId(long outletId) throws OutletNotFoundException{

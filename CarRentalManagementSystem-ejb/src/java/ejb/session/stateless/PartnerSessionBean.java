@@ -25,12 +25,6 @@ import javax.persistence.Query;
 @Remote(PartnerSessionBeanRemote.class)
 public class PartnerSessionBean implements PartnerSessionBeanRemote, PartnerSessionBeanLocal {
 
-    @EJB
-    private CustomerSessionBeanLocal customerSessionBean;
-
-    @EJB
-    private CarSessionBeanLocal carSessionBean;
-
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
     

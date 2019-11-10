@@ -42,6 +42,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanRemote, EjbTimerS
                 }
             }
         } else {
+            //if this happens, this might be ebcause retrieveReservationsByDate may not be working properly
             throw new NoReservationsException("No reservations found for the day");
         }
     }

@@ -180,6 +180,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
                 cars = carSessionBeanLocal.retrieveAvailableCarsByCarCategoryIdInOutlet(carCategory.getCarCategoryId(), outletEntity.getOutletId());
                 cars.addAll(carSessionBeanLocal.retrieveAvailableCarsByCarCategoryIdWithCustomerButReturnedOnTime(carModel.getCarModelId(), outletEntity.getOutletId(), reservationEntity.getStartDate()));
             } else {
+                //this should never happen
                 throw new ReservationNoModelNoCategoryException("The reservation has no model or category, please remake it");
             }
 
@@ -213,6 +214,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
                 }
                 cars.addAll(carSessionBeanLocal.retrieveAvailableCarsByCarCategoryIdWithCustomerButReturnedOnTimeOtherOutlet(carModel.getCarModelId(), outletEntity.getOutletId(), reservationEntity.getStartDate()));
             } else {
+                //this should never happen
                 throw new ReservationNoModelNoCategoryException("The reservation has no model or category, please remake it");
             }
 
@@ -575,14 +577,14 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         //Get rental rates for every day
         while (startCalendar.before(endCalendar)) {
             Date curDate = startCalendar.getTime();
-            double cheapestRateOfDay = -1;
+            double cheapestRateOfDay = -1337;
             RentalRateEntity chosenRentalRate = null;
             boolean isFound = false;
             for (RentalRateEntity rentalRate : carCategory.getRentalRates()) {
                 Date rentalRateStartDate = rentalRate.getValidityPeriodStart();
                 Date rentalRateEndDate = rentalRate.getValidityPeriodEnd();
                 if (rentalRateStartDate.equals(curDate) || rentalRateStartDate.before(curDate) && rentalRateEndDate.after(curDate)) {
-                    if (rentalRate.isDisabled() == false && (cheapestRateOfDay == -1 || rentalRate.getDailyRate() < cheapestRateOfDay)) {
+                    if (rentalRate.isDisabled() == false && (cheapestRateOfDay == -1337 || rentalRate.getDailyRate() < cheapestRateOfDay)) {
                         cheapestRateOfDay = rentalRate.getDailyRate();
                         chosenRentalRate = rentalRate;
                         isFound = true;
@@ -613,11 +615,13 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
                 reservationEntity.setCar(carEntity);
                 carEntity.setCurrentReservation(reservationEntity);
                 carEntity.setReturnOutlet(reservationEntity.getCarReturn().getOutlet());
+                carEntity.setUsed(true);
 
                 updateReservationEntity(reservationEntity);
                 carSessionBeanLocal.updateCarEntity(carEntity);
                 break;
             } else if (carEntity.getCurrentOutlet() == null && carEntity.getStatus().equals(CarStatusEnum.INOUTLET)) {
+                //this should never happen
                 throw new NullCurrentOutletException("Car " + carEntity.getCarId() + " has a null current outlet but is INOUTLET");
             }
         }
@@ -627,23 +631,25 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
             for (CarEntity carEntity : backupCars) {
                 if (carEntity.getCurrentReservation() != null) {
                     reservationEntity.setCar(carEntity);
+                    carEntity.setCurrentReservation(reservationEntity);
+                    carEntity.setReturnOutlet(reservationEntity.getCarReturn().getOutlet());
+                    carEntity.setUsed(true);
+                    
+                    DispatchEntity dispatchEntity = new DispatchEntity(reservationEntity, carEntity, carEntity.getCurrentOutlet(), reservationEntity.getPickupOutlet());
+
+                    dispatchSessionBeanLocal.createDispatchEntity(dispatchEntity);
+                    reservationEntity.setDispatch(dispatchEntity);
+
+                    updateReservationEntity(reservationEntity);
+                    carSessionBeanLocal.updateCarEntity(carEntity);
+                    dispatchSessionBeanLocal.updateDispatchEntity(dispatchEntity);
+                    break;
                 }
-                carEntity.setCurrentReservation(reservationEntity);
-                carEntity.setReturnOutlet(reservationEntity.getCarReturn().getOutlet());
-                DispatchEntity dispatchEntity = new DispatchEntity(reservationEntity, carEntity, carEntity.getCurrentOutlet(), reservationEntity.getPickupOutlet());
-
-                dispatchSessionBeanLocal.createDispatchEntity(dispatchEntity);
-                reservationEntity.setDispatch(dispatchEntity);
-
-                updateReservationEntity(reservationEntity);
-                carSessionBeanLocal.updateCarEntity(carEntity);
-                dispatchSessionBeanLocal.updateDispatchEntity(dispatchEntity);
-
-                break;
             }
         }
 
         if (reservationEntity.getCar() == null) {
+            // this should not happen under normal conditions
             throw new NoCarsException("No car that satisfies the conditions have been found for reservation " + reservationEntity.getReservationId());
         }
 
