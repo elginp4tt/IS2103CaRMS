@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,8 +17,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlTransient;
 import util.enumeration.CarStatusEnum;
 
 /**
@@ -55,6 +58,10 @@ public class CarEntity implements Serializable {
     @OneToOne(mappedBy = "car", optional = true)
     @JoinColumn(nullable = true)
     private ReservationEntity currentReservation;
+    
+    @OneToMany
+    @JoinColumn(nullable = true)
+    private List<ReservationEntity> reservations;
     
     @ManyToOne(optional = true)
     @JoinColumn(nullable = false)
@@ -155,6 +162,7 @@ public class CarEntity implements Serializable {
     /**
      * @return the carModel
      */
+    @XmlTransient
     public CarModelEntity getCarModel() {
         return carModel;
     }
@@ -197,6 +205,7 @@ public class CarEntity implements Serializable {
     /**
      * @return the currentOutlet
      */
+    @XmlTransient
     public OutletEntity getCurrentOutlet() {
         return currentOutlet;
     }
@@ -262,6 +271,20 @@ public class CarEntity implements Serializable {
      */
     public void setUsed(boolean used) {
         this.used = used;
+    }
+
+    /**
+     * @return the reservations
+     */
+    public List<ReservationEntity> getReservations() {
+        return reservations;
+    }
+
+    /**
+     * @param reservations the reservations to set
+     */
+    public void setReservations(List<ReservationEntity> reservations) {
+        this.reservations = reservations;
     }
 
 }

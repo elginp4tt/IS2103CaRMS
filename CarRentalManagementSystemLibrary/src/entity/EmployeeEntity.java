@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 import util.enumeration.EmployeeAccessRightEnum;
 
 /**
@@ -128,6 +129,7 @@ public class EmployeeEntity implements Serializable {
     /**
      * @param outlet the outlet to set
      */
+    @XmlTransient
     public void setOutlet(OutletEntity outlet) {
         this.outlet = outlet;
     }

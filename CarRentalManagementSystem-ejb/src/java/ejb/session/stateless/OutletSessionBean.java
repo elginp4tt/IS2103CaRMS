@@ -43,6 +43,7 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
 
+    @Override
     public long createOutletEntity(OutletEntity newOutletEntity) {
         em.persist(newOutletEntity);
         em.flush();
@@ -50,6 +51,7 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
         return newOutletEntity.getOutletId();
     }
 
+    @Override
     public OutletEntity retrieveOutletEntityById(long outletId) throws OutletNotFoundException {
         OutletEntity outletEntity = em.find(OutletEntity.class, outletId);
 
@@ -60,6 +62,7 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
         }
     }
 
+    @Override
     public OutletEntity retrieveOutletEntityByName(String outletName) throws OutletNotFoundException {
         Query query = em.createQuery("SELECT o FROM OutletEntity o WHERE o.name = :inOutletName");
         query.setParameter("inOutletName", outletName);
@@ -71,22 +74,29 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
         }
     }
 
-    public void updateOutletEntity(OutletEntity outletEntity) throws OutletNotFoundException, OutletUpdateException {
-        if (outletEntity != null && outletEntity.getOutletId() != null) {
-            OutletEntity outletEntityToUpdate = retrieveOutletEntityById(outletEntity.getOutletId());
-            if (outletEntityToUpdate.getName().equals(outletEntity.getName())) {
-                outletEntityToUpdate.setAddress(outletEntity.getAddress());
-                outletEntityToUpdate.setName(outletEntity.getName());
-                outletEntityToUpdate.setOpeningHours(outletEntity.getOpeningHours());
-                em.merge(outletEntityToUpdate);
-            } else {
-                throw new OutletUpdateException("Name of outlet to be updated does not match the existing record");
-            }
-        } else {
-            throw new OutletNotFoundException("Outlet ID not provided for Outler to be updated");
-        }
+//    @Override
+//    public void updateOutletEntity(OutletEntity outletEntity) throws OutletNotFoundException, OutletUpdateException {
+//        if (outletEntity != null && outletEntity.getOutletId() != null) {
+//            OutletEntity outletEntityToUpdate = retrieveOutletEntityById(outletEntity.getOutletId());
+//            if (outletEntityToUpdate.getName().equals(outletEntity.getName())) {
+//                outletEntityToUpdate.setAddress(outletEntity.getAddress());
+//                outletEntityToUpdate.setName(outletEntity.getName());
+//                outletEntityToUpdate.setOpeningHours(outletEntity.getOpeningHours());
+//                em.merge(outletEntityToUpdate);
+//            } else {
+//                throw new OutletUpdateException("Name of outlet to be updated does not match the existing record");
+//            }
+//        } else {
+//            throw new OutletNotFoundException("Outlet ID not provided for Outler to be updated");
+//        }
+//    }
+    
+    @Override
+    public void updateOutletEntity(OutletEntity outletEntity){
+        em.merge(outletEntity);
     }
 
+    @Override
     public void deleteOutletEntity(long outletId) throws OutletUpdateException {
         try {
             OutletEntity outletEntity = retrieveOutletEntityById(outletId);
@@ -97,6 +107,7 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
         }
     }
 
+    @Override
     public OutletEntity addCarToOutletEntity(String outletName, CarEntity car) throws OutletUpdateException {
 
         try {
@@ -114,6 +125,7 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
         }
     }
 
+    @Override
     public OutletEntity addEmployeeToOutletEntity(String outletName, long EmployeeId) throws OutletUpdateException {
         try {
             EmployeeEntity employeeEntityToUpdate = employeeSessionBeanLocal.retrieveEmployeeEntityByEmployeeId(EmployeeId);
@@ -130,6 +142,7 @@ public class OutletSessionBean implements OutletSessionBeanRemote, OutletSession
         }
     }
 
+    @Override
     public OutletEntity addDispatchToOutletEntity (DispatchEntity dispatchRecord) throws OutletUpdateException{
         try {
             OutletEntity fromOutletEntityToUpdate = retrieveOutletEntityByName(dispatchRecord.getCurrentOutlet().getName());

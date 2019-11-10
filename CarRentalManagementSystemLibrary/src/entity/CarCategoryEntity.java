@@ -27,13 +27,13 @@ public class CarCategoryEntity implements Serializable {
     private Long carCategoryId;
     @Column(nullable = false)
     private String carCategory;
-    
+
     @OneToMany(mappedBy = "carCategory")
     private ArrayList<CarModelEntity> carModels;
-    
+
     @OneToMany(mappedBy = "carCategory")
     private ArrayList<RentalRateEntity> rentalRates;
-    
+
     @OneToMany(mappedBy = "carCategory")
     private ArrayList<ReservationEntity> reservations;
 
@@ -46,7 +46,7 @@ public class CarCategoryEntity implements Serializable {
         this();
         this.carCategory = carCategory;
     }
-    
+
     public Long getCarCategoryId() {
         return carCategoryId;
     }
@@ -136,5 +136,4 @@ public class CarCategoryEntity implements Serializable {
         this.rentalRates = rentalRates;
     }
 
-    
 }

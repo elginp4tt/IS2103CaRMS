@@ -6,9 +6,16 @@
 package ejb.session.stateless;
 
 import entity.PartnerEntity;
+import exception.InvalidLoginException;
+import exception.PartnerNotFoundException;
 
 public interface PartnerSessionBeanLocal {
 
     public long createPartnerEntity(PartnerEntity partnerEntity);
+
+    public PartnerEntity doLogin(String username, String password) throws InvalidLoginException;
     
+    public PartnerEntity retrievePartnerEntityByUsername(String username) throws PartnerNotFoundException;
+
+    public void updatePartnerEntity(PartnerEntity partnerEntity);
 }

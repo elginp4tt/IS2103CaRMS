@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,7 +34,7 @@ public class DispatchEntity implements Serializable {
     @JoinColumn(nullable = false)
     private ReservationEntity reservation;
     
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private CarEntity car;
     
@@ -124,6 +125,7 @@ public class DispatchEntity implements Serializable {
     /**
      * @return the transitDriver
      */
+    @XmlTransient
     public EmployeeEntity getTransitDriver() {
         return transitDriver;
     }
@@ -138,6 +140,7 @@ public class DispatchEntity implements Serializable {
     /**
      * @return the currentOutlet
      */
+    @XmlTransient
     public OutletEntity getCurrentOutlet() {
         return currentOutlet;
     }
@@ -166,6 +169,7 @@ public class DispatchEntity implements Serializable {
     /**
      * @return the reservation
      */
+    @XmlTransient
     public ReservationEntity getReservation() {
         return reservation;
     }

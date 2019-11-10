@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -127,6 +128,7 @@ public class RentalRateEntity implements Serializable {
     /**
      * @return the car
      */
+    @XmlTransient
     public CarCategoryEntity getCarCategory() {
         return carCategory;
     }

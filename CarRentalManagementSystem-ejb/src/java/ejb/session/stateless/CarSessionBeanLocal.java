@@ -12,7 +12,6 @@ import exception.CarCategoryNotFoundException;
 import exception.CarModelNotFoundException;
 import exception.CarNotFoundException;
 import exception.NoCarModelsException;
-import exception.NoCarsException;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public interface CarSessionBeanLocal {
 
     public List<CarEntity> retrieveAvailableCarsByCarModelId(long carModelId);
     
-    public List<CarEntity> retrieveAvailableCarsByCarCategoryId(long carCategoryId) throws NoCarModelsException;
+    public List<CarEntity> retrieveAvailableCarsByCarCategoryId(long carCategoryId);
     
     public List<CarEntity> retrieveAvailableCarsByCarModelIdInOutlet(long carModelId, long outletId);
     
@@ -73,4 +72,10 @@ public interface CarSessionBeanLocal {
     public long createCarEntity(CarEntity carEntity);
 
     public List<CarEntity> retrieveCarsByCategoryThenMakeThenModelThenLicensePlate();
+
+    public List<CarCategoryEntity> retrieveAllCarCategoryEntities();
+
+    public List<CarModelEntity> retrieveAllCarModelEntitiesByCarCategory(long carCategoryId);
+
+    public List<CarEntity> retrieveAvailableCarsByCarModelIdNotDisabled(long carModelId);
 }

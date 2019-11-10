@@ -7,11 +7,12 @@ package carmsreservationclient;
 
 import ejb.session.stateless.ReservationSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
-import ejb.session.stateless.SearchSessionBeanRemote;
 import entity.CustomerEntity;
 import entity.RentalRateEntity;
 import entity.ReservationEntity;
 import exception.InvalidLoginException;
+import exception.NoCarsException;
+import exception.NoRentalRatesFoundException;
 import exception.ReservationNotFoundException;
 import java.util.List;
 import java.util.Scanner;
@@ -26,16 +27,14 @@ public class MainApp {
 
     private CustomerSessionBeanRemote customerSessionBeanRemote;
     private ReservationSessionBeanRemote reservationSessionBean;
-    private SearchSessionBeanRemote searchSessionBeanRemote;
     private CustomerEntity customer;
 
-    private CustomerEntity CustomerEntity;
+    private CustomerEntity customerEntity;
     private boolean isLoggedin = false;
 
-    public MainApp(CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBean, SearchSessionBeanRemote searchSessionBeanRemote) {
+    public MainApp(CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBean) {
         this.customerSessionBeanRemote = customerSessionBeanRemote;
         this.reservationSessionBean = reservationSessionBean;
-        this.searchSessionBeanRemote = searchSessionBeanRemote;
     }
 
     public void run() {
@@ -105,7 +104,7 @@ public class MainApp {
 
         try {
             CustomerEntity cust = customerSessionBeanRemote.doLogin(email, password);
-            this.CustomerEntity = cust;
+            this.customerEntity = cust;
             isLoggedin = true;
         } catch (InvalidLoginException ex) {
             throw ex;
@@ -117,35 +116,46 @@ public class MainApp {
         int option = 0;
 
         while (isLoggedin) {
-            System.out.println("1: Search Car");
-            System.out.println("2: Reserve Car");
-            System.out.println("3: Cancel Reservation");
-            System.out.println("4: View Reservation Details");
-            System.out.println("5: View All My Reservations");
-            System.out.println("6: Customer Logout");
+            System.out.println("1: Search and Then Reserve Car");
+            System.out.println("2: Cancel Reservation");
+            System.out.println("3: View Reservation Details");
+            System.out.println("4: View All My Reservations");
+            System.out.println("5: Customer Logout");
             option = sc.nextInt();
 
             switch (option) {
                 case 1:
+                    doSearchForCar();
                     break;
                 case 2:
+                    doCancelReservation();
                     break;
                 case 3:
+                    doViewReservationDetails();
                     break;
                 case 4:
-                    viewReservationDetails();
+                    doViewAllMyReservations();
                     break;
                 case 5:
-                    viewAllMyReservations();
-                    break;
-                case 6:
                     doLogout();
                     break;
             }
-            if (option == 6){
+            if (option == 5){
                 break;
             }
         }
+    }
+    
+    private void doSearchForCar() {
+        try {
+            reservationSessionBean.searchForAvailableCars(null, customerEntity);
+        } catch (NoCarsException | NoRentalRatesFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    private void doCancelReservation() {
+        
     }
 
     private void doLogout() {
@@ -160,12 +170,12 @@ public class MainApp {
         option = sc.next();
 
         if (option.equals("Y")) {
-            CustomerEntity = null;
+            customerEntity = null;
             isLoggedin = true;
         }
     }
 
-    private void viewReservationDetails() {
+    private void doViewReservationDetails() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter Your Reservation Id: ");
         long reservationId = sc.nextLong();
@@ -190,8 +200,14 @@ public class MainApp {
 
     }
 
-    private void viewAllMyReservations() {
+    private void doViewAllMyReservations() {
+        System.out.print("Viewing all past reservations");
+        List<ReservationEntity> reservations = reservationSessionBean.retrieveReservationsByCustomerId(customerEntity.getCustomerId());
         
+        for (ReservationEntity reservation : reservations){
+            System.out.println("Reservation ID: " + reservation.getReservationId() + " Start Date: " + reservation.getStartDate() + " End Date: " + reservation.getEndDate());
+            System.out.println("    Car Category: " + reservation.getCarCategory().getCarCategory() + " Pickup Outlet: " + reservation.getPickupOutlet().getName() + " Return Outlet: " + reservation.getReturnOutlet().getName());
+        }
     }
 
 }

@@ -8,7 +8,6 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -53,7 +53,7 @@ public class ReservationEntity implements Serializable {
     @JoinColumn
     private CarCategoryEntity carCategory;
     
-    @OneToOne(optional = true)
+    @ManyToOne(optional = true)
     @JoinColumn
     private CarModelEntity carModel;
     
@@ -74,7 +74,11 @@ public class ReservationEntity implements Serializable {
     
     @OneToOne(optional = false)
     @JoinColumn
-    private OutletEntity outlet;
+    private OutletEntity pickupOutlet;
+    
+    @OneToOne(optional = false)
+    @JoinColumn
+    private OutletEntity returnOutlet;
     
     @OneToOne(optional = false)
     @JoinColumn
@@ -87,16 +91,17 @@ public class ReservationEntity implements Serializable {
     public ReservationEntity() {
     }
 
-    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CarEntity car, CustomerEntity customer, OutletEntity outlet) {
+    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, List<RentalRateEntity> rentalRates) {
         this();
         this.paid = paid;
         this.creditCardNumber = creditCardNumber;
         this.cvv = cvv;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.car = car;
         this.customer = customer;
-        this.outlet = outlet;
+        this.pickupOutlet = pickupOutlet;
+        this.returnOutlet = returnOutlet;
+        this.rentalRates = rentalRates;
     }
 
     public Long getReservationId() {
@@ -177,6 +182,7 @@ public class ReservationEntity implements Serializable {
     /**
      * @return the car
      */
+    @XmlTransient
     public CarEntity getCar() {
         return car;
     }
@@ -315,20 +321,6 @@ public class ReservationEntity implements Serializable {
     }
 
     /**
-     * @return the outlet
-     */
-    public OutletEntity getOutlet() {
-        return outlet;
-    }
-
-    /**
-     * @param outlet the outlet to set
-     */
-    public void setOutlet(OutletEntity outlet) {
-        this.outlet = outlet;
-    }
-
-    /**
      * @return the rentalRates
      */
     public List<RentalRateEntity> getRentalRates() {
@@ -340,6 +332,34 @@ public class ReservationEntity implements Serializable {
      */
     public void setRentalRates(List<RentalRateEntity> rentalRates) {
         this.rentalRates = rentalRates;
+    }
+
+    /**
+     * @return the pickupOutlet
+     */
+    public OutletEntity getPickupOutlet() {
+        return pickupOutlet;
+    }
+
+    /**
+     * @param pickupOutlet the pickupOutlet to set
+     */
+    public void setPickupOutlet(OutletEntity pickupOutlet) {
+        this.pickupOutlet = pickupOutlet;
+    }
+
+    /**
+     * @return the returnOutlet
+     */
+    public OutletEntity getReturnOutlet() {
+        return returnOutlet;
+    }
+
+    /**
+     * @param returnOutlet the returnOutlet to set
+     */
+    public void setReturnOutlet(OutletEntity returnOutlet) {
+        this.returnOutlet = returnOutlet;
     }
     
 }

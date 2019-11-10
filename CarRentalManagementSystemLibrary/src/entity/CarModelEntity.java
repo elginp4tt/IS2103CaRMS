@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,9 +29,9 @@ public class CarModelEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carModelId;
     @Column(nullable = false)
-    private String make;
+    private String make; //Toyota
     @Column(nullable = false)
-    private String model;
+    private String model; //Corolla Altis
     @Column(nullable = false)
     private boolean disabled;
     
@@ -133,6 +134,7 @@ public class CarModelEntity implements Serializable {
     /**
      * @return the carCategory
      */
+    @XmlTransient
     public CarCategoryEntity getCarCategory() {
         return carCategory;
     }

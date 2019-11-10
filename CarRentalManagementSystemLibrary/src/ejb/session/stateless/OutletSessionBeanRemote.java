@@ -20,8 +20,10 @@ public interface OutletSessionBeanRemote {
 
     public OutletEntity retrieveOutletEntityByName(String outletName) throws OutletNotFoundException;
 
-    public void updateOutletEntity(OutletEntity outletEntity) throws OutletNotFoundException, OutletUpdateException;
+//    public void updateOutletEntity(OutletEntity outletEntity) throws OutletNotFoundException, OutletUpdateException;
 
+    public void updateOutletEntity(OutletEntity outletEntity);
+    
     public void deleteOutletEntity(long outletId) throws OutletUpdateException;
 
     public OutletEntity addCarToOutletEntity(String outletName, CarEntity car) throws OutletUpdateException;

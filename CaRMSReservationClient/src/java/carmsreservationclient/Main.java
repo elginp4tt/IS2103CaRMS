@@ -7,7 +7,6 @@ package carmsreservationclient;
 
 import ejb.session.stateless.ReservationSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
-import ejb.session.stateless.SearchSessionBeanRemote;
 import javax.ejb.EJB;
 
 /**
@@ -22,11 +21,8 @@ public class Main {
     @EJB
     private static ReservationSessionBeanRemote reservationSessionBean;
 
-    @EJB
-    private static SearchSessionBeanRemote searchSessionBeanRemote;
-
     public static void main(String[] args) {
-        MainApp mainApp = new MainApp(customerSessionBeanRemote, reservationSessionBean, searchSessionBeanRemote);
+        MainApp mainApp = new MainApp(customerSessionBeanRemote, reservationSessionBean);
         mainApp.run();
     }
 }
