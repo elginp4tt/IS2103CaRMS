@@ -76,6 +76,14 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
 
         return query.getResultList();
     }
+    
+    @Override
+    public List<ReservationEntity> retrieveReservationsByPartnerId(Long partnerId) {
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.partner.partnerId = :inPartner");
+        query.setParameter("inPartner", partnerId);
+
+        return query.getResultList();
+    }
 
     @Override
     public void cancelReservation(Date currentDate) {

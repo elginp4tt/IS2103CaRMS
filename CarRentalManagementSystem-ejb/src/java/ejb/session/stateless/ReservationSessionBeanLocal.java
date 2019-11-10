@@ -52,5 +52,7 @@ public interface ReservationSessionBeanLocal {
     public List<ReservationEntity> retrieveReservationsByCustomerId(Long customerId);
 
     public void cancelReservation(Date currentDate);
+
+    public List<ReservationEntity> retrieveReservationsByPartnerId(Long partnerId);
     
 }

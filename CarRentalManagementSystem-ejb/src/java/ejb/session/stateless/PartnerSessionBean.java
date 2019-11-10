@@ -14,10 +14,7 @@ import exception.CarModelNotFoundException;
 import exception.InvalidLoginException;
 import exception.InvalidReservationException;
 import exception.PartnerNotFoundException;
-import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -41,9 +38,6 @@ public class PartnerSessionBean implements PartnerSessionBeanRemote, PartnerSess
     @EJB
     private CarSessionBeanLocal carSessionBean;
 
-    @EJB
-    private ReservationSessionBeanLocal reservationSessionBean;
-
     @PersistenceContext(unitName = "CarRentalManagementSystem-ejbPU")
     private EntityManager em;
     
@@ -63,11 +57,11 @@ public class PartnerSessionBean implements PartnerSessionBeanRemote, PartnerSess
             if (partner.getPassword().equals(password)) {
                 return partner;
             } else {
-                throw new InvalidLoginException("Email or Password provided is incorrectly");
+                throw new InvalidLoginException("Login details provided are incorrect");
             }
 
         } catch (PartnerNotFoundException e) {
-            throw new InvalidLoginException("Email or Password provided is incorrectly");
+            throw new InvalidLoginException("Login details provided are incorrect");
         }
     }
 
