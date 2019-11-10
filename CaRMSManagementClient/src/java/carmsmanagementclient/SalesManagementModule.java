@@ -25,16 +25,13 @@ import exception.CarModelNotFoundException;
 import exception.CarNotFoundException;
 import exception.DispatchNotFoundException;
 import exception.EmployeeNotFoundException;
-import exception.NoCarsException;
-import exception.NoReservationsException;
-import exception.NullCurrentOutletException;
 import exception.OutletNotFoundException;
 import exception.RentalRateNotFoundException;
-import exception.ReservationNoModelNoCategoryException;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import util.enumeration.CarStatusEnum;
+import util.enumeration.EmployeeAccessRightEnum;
 
 /**
  *
@@ -79,16 +76,32 @@ public class SalesManagementModule {
         
         switch (option){
             case 1:
-                rentalRateMenu();
+                if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.SALESMANAGER)){
+                    rentalRateMenu();
+                } else {
+                    System.out.println("You do not have sufficient privileges");
+                }
                 break;
             case 2:
+                if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)){
                 carModelMenu();
+                } else {
+                    System.out.println("You do not have sufficient privileges");
+                }
                 break;
             case 3:
+                if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)){
                 carMenu();
+                } else {
+                    System.out.println("You do not have sufficient privileges");
+                }
                 break;
             case 4:
+                if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)){
                 transitDriverMenu();
+                } else {
+                    System.out.println("You do not have sufficient privileges");
+                }
                 break;
             }
         }

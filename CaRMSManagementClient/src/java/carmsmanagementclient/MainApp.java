@@ -18,9 +18,10 @@ import entity.EmployeeEntity;
 import exception.InvalidLoginException;
 import java.util.Date;
 import java.util.Scanner;
-
+import util.enumeration.EmployeeAccessRightEnum;
 
 public class MainApp {
+
     private RentalRateSessionBeanRemote rentalRateSessionBeanRemote;
     private PartnerSessionBeanRemote partnerSessionBeanRemote;
     private OutletSessionBeanRemote outletSessionBeanRemote;
@@ -30,16 +31,14 @@ public class MainApp {
     private CustomerSessionBeanRemote customerSessionBeanRemote;
     private ReservationSessionBeanRemote reservationSessionBeanRemote;
     private CarPickupReturnSessionBeanRemote carPickupReturnSessionBeanRemote;
-    
+
     private EmployeeEntity employeeEntity;
-    
+
     private CustomerServiceModule customerServiceModule;
     private SalesManagementModule salesManagementModule;
-    
+
     private boolean loggedIn = false;
     private Date currentDate;
-    
-    
 
     public MainApp(RentalRateSessionBeanRemote rentalRateSessionBeanRemote, PartnerSessionBeanRemote partnerSessionBeanRemote, OutletSessionBeanRemote outletSessionBeanRemote, EmployeeSessionBeanRemote employeeSessionBeanRemote, DispatchSessionBeanRemote dispatchSessionBeanRemote, CarSessionBeanRemote carSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, ReservationSessionBeanRemote reservationSessionBeanRemote, CarPickupReturnSessionBeanRemote carPickupReturnSessionBeanRemote) {
         this.rentalRateSessionBeanRemote = rentalRateSessionBeanRemote;
@@ -50,83 +49,90 @@ public class MainApp {
         this.carSessionBeanRemote = carSessionBeanRemote;
         this.customerSessionBeanRemote = customerSessionBeanRemote;
         this.reservationSessionBeanRemote = reservationSessionBeanRemote;
-        this.carPickupReturnSessionBeanRemote = carPickupReturnSessionBeanRemote; 
+        this.carPickupReturnSessionBeanRemote = carPickupReturnSessionBeanRemote;
     }
 
-    public void runApp(){
-        
+    public void runApp() {
+
         while (true) {
             System.out.println("Please log in to continue");
-            
-        try{
-            doLogin();
-            System.out.println("Login successful");
+
+            try {
+                doLogin();
+                System.out.println("Login successful");
+            } catch (InvalidLoginException e) {
+                System.out.println("Login failed, please try again");
+                System.out.println(e.getMessage());
             }
-        catch (InvalidLoginException e) {
-            System.out.println("Login failed, please try again");
-            System.out.println(e.getMessage());
-            }
-        
-        setCurrentDate();
-        
-        this.customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, carPickupReturnSessionBeanRemote, outletSessionBeanRemote, employeeEntity);
-        this.salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, reservationSessionBeanRemote, outletSessionBeanRemote, employeeSessionBeanRemote, employeeEntity, currentDate);
-        
-        mainMenu();
-        
+
+            setCurrentDate();
+
+            this.customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, carPickupReturnSessionBeanRemote, outletSessionBeanRemote, employeeEntity);
+            this.salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, reservationSessionBeanRemote, outletSessionBeanRemote, employeeSessionBeanRemote, employeeEntity, currentDate);
+
+            mainMenu();
+
         }
-        
+
     }
-    
+
     public void mainMenu() {
         Scanner sc = new Scanner(System.in);
-        int option = 0;      
-        
-        while(loggedIn){
+        int option = 0;
+
+        while (loggedIn) {
             System.out.println("*****Select module to access*****");
             System.out.println("1 : Sales Management Module");
             System.out.println("2 : Customer Service Module");
             System.out.println("3 : Logout");
             option = sc.nextInt();
-            
-            switch (option){
+
+            switch (option) {
                 case 1:
-                    salesManagementModule.menu();
+                    if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.SALESMANAGER) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)) {
+                        salesManagementModule.menu();
+                    } else {
+                        System.out.println("You do not have sufficient privileges");
+                    }
                     break;
                 case 2:
-                    customerServiceModule.menu();
+                    if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.CUSTOMERSERVICEEXECUTIVE)) {
+                        customerServiceModule.menu();
+                    } else {
+                        System.out.println("You do not have sufficient privileges");
+                    }
                     break;
                 case 3:
                     doLogout();
                     break;
             }
-        }  
+        }
     }
-    
+
     public void doLogin() throws InvalidLoginException {
         Scanner sc = new Scanner(System.in);
         String username = "";
         String password = "";
-        
+
         System.out.println("*****Please key in your Username to begin*****");
         username = sc.next();
         System.out.println("*****Please key in your password*****");
         password = sc.next();
-        
+
         employeeEntity = employeeSessionBeanRemote.login(username, password);
         loggedIn = true;
     }
-    
+
     public void doLogout() {
         Scanner sc = new Scanner(System.in);
         String option = "";
-        
+
         System.out.println("*****Please confirm you would like to logout (Y to confirm)");
         option = sc.next();
-        
-        if (loggedIn == false){
+
+        if (loggedIn == false) {
             System.out.println("You are not logged in");
-        } else if (option.equals("Y") && loggedIn == true){
+        } else if (option.equals("Y") && loggedIn == true) {
             employeeEntity = null;
             loggedIn = false;
         }
@@ -135,7 +141,7 @@ public class MainApp {
     private void setCurrentDate() {
         Scanner sc = new Scanner(System.in);
         int option = 0;
-        
+
         System.out.println("Please specify the current date");
         System.out.println("1: Manual Entry");
         System.out.println("2: Automatically retrieve according to system clock");
@@ -155,5 +161,5 @@ public class MainApp {
                 break;
         }
     }
-    
+
 }

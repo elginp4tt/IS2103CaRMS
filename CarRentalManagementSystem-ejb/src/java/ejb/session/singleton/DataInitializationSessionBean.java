@@ -57,7 +57,7 @@ public class DataInitializationSessionBean {
     private void initializeData() {
         OutletEntity outletEntity = new OutletEntity("Outlet0", "0 Outlet Road #00-00");
         outletSessionBean.createOutletEntity(outletEntity);
-        employeeSessionBean.createEmployeeEntity(new EmployeeEntity("manager", "password", EmployeeAccessRightEnum.MANAGER, outletEntity));
+        employeeSessionBean.createEmployeeEntity(new EmployeeEntity("admin", "password", EmployeeAccessRightEnum.ADMINISTRATOR, outletEntity));
         partnerSessionBean.createPartnerEntity(new PartnerEntity("partner", "password", "partner"));
         carSessionBean.createCarCategoryEntity(new CarCategoryEntity("0"));
     }

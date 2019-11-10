@@ -38,7 +38,7 @@ public class EmployeeEntity implements Serializable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EmployeeAccessRightEnum accessRight;
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private OutletEntity outlet;

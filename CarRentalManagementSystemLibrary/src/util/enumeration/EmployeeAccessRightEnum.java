@@ -10,5 +10,5 @@ package util.enumeration;
  * @author Elgin Patt
  */
 public enum EmployeeAccessRightEnum {
-    ADMINISTRATOR, MANAGER, GENERAL
+    ADMINISTRATOR, SALESMANAGER, OPERATIONSMANAGER, CUSTOMERSERVICEEXECUTIVE, EMPLOYEE
 }
