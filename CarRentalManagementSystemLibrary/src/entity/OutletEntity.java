@@ -173,4 +173,8 @@ public class OutletEntity implements Serializable {
         this.dispatches = dispatches;
     }
     
+    public void addCar (CarEntity car){
+         cars.add(car);
+    }
+    
 }

@@ -7,14 +7,15 @@ package exception;
 
 /**
  *
- * @author Elgin Patt
+ * @author user
  */
-public class OutletNotFoundException extends Exception{
-
-    public OutletNotFoundException() {
+public class OutletUpdateException extends Exception{
+    public OutletUpdateException(){
+        
     }
-
-    public OutletNotFoundException(String message) {
-        super(message);
-    }    
+    
+    public OutletUpdateException (String message){
+        super (message);
+    }
+    
 }

@@ -5,13 +5,6 @@
  */
 package ejb.session.stateless;
 
-import javax.ejb.Remote;
-
-/**
- *
- * @author Elgin Patt
- */
-@Remote
 public interface EjbTimerSessionBeanRemote {
     
 }

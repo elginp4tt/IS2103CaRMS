@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.CustomerEntity;
 import exception.CustomerNotFoundException;
+import exception.InvalidLoginException;
 
 public interface CustomerSessionBeanLocal {
 
@@ -19,5 +20,7 @@ public interface CustomerSessionBeanLocal {
     public void updateCustomerEntity(CustomerEntity customerEntity);
 
     public void deleteCustomerEntity(long customerId);
-    
+
+    public CustomerEntity doLogin(String email, String password) throws InvalidLoginException;
+
 }
