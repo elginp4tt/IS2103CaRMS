@@ -11,7 +11,6 @@ import entity.EmployeeEntity;
 import entity.OutletEntity;
 import exception.CarNotFoundException;
 import exception.EmployeeNotFoundException;
-import exception.OutletNotFoundException;
 import exception.OutletUpdateException;
 import javax.ejb.EJB;
 import exception.OutletNotFoundException;

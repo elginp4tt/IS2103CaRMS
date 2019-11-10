@@ -28,10 +28,11 @@ public class CarPickupEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carPickupId;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     private Date pickupDateTime; //can use for both date and time
     
-    @OneToOne(optional = true)
-    @JoinColumn
+    @OneToOne(optional = false)
+    @JoinColumn(nullable = false)
     private OutletEntity outlet;
 
     public CarPickupEntity() {

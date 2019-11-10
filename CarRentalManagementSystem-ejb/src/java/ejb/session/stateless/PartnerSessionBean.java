@@ -5,16 +5,9 @@
  */
 package ejb.session.stateless;
 
-import entity.CarCategoryEntity;
-import entity.CarModelEntity;
-import entity.CustomerEntity;
 import entity.PartnerEntity;
-import entity.ReservationEntity;
-import exception.CarModelNotFoundException;
 import exception.InvalidLoginException;
-import exception.InvalidReservationException;
 import exception.PartnerNotFoundException;
-import java.util.Scanner;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;

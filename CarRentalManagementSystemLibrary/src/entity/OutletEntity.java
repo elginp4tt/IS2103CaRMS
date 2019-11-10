@@ -27,12 +27,14 @@ public class OutletEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long outletId;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 64)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 216)
     private String address;
     @Column(nullable = false)
-    private HashMap<String, HashMap<Date, Date>> openingHours;
+    private String openingTime;
+    @Column(nullable = false)
+    private String closingTime;
     
     @OneToMany(mappedBy = "currentOutlet")
     private ArrayList<CarEntity> cars;
@@ -44,16 +46,17 @@ public class OutletEntity implements Serializable {
     private ArrayList<DispatchEntity> dispatches;
 
     public OutletEntity() {
-        this.cars = new ArrayList<CarEntity>();
-        this.employees = new ArrayList<EmployeeEntity>();
-        this.dispatches = new ArrayList<DispatchEntity>();
-        this.openingHours = new HashMap<String, HashMap<Date, Date>>();
+        this.cars = new ArrayList<>();
+        this.employees = new ArrayList<>();
+        this.dispatches = new ArrayList<>();
     }
 
-    public OutletEntity(String name, String address) {
+    public OutletEntity(String name, String address, String openingTime, String closingTime) {
         this();
         this.name = name;
         this.address = address;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
     }
 
     public Long getOutletId() {
@@ -118,20 +121,6 @@ public class OutletEntity implements Serializable {
     }
 
     /**
-     * @return the openingHours
-     */
-    public HashMap getOpeningHours() {
-        return openingHours;
-    }
-
-    /**
-     * @param openingHours the openingHours to set
-     */
-    public void setOpeningHours(HashMap openingHours) {
-        this.openingHours = openingHours;
-    }
-
-    /**
      * @return the cars
      */
     public ArrayList<CarEntity> getCars() {
@@ -175,6 +164,34 @@ public class OutletEntity implements Serializable {
     
     public void addCar (CarEntity car){
          cars.add(car);
+    }
+
+    /**
+     * @return the openingTime
+     */
+    public String getOpeningTime() {
+        return openingTime;
+    }
+
+    /**
+     * @param openingTime the openingTime to set
+     */
+    public void setOpeningTime(String openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    /**
+     * @return the closingTime
+     */
+    public String getClosingTime() {
+        return closingTime;
+    }
+
+    /**
+     * @param closingTime the closingTime to set
+     */
+    public void setClosingTime(String closingTime) {
+        this.closingTime = closingTime;
     }
     
 }

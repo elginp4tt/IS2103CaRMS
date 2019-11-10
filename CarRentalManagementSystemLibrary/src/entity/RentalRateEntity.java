@@ -29,7 +29,7 @@ public class RentalRateEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rentalRateId;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String name;
     @Column(nullable = false)
     private double dailyRate;
@@ -47,7 +47,7 @@ public class RentalRateEntity implements Serializable {
     private boolean used = false;
     
     @ManyToOne(optional = false)
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private CarCategoryEntity carCategory;
 
     public RentalRateEntity() {

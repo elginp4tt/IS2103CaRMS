@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -29,26 +28,26 @@ public class CustomerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 16)
     private String username;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 16)
     private String password;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 128)
     private String email;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 16)
     private String mobilePhoneNumber;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String passportNumber;
     
-    @OneToMany(mappedBy = "customer", orphanRemoval = true)
+    @OneToMany(mappedBy = "customer")
     private ArrayList<ReservationEntity> reservations;
     
     @ManyToOne(optional = true)
-    @JoinColumn
+    @JoinColumn(nullable = true)
     private PartnerEntity partner;
 
     public CustomerEntity() {
-        this.reservations = new ArrayList<ReservationEntity>();
+        this.reservations = new ArrayList<>();
     }
 
     public CustomerEntity(String username, String password, String email) {

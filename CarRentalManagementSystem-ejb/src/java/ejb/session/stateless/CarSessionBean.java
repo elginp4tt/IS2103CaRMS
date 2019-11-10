@@ -378,7 +378,5 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     public void updateCarCategoryEntity(CarCategoryEntity carCategoryEntity){
         em.merge(carCategoryEntity);
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
 
 }

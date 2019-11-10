@@ -25,11 +25,11 @@ public class PartnerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long partnerId;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 16)
     private String username;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 16)
     private String password;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 64)
     private String name;
     
     @OneToMany(mappedBy = "partner")
@@ -39,8 +39,8 @@ public class PartnerEntity implements Serializable {
     private ArrayList<ReservationEntity> reservations;
 
     public PartnerEntity() {
-        this.customers = new ArrayList<CustomerEntity>();
-        this.reservations = new ArrayList<ReservationEntity>();
+        this.customers = new ArrayList<>();
+        this.reservations = new ArrayList<>();
     }
 
     public PartnerEntity(String username, String password, String name) {

@@ -5,7 +5,6 @@
  */
 package ejb.session.stateless;
 
-import entity.OutletEntity;
 import entity.ReservationEntity;
 import exception.NoCarsException;
 import exception.NoReservationsException;

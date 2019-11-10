@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -34,14 +35,14 @@ public class CarEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carId;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private String licensePlate;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 16)
     private String colour;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CarStatusEnum status = CarStatusEnum.INOUTLET;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 64)
     private String location;
     @Column(nullable = true)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -73,6 +74,7 @@ public class CarEntity implements Serializable {
     
 
     public CarEntity() {
+        this.reservations = new ArrayList<>();
     }
 
     public CarEntity(String licensePlate, String colour, CarModelEntity carModel, OutletEntity currentOutlet) {

@@ -8,8 +8,6 @@ package ejb.session.stateless;
 import entity.CustomerEntity;
 import exception.CustomerNotFoundException;
 import exception.InvalidLoginException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;

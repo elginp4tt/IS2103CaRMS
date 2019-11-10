@@ -28,24 +28,26 @@ public class CarModelEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carModelId;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String make; //Toyota
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String model; //Corolla Altis
     @Column(nullable = false)
     private boolean disabled;
     
     @OneToMany(mappedBy = "carModel")
-    private ArrayList<CarEntity> cars = new ArrayList<CarEntity>();;
+    private ArrayList<CarEntity> cars;
     
     @ManyToOne(optional = false)
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private CarCategoryEntity carCategory;
     
     @OneToMany(mappedBy = "carModel")
-    private ArrayList<ReservationEntity> reservations = new ArrayList<ReservationEntity>();
+    private ArrayList<ReservationEntity> reservations;
 
     public CarModelEntity() {
+        this.cars = new ArrayList<>();
+        this.reservations = new ArrayList<>();
     }
 
     public CarModelEntity(String make, String model, CarCategoryEntity carCategory) {
@@ -54,7 +56,6 @@ public class CarModelEntity implements Serializable {
         this.model = model;
         this.carCategory = carCategory;
     }
-    
     
     /**
      * @return the make

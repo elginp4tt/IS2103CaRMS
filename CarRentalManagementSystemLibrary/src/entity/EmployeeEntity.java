@@ -31,9 +31,9 @@ public class EmployeeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 16)
     private String username;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 16)
     private String password;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -47,7 +47,7 @@ public class EmployeeEntity implements Serializable {
     private ArrayList<DispatchEntity> dispatches;
 
     public EmployeeEntity() {
-        this.dispatches = new ArrayList<DispatchEntity>();
+        this.dispatches = new ArrayList<>();
     }
 
     public EmployeeEntity(String username, String password, EmployeeAccessRightEnum accessRight, OutletEntity outlet) {

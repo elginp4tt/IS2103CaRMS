@@ -36,9 +36,9 @@ public class ReservationEntity implements Serializable {
     private boolean paid;
     @Column(nullable = false)
     private boolean cancelled = false;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String creditCardNumber;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 3)
     private String cvv;
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -48,49 +48,49 @@ public class ReservationEntity implements Serializable {
     private Date endDate;
     
     @OneToMany
-    @JoinColumn
-    private List<RentalRateEntity> rentalRates = new ArrayList<RentalRateEntity>();
+    private List<RentalRateEntity> rentalRates;
     
-    @OneToOne(optional = true)
-    @JoinColumn
+    @OneToOne(optional = false)
+    @JoinColumn(nullable = false)
     private CarCategoryEntity carCategory;
     
     @ManyToOne(optional = true)
-    @JoinColumn
+    @JoinColumn(nullable = true)
     private CarModelEntity carModel;
     
     @OneToOne(optional = false)
-    @JoinColumn
+    @JoinColumn(nullable = true)
     private CarEntity car;
     
     @ManyToOne(optional = false)
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private CustomerEntity customer;
     
     @ManyToOne(optional = true)
-    @JoinColumn
+    @JoinColumn(nullable = true)
     private PartnerEntity partner;
     
     @OneToOne(optional = false, mappedBy = "reservation")
     private DispatchEntity dispatch;
     
     @OneToOne(optional = false)
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private OutletEntity pickupOutlet;
     
     @OneToOne(optional = false)
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private OutletEntity returnOutlet;
     
     @OneToOne(optional = false)
-    @JoinColumn
+    @JoinColumn(nullable = true)
     private CarPickupEntity carPickup;
     
     @OneToOne(optional = false)
-    @JoinColumn
+    @JoinColumn(nullable = true)
     private CarReturnEntity carReturn;
 
     public ReservationEntity() {
+        this.rentalRates = new ArrayList<>();
     }
 
     public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, List<RentalRateEntity> rentalRates) {
