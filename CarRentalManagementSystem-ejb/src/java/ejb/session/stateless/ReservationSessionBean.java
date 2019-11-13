@@ -414,19 +414,23 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
             rentalRate.setUsed(true);
             rentalRateSessionBeanLocal.updateRentalRateEntity(rentalRate);
         }
-
+        
+        carCategory.getReservations().size();
         carCategory.getReservations().add(reservation);
         carSessionBeanLocal.updateCarCategoryEntity(carCategory);
 
         if (carModel != null) {
+            carModel.getReservations().size();
             carModel.getReservations().add(reservation);
             carSessionBeanLocal.updateCarModelEntity(carModel);
         }
 
+        customerEntity.getReservations().size();
         customerEntity.getReservations().add(reservation);
         customerSessionBeanLocal.updateCustomerEntity(customerEntity);
 
         if (partnerEntity != null) {
+            partnerEntity.getReservations().size();
             partnerEntity.getReservations().add(reservation);
             partnerSessionBeanLocal.updatePartnerEntity(partnerEntity);
         }
