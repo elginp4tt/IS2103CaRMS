@@ -33,14 +33,12 @@ public class RentalRateEntity implements Serializable {
     private String name;
     @Column(nullable = false)
     private double dailyRate;
-    @Column(nullable = false)
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date validityPeriodStart;
-    @Column(nullable = false)
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date validityPeriodEnd;
-    @Column(nullable = false)
-    private int validityPeriod;
+    @Column(nullable = true)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date startDate;
+    @Column(nullable = true)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date endDate;
     @Column(nullable = false)
     private boolean disabled = false;
     @Column(nullable = false)
@@ -53,15 +51,13 @@ public class RentalRateEntity implements Serializable {
     public RentalRateEntity() {
     }
 
-    public RentalRateEntity(String name, double dailyRate, Date validityPeriodStart, int validityPeriod, CarCategoryEntity carCategory) {
+    public RentalRateEntity(String name, CarCategoryEntity carCategory, double dailyRate, Date startDate, Date endDate) {
         this();
         this.name = name;
         this.dailyRate = dailyRate;
-        this.validityPeriodStart = validityPeriodStart;
-        this.validityPeriod = validityPeriod;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.carCategory = carCategory;
-        
-        generateValidityPeriodEnd(validityPeriod);
     }
 
     public Long getRentalRateId() {
@@ -94,7 +90,7 @@ public class RentalRateEntity implements Serializable {
 
     @Override
     public String toString() {
-        return ("rentalRateId: " + rentalRateId + " " + name + " " + carCategory + " " + dailyRate + " " + validityPeriodStart + " " + validityPeriod);
+        return ("rentalRateId: " + rentalRateId + " " + name + " " + carCategory + " " + dailyRate + " " + getStartDate() + " " + getEndDate());
     }
 
     /**
@@ -141,35 +137,6 @@ public class RentalRateEntity implements Serializable {
     }
 
     /**
-     * @return the validityPeriodStart
-     */
-    public Date getValidityPeriodStart() {
-        return validityPeriodStart;
-    }
-
-    /**
-     * @param validityPeriodStart the validityPeriodStart to set
-     */
-    public void setValidityPeriodStart(Date validityPeriodStart) {
-        this.validityPeriodStart = validityPeriodStart;
-    }
-
-    /**
-     * @return the validityPeriod
-     */
-    public int getValidityPeriod() {
-        return validityPeriod;
-    }
-
-    /**
-     * @param validityPeriod the validityPeriod to set
-     */
-    public void setValidityPeriod(int validityPeriod) {
-        this.validityPeriod = validityPeriod;
-        generateValidityPeriodEnd(validityPeriod);
-    }
-
-    /**
      * @return the disabled
      */
     public boolean isDisabled() {
@@ -184,27 +151,6 @@ public class RentalRateEntity implements Serializable {
     }
 
     /**
-     * @return the validityPeriodEnd
-     */
-    public Date getValidityPeriodEnd() {
-        return validityPeriodEnd;
-    }
-
-    /**
-     * @param validityPeriodEnd the validityPeriodEnd to set
-     */
-    public void setValidityPeriodEnd(Date validityPeriodEnd) {
-        this.validityPeriodEnd = validityPeriodEnd;
-    }
-    
-    public void generateValidityPeriodEnd(int validityPeriod){
-        Calendar c = Calendar.getInstance();
-        c.setTime(validityPeriodStart);
-        c.add(Calendar.DATE, validityPeriod - 1);
-        this.validityPeriodEnd = c.getTime();
-    }
-
-    /**
      * @return the used
      */
     public boolean isUsed() {
@@ -216,6 +162,34 @@ public class RentalRateEntity implements Serializable {
      */
     public void setUsed(boolean used) {
         this.used = used;
+    }
+
+    /**
+     * @return the startDate
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * @return the endDate
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
 }   

@@ -11,6 +11,7 @@ import entity.CarModelEntity;
 import entity.CustomerEntity;
 import entity.OutletEntity;
 import entity.PartnerEntity;
+import entity.RentalRateEntity;
 import entity.ReservationEntity;
 import exception.NoCarsException;
 import exception.NoRentalRatesFoundException;
@@ -46,12 +47,12 @@ public interface ReservationSessionBeanRemote {
     public long createReservationEntity(ReservationEntity reservationEntity);
 
     public void reserveAvailableCar(CarCategoryEntity carCategory, CarModelEntity carModel, Date startDate, Date endDate, CustomerEntity customerEntity, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet, PartnerEntity partnerEntity) throws NoRentalRatesFoundException;
-
-    public void searchForAvailableCars(PartnerEntity partnerEntity, CustomerEntity customerEntity) throws NoCarsException, NoRentalRatesFoundException;
     
     public List<ReservationEntity> retrieveReservationsByCustomerId(Long customerId);
     
     public void cancelReservation(Date currentDate);
     
     public List<ReservationEntity> retrieveReservationsByPartnerId(Long partnerId);
+    
+    public List<RentalRateEntity> calculateTotalRentalRate(CarCategoryEntity carCategory, Date startDate, Date endDate) throws NoRentalRatesFoundException;
 }

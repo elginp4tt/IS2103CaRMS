@@ -33,7 +33,7 @@ public class CarModelEntity implements Serializable {
     @Column(nullable = false, length = 32)
     private String model; //Corolla Altis
     @Column(nullable = false)
-    private boolean disabled;
+    private boolean disabled = false;
     
     @OneToMany(mappedBy = "carModel")
     private ArrayList<CarEntity> cars;
@@ -115,7 +115,7 @@ public class CarModelEntity implements Serializable {
 
     @Override
     public String toString() {
-        return ("Car Model is: " + make + " " + model + " in category: " + carCategory);
+        return ("ID: "+ carModelId + " " + make + " " + model + " in category: " + carCategory);
     }
 
     /**

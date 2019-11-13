@@ -15,8 +15,14 @@ import ejb.session.stateless.PartnerSessionBeanRemote;
 import ejb.session.stateless.RentalRateSessionBeanRemote;
 import ejb.session.stateless.ReservationSessionBeanRemote;
 import entity.EmployeeEntity;
+import entity.ReservationEntity;
 import exception.InvalidLoginException;
+import exception.NoCarsException;
+import exception.NoReservationsException;
+import exception.NullCurrentOutletException;
+import exception.ReservationNoModelNoCategoryException;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import util.enumeration.EmployeeAccessRightEnum;
 
@@ -55,23 +61,25 @@ public class MainApp {
     public void runApp() {
 
         while (true) {
-            System.out.println("Please log in to continue");
+            if (!loggedIn) {
+                System.out.println("Please log in to continue");
 
-            try {
-                doLogin();
-                System.out.println("Login successful");
-            } catch (InvalidLoginException e) {
-                System.out.println("Login failed, please try again");
-                System.out.println(e.getMessage());
+                try {
+                    doLogin();
+                    System.out.println("Login successful");
+                } catch (InvalidLoginException e) {
+                    System.out.println("Login failed, please try again");
+                    System.out.println(e.getMessage());
+                }
             }
+            if (loggedIn) {
+                setCurrentDate();
 
-            setCurrentDate();
+                this.customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, carPickupReturnSessionBeanRemote, outletSessionBeanRemote, employeeEntity);
+                this.salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, reservationSessionBeanRemote, outletSessionBeanRemote, employeeSessionBeanRemote, employeeEntity, currentDate);
 
-            this.customerServiceModule = new CustomerServiceModule(customerSessionBeanRemote, reservationSessionBeanRemote, carSessionBeanRemote, carPickupReturnSessionBeanRemote, outletSessionBeanRemote, employeeEntity);
-            this.salesManagementModule = new SalesManagementModule(rentalRateSessionBeanRemote, carSessionBeanRemote, dispatchSessionBeanRemote, reservationSessionBeanRemote, outletSessionBeanRemote, employeeSessionBeanRemote, employeeEntity, currentDate);
-
-            mainMenu();
-
+                mainMenu();
+            }
         }
 
     }
@@ -85,6 +93,7 @@ public class MainApp {
             System.out.println("1 : Sales Management Module");
             System.out.println("2 : Customer Service Module");
             System.out.println("3 : Logout");
+            System.out.println("4 : Allocate Cars To Current Day Reservations");
             option = sc.nextInt();
 
             switch (option) {
@@ -105,6 +114,15 @@ public class MainApp {
                 case 3:
                     doLogout();
                     break;
+                case 4: {
+                    try {
+                        allocateCarsToCurrentDayReservationsAndGenerateDispatch();
+                    } catch (NoReservationsException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+                break;
+
             }
         }
     }
@@ -115,7 +133,7 @@ public class MainApp {
         String password = "";
 
         System.out.println("*****Please key in your Username to begin*****");
-        username = sc.next();
+        username = sc.nextLine();
         System.out.println("*****Please key in your password*****");
         password = sc.next();
 
@@ -159,6 +177,36 @@ public class MainApp {
             case 2:
                 currentDate = new Date();
                 break;
+        }
+    }
+
+    public void allocateCarsToCurrentDayReservationsAndGenerateDispatch() throws NoReservationsException {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Please key in the date to generate reservations");
+        System.out.println("Key in the year (YYYY)");
+        int year = sc.nextInt() - 1900;
+        System.out.println("Key in the month (1-12)");
+        int month = sc.nextInt();
+        System.out.println("Key in the day (1-31)");
+        int day = sc.nextInt();
+
+        Date date = new Date(year, month, day);
+        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByDate(date);
+
+        if (!reservations.isEmpty()) {
+            for (ReservationEntity reservationEntity : reservations) {
+                if (reservationEntity.getCar() != null && !reservationEntity.isCancelled()) {
+                    try {
+                        reservationSessionBeanRemote.autoAllocateCarToReservation(reservationEntity);
+                    } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        } else {
+            //if this happens, this might be ebcause retrieveReservationsByDate may not be working properly
+            throw new NoReservationsException("No reservations found for the day");
         }
     }
 

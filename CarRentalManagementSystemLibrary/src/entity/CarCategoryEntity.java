@@ -40,6 +40,7 @@ public class CarCategoryEntity implements Serializable {
     public CarCategoryEntity() {
         this.carModels = new ArrayList<CarModelEntity>();
         this.reservations = new ArrayList<ReservationEntity>();
+        this.rentalRates = new ArrayList<RentalRateEntity>();
     }
 
     public CarCategoryEntity(String carCategory) {

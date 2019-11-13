@@ -18,7 +18,6 @@ import entity.DispatchEntity;
 import entity.EmployeeEntity;
 import entity.OutletEntity;
 import entity.RentalRateEntity;
-import entity.ReservationEntity;
 import exception.CarCategoryNotFoundException;
 import exception.CarModelIsDisabledException;
 import exception.CarModelNotFoundException;
@@ -38,6 +37,7 @@ import util.enumeration.EmployeeAccessRightEnum;
  * @author Elgin Patt
  */
 public class SalesManagementModule {
+
     private RentalRateSessionBeanRemote rentalRateSessionBeanRemote;
     private CarSessionBeanRemote carSessionBeanRemote;
     private DispatchSessionBeanRemote dispatchSessionBeanRemote;
@@ -59,59 +59,59 @@ public class SalesManagementModule {
         this.outletEntity = employeeEntity.getOutlet();
         this.currentDate = currentDate;
     }
-    
+
     public void menu() {
         Scanner sc = new Scanner(System.in);
         int option = 0;
-        
-        while (option != 5){
-        System.out.println("*****Select subsystem to access*****");
-        System.out.println("1 : Rental Rate Subsystem");
-        System.out.println("2 : Car Model Subsystem");
-        System.out.println("3 : Car Subsystem");
-        System.out.println("4 : Transit Driver Subsystem");
-        System.out.println("5 : Exit");
-        
-        option = sc.nextInt();
-        
-        switch (option){
-            case 1:
-                if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.SALESMANAGER)){
-                    rentalRateMenu();
-                } else {
-                    System.out.println("You do not have sufficient privileges");
-                }
-                break;
-            case 2:
-                if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)){
-                carModelMenu();
-                } else {
-                    System.out.println("You do not have sufficient privileges");
-                }
-                break;
-            case 3:
-                if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)){
-                carMenu();
-                } else {
-                    System.out.println("You do not have sufficient privileges");
-                }
-                break;
-            case 4:
-                if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)){
-                transitDriverMenu();
-                } else {
-                    System.out.println("You do not have sufficient privileges");
-                }
-                break;
+
+        while (option != 5) {
+            System.out.println("*****Select subsystem to access*****");
+            System.out.println("1 : Rental Rate Subsystem");
+            System.out.println("2 : Car Model Subsystem");
+            System.out.println("3 : Car Subsystem");
+            System.out.println("4 : Transit Driver Subsystem");
+            System.out.println("5 : Exit");
+
+            option = sc.nextInt();
+
+            switch (option) {
+                case 1:
+                    if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.SALESMANAGER)) {
+                        rentalRateMenu();
+                    } else {
+                        System.out.println("You do not have sufficient privileges");
+                    }
+                    break;
+                case 2:
+                    if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)) {
+                        carModelMenu();
+                    } else {
+                        System.out.println("You do not have sufficient privileges");
+                    }
+                    break;
+                case 3:
+                    if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)) {
+                        carMenu();
+                    } else {
+                        System.out.println("You do not have sufficient privileges");
+                    }
+                    break;
+                case 4:
+                    if (employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.ADMINISTRATOR) || employeeEntity.getAccessRight().equals(EmployeeAccessRightEnum.OPERATIONSMANAGER)) {
+                        transitDriverMenu();
+                    } else {
+                        System.out.println("You do not have sufficient privileges");
+                    }
+                    break;
             }
         }
     }
-    
+
     public void rentalRateMenu() {
         Scanner sc = new Scanner(System.in);
         int option = 0;
-        
-        while (option != 6){
+
+        while (option != 6) {
             System.out.println("*****Select scenario to access*****");
             System.out.println("1 : Create Rental Rate");
             System.out.println("2 : View All Rental Rates");
@@ -119,10 +119,10 @@ public class SalesManagementModule {
             System.out.println("4 : Update Rental Rate");
             System.out.println("5 : Delete Rental Rate");
             System.out.println("6 : Exit");
-            
+
             option = sc.nextInt();
-            
-            switch(option) {
+
+            switch (option) {
                 case 1:
                     doCreateRentalRate();
                     break;
@@ -141,67 +141,97 @@ public class SalesManagementModule {
             }
         }
     }
-    
-    public void doCreateRentalRate(){
+
+    public void doCreateRentalRate() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Create a new rental rate*****");
         System.out.println("*****Enter the name for the new rental rate*****");
-        String name = sc.next();
+        String name = sc.nextLine();
         
         System.out.println("*****Enter the name of the car category for the new rental rate*****");
-        String carCategory = sc.next();
-        
+        String carCategory = sc.nextLine();
+
         System.out.println("*****Enter the daily rate for the rental rate (in dollars)*****");
         double dailyRate = sc.nextDouble();
-        
+
         System.out.println("*****Enter the start date for the new rental rate*****");
-        System.out.println("*****Enter 1 to use today's date, else use DDMMYYYY*****");
-        int dateOption = sc.nextInt();
-        
-        Date date = new Date();
-        if (dateOption != 1){
-            int day = dateOption/1000000;
-            int month = dateOption/10000;
-            month = month%100;
-            int year = dateOption%10000;
-            date = new Date(year, month, day);
+        System.out.println("*****Enter 1 to set an always valid rental rate*****");
+        System.out.println("*****Enter 2 to set rental rate start date*****");
+        int validity = sc.nextInt();
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        if (validity == 1) {
+            startDate = null;
+            endDate = null;
+
+        } else if (validity == 2) {
+            System.out.println("*****Enter 1 to use today's date, else key in date in the format DDMMYYYY*****");
+            int dateDay = sc.nextInt();
+
+            if (dateDay != 1) {
+                System.out.println("*****Enter rental rate starting hour (0-23)*****");
+                int hour = sc.nextInt();
+                System.out.println("*****Enter rental rate starting minute (0-59)*****");
+                int minute = sc.nextInt();
+
+                int day = dateDay / 1000000;
+                int month = dateDay / 10000;
+                month = month % 100;
+                int year = (dateDay % 10000) - 1900;
+                startDate = new Date(year, month, day, hour, minute);
+            }
+
+            System.out.println("*****Enter 1 to use today's date, else key in date in the format DDMMYYYY*****");
+            dateDay = sc.nextInt();
+
+            if (dateDay != 1) {
+                System.out.println("*****Enter rental rate starting hour (0-23)*****");
+                int hour = sc.nextInt();
+                System.out.println("*****Enter rental rate starting minute (0-59)*****");
+                int minute = sc.nextInt();
+
+                int day = dateDay / 1000000;
+                int month = dateDay / 10000;
+                month = month % 100;
+                int year = (dateDay % 10000) - 1900;
+                endDate = new Date(year, month, day, hour, minute);
+            }
         }
-        System.out.println("*****Enter the number of days this rental rate is valid for*****");
-        System.out.println("*****i.e Enter 1 if the rate is only valid for the start day*****");
-        int validityPeriod = sc.nextInt();
+
         try {
-            rentalRateSessionBeanRemote.createRentalRateEntity(new RentalRateEntity(name, dailyRate, date, validityPeriod, carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategory)));
-        } catch (CarCategoryNotFoundException e){
+            rentalRateSessionBeanRemote.createRentalRateEntity(new RentalRateEntity(name, carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategory), dailyRate, startDate, endDate));
+        } catch (CarCategoryNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        
+
         System.out.println("*****New rental rate has been successfully created");
     }
-    
+
     public void doViewAllRentalRates() {
         System.out.println("*****View all rental rates*****");
-        
+
         List<RentalRateEntity> rentalRates = rentalRateSessionBeanRemote.retrieveAllRentalRatesByCarCategoryThenDate();
-        for (RentalRateEntity rentalRate : rentalRates){
+        for (RentalRateEntity rentalRate : rentalRates) {
             System.out.println(rentalRate);
         }
     }
-    
+
     public void doViewRentalRateDetails() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****View Rental Rate Details*****");
         System.out.println("*****Key in the ID of the rental rate you want to view*****");
         long rentalRateId = sc.nextLong();
-        
+
         try {
             RentalRateEntity rentalRateEntity = rentalRateSessionBeanRemote.retrieveRentalRateEntityByRentalRateId(rentalRateId);
             System.out.println(rentalRateEntity);
-        } catch (RentalRateNotFoundException e){
+        } catch (RentalRateNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        
+
     }
-    
+
     public void doUpdateRentalRate() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Update Rental Rate*****");
@@ -209,20 +239,21 @@ public class SalesManagementModule {
         long rentalRateId = sc.nextLong();
         int option = 0;
         CarCategoryEntity carCategoryEntity = null;
-        
+
         try {
             RentalRateEntity rentalRateEntity = rentalRateSessionBeanRemote.retrieveRentalRateEntityByRentalRateId(rentalRateId);
-            while (option != 6){
+            while (option != 6) {
                 System.out.println("Select field of rental rate to edit");
                 System.out.println("1: Name");
                 System.out.println("2: Car Category");
                 System.out.println("3: Daily Rate");
                 System.out.println("4: Start Date");
-                System.out.println("5: Validity Period");
+                System.out.println("5: End Date");
                 System.out.println("6: Exit and Update");
                 option = sc.nextInt();
-                
-                switch (option){
+                sc.nextLine();
+
+                switch (option) {
                     case 1:
                         System.out.println("Please key in the new name (single word)");
                         String name = sc.next();
@@ -233,12 +264,13 @@ public class SalesManagementModule {
                         String carCategory = sc.nextLine();
                         try {
                             carCategoryEntity = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategory);
-                            if(rentalRateEntity.getCarCategory().getRentalRates().contains(rentalRateEntity)){
+                            if (rentalRateEntity.getCarCategory().getRentalRates().contains(rentalRateEntity)) {
                                 rentalRateEntity.getCarCategory().getRentalRates().remove(rentalRateEntity);
                             }
                             rentalRateEntity.setCarCategory(carCategoryEntity);
+                            carCategoryEntity.getRentalRates().size();
                             carCategoryEntity.getRentalRates().add(rentalRateEntity);
-                        } catch (CarCategoryNotFoundException e){
+                        } catch (CarCategoryNotFoundException e) {
                             System.out.println(e.getMessage());
                         }
                         break;
@@ -250,60 +282,75 @@ public class SalesManagementModule {
                     case 4:
                         System.out.println("Please key in the new start date in DDMMYYYY");
                         int numericalDate = sc.nextInt();
-                        int day = numericalDate/1000000;
-                        int month = numericalDate/10000;
-                        month = month%100;
-                        int year = numericalDate%10000;
-                        Date date = new Date(year, month, day);
-                        rentalRateEntity.setValidityPeriodStart(date);
+                        int day = numericalDate / 1000000;
+                        int month = numericalDate / 10000;
+                        month = month % 100;
+                        int year = numericalDate % 10000;
+
+                        System.out.println("*****Enter rental rate starting hour (0-23)*****");
+                        int hour = sc.nextInt();
+                        System.out.println("*****Enter rental rate starting minute (0-59)*****");
+                        int minute = sc.nextInt();
+                        
+                        Date date = new Date(year, month, day, hour, minute);
+                        rentalRateEntity.setStartDate(date);
                         break;
                     case 5:
-                        System.out.println("Please key in the new validity period");
-                        System.out.println("The period should be the number of valid days, including the starting day");
-                        int validityPeriod = sc.nextInt();
-                        rentalRateEntity.setValidityPeriod(validityPeriod);
+                        System.out.println("Please key in the new end date in DDMMYYYY");
+                        int numericalDateEnd = sc.nextInt();
+                        int dayEnd = numericalDateEnd / 1000000;
+                        int monthEnd = numericalDateEnd / 10000;
+                        monthEnd = monthEnd % 100;
+                        int yearEnd = (numericalDateEnd % 10000) - 1900;
+
+                        System.out.println("*****Enter rental rate starting hour (0-23)*****");
+                        int hourEnd = sc.nextInt();
+                        System.out.println("*****Enter rental rate starting minute (0-59)*****");
+                        int minuteEnd = sc.nextInt();
+                        
+                        Date endDate = new Date(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd);
+                        rentalRateEntity.setStartDate(endDate);
                         break;
                     case 6:
                         rentalRateSessionBeanRemote.updateRentalRateEntity(rentalRateEntity);
-                        if (carCategoryEntity != null){
+                        if (carCategoryEntity != null) {
                             carSessionBeanRemote.updateCarCategoryEntity(carCategoryEntity);
                         }
                         break;
                 }
             }
-        } catch (RentalRateNotFoundException e){
+        } catch (RentalRateNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void doDeleteRentalRate() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Delete Rental Rate*****");
         System.out.println("*****Key in the ID of the rental rate you want to update*****");
         long rentalRateId = sc.nextLong();
-        try{
+        try {
             rentalRateSessionBeanRemote.deleteRentalRateEntity(rentalRateId);
-        } catch (RentalRateNotFoundException e){
+        } catch (RentalRateNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    
+
     public void carModelMenu() {
         Scanner sc = new Scanner(System.in);
         int option = 0;
-        
-        while (option != 5){
+
+        while (option != 5) {
             System.out.println("*****Select scenario to access*****");
             System.out.println("1 : Create New Model");
             System.out.println("2 : View All Models");
             System.out.println("3 : Update Model");
             System.out.println("4 : Delete Model");
             System.out.println("5 : Exit");
-            
+
             option = sc.nextInt();
-            
-            switch(option) {
+
+            switch (option) {
                 case 1:
                     doCreateNewModel();
                     break;
@@ -319,7 +366,7 @@ public class SalesManagementModule {
             }
         }
     }
-    
+
     public void doCreateNewModel() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Create new car model*****");
@@ -327,28 +374,29 @@ public class SalesManagementModule {
         String make = sc.next();
         System.out.println("*****Key in the model of the new car model*****");
         String model = sc.next();
+        sc.nextLine();
         System.out.println("*****Key in an existing car category to add the new car model to*****");
         String category = sc.nextLine();
         try {
             CarCategoryEntity carCategoryEntity = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(category);
             long carModelId = carSessionBeanRemote.createCarModelEntity(new CarModelEntity(make, model, carCategoryEntity));
             System.out.println("Car Model Entity with ID: " + carModelId + " has been created");
-        } catch (CarCategoryNotFoundException e){
+        } catch (CarCategoryNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        
+
     }
-    
-    public void doViewAllModels(){
+
+    public void doViewAllModels() {
         System.out.println("*****View all car models*****");
         List<CarModelEntity> carModels = carSessionBeanRemote.retrieveAllCarModelsByCategoryThenMakeThenModel();
-        
-        for (CarModelEntity carModelEntity : carModels){
+
+        for (CarModelEntity carModelEntity : carModels) {
             System.out.println(carModelEntity);
         }
     }
-    
-    public void doUpdateModel(){
+
+    public void doUpdateModel() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Update Model*****");
         System.out.println("*****Enter the make of the car model*****");
@@ -359,15 +407,16 @@ public class SalesManagementModule {
             CarModelEntity carModelEntity = carSessionBeanRemote.retrieveCarModelEntityByMakeAndModel(make, model);
             CarCategoryEntity carCategoryEntity = null;
             int option = 0;
-            
-            while (option != 4){
+
+            while (option != 4) {
                 System.out.println("Select field of car model to edit");
                 System.out.println("1: Make");
                 System.out.println("2: Model");
                 System.out.println("3: Category");
                 System.out.println("4: Exit and Update");
                 option = sc.nextInt();
-                
+                sc.nextLine();
+
                 switch (option) {
                     case 1:
                         System.out.println("Please key in the new make");
@@ -383,29 +432,30 @@ public class SalesManagementModule {
                         System.out.println("Please key in an existing car category for the car model");
                         String carCategoryString = sc.nextLine();
                         try {
-                            CarCategoryEntity CarCategory = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategoryString);
-                            if (carModelEntity.getCarCategory().getCarModels().contains(carModelEntity)){
+                            CarCategoryEntity carCategory = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategoryString);
+                            if (carModelEntity.getCarCategory().getCarModels().contains(carModelEntity)) {
                                 carModelEntity.getCarCategory().getCarModels().remove(carModelEntity);
                             }
-                            carModelEntity.setCarCategory(CarCategory);
+                            carModelEntity.setCarCategory(carCategory);
+                            carModelEntity.getCarCategory().getCarModels().size();
                             carModelEntity.getCarCategory().getCarModels().add(carModelEntity);
-                        } catch (CarCategoryNotFoundException e){
+                        } catch (CarCategoryNotFoundException e) {
                             System.out.println(e.getMessage());
                         }
                         break;
                     case 4:
                         carSessionBeanRemote.updateCarModelEntity(carModelEntity);
-                        if (carCategoryEntity != null){
-                        carSessionBeanRemote.updateCarCategoryEntity(carCategoryEntity);
+                        if (carCategoryEntity != null) {
+                            carSessionBeanRemote.updateCarCategoryEntity(carCategoryEntity);
                         }
                         break;
                 }
             }
-        } catch (CarModelNotFoundException e){
+        } catch (CarModelNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void doDeleteModel() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Delete Model*****");
@@ -413,19 +463,19 @@ public class SalesManagementModule {
         String make = sc.next();
         System.out.println("*****Enter the model of the car model*****");
         String model = sc.next();
-        
+
         try {
             carSessionBeanRemote.deleteCarModelEntity(make, model);
-        } catch (CarModelNotFoundException e){
+        } catch (CarModelNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void carMenu() {
         Scanner sc = new Scanner(System.in);
         int option = 0;
-        
-        while (option != 6){
+
+        while (option != 6) {
             System.out.println("*****Select scenario to access*****");
             System.out.println("1 : Create New Car");
             System.out.println("2 : View All Cars");
@@ -433,14 +483,14 @@ public class SalesManagementModule {
             System.out.println("4 : Update Car");
             System.out.println("5 : Delete Car");
             System.out.println("6 : Exit");
-            
+
             option = sc.nextInt();
-            
-            switch(option) {
+
+            switch (option) {
                 case 1:
-                    try{
+                    try {
                         doCreateNewCar();
-                    } catch (CarModelIsDisabledException e){
+                    } catch (CarModelIsDisabledException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -459,44 +509,46 @@ public class SalesManagementModule {
             }
         }
     }
-    
-    public void doCreateNewCar() throws CarModelIsDisabledException{
+
+    public void doCreateNewCar() throws CarModelIsDisabledException {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Create a new car*****");
         System.out.println("*****Enter the license plate of the new car*****");
         String licensePlate = sc.next();
-        
+
         System.out.println("*****Enter the colour of the new car*****");
         String colour = sc.next();
-        
+
         System.out.println("*****Enter a pre-existing make for the new car*****");
         String make = sc.next();
         System.out.println("*****Enter a pre-existing model for the new car*****");
         String model = sc.next();
         try {
             CarModelEntity carModel = carSessionBeanRemote.retrieveCarModelEntityByMakeAndModel(make, model);
-            if (!carModel.isDisabled()){
-                CarEntity carEntity = new CarEntity(licensePlate, colour, carModel, outletEntity);
+            if (!carModel.isDisabled()) {
+                CarEntity carEntity = new CarEntity(licensePlate, carModel, outletEntity);
+                carEntity.setColour(colour);
                 carSessionBeanRemote.createCarEntity(carEntity);
+                outletEntity.getCars().size();
                 outletEntity.getCars().add(carEntity);
                 outletSessionBeanRemote.updateOutletEntity(outletEntity);
             } else {
                 throw new CarModelIsDisabledException("Car model is disabled");
             }
-        } catch (CarModelNotFoundException e){
+        } catch (CarModelNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void doViewAllCars() {
         System.out.println("*****View all cars*****");
         List<CarEntity> cars = carSessionBeanRemote.retrieveCarsByCategoryThenMakeThenModelThenLicensePlate();
-        
-        for (CarEntity car : cars){
+
+        for (CarEntity car : cars) {
             System.out.println(car);
         }
     }
-    
+
     public void doViewCarDetails() {
         System.out.println("*****View Car Details*****");
         Scanner sc = new Scanner(System.in);
@@ -505,11 +557,11 @@ public class SalesManagementModule {
         try {
             CarEntity carEntity = carSessionBeanRemote.retrieveCarEntityByLicensePlate(licensePlate);
             System.out.println(carEntity);
-        } catch (CarNotFoundException e){
+        } catch (CarNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void doUpdateCar() {
         System.out.println("*****Update a car*****");
         Scanner sc = new Scanner(System.in);
@@ -520,8 +572,8 @@ public class SalesManagementModule {
         try {
             CarEntity carEntity = carSessionBeanRemote.retrieveCarEntityByLicensePlate(licensePlate);
             int option = 0;
-            
-            while (option != 8){
+
+            while (option != 8) {
                 System.out.println("Select field of car to edit");
                 System.out.println("1: License Plate");
                 System.out.println("2: Colour");
@@ -532,8 +584,8 @@ public class SalesManagementModule {
                 System.out.println("7: Return Outlet");
                 System.out.println("8: Exit and Update");
                 option = sc.nextInt();
-                
-                switch (option){
+
+                switch (option) {
                     case 1:
                         System.out.println("Please key in the new license plate");
                         String newLicensePlate = sc.next();
@@ -546,42 +598,52 @@ public class SalesManagementModule {
                         break;
                     case 3:
                         System.out.println("Please select a new status");
-                        System.out.println("Key in 1 for INOUTLET");
-                        System.out.println("Key in 2 for ONRENTAL");
+                        System.out.println("Key in 1 for Available");
+                        System.out.println("Key in 2 for On Rental");
+                        System.out.println("Key in 3 for On Repair");
                         int status = sc.nextInt();
-                        if (status == 1){
-                            carEntity.setStatus(CarStatusEnum.INOUTLET);
-                        } else if (status == 2){
-                            carEntity.setStatus(CarStatusEnum.ONRENTAL);
+                        switch (status) {
+                            case 1:
+                                carEntity.setStatus(CarStatusEnum.AVAILABLE);
+                                break;
+                            case 2:
+                                carEntity.setStatus(CarStatusEnum.ONRENTAL);
+                                break;
+                            case 3:
+                                carEntity.setStatus(CarStatusEnum.REPAIR);
+                                break;
+                            default:
+                                break;
                         }
                         break;
+
                     case 4:
                         System.out.println("Please key in the new location");
                         System.out.println("If the car is with a customer, please key in 1");
                         System.out.println("If the car is with an outlet, please key in 2");
                         int locationOption = sc.nextInt();
                         String location = null;
-                        if (locationOption == 1){
+                        if (locationOption == 1) {
                             System.out.println("Please key in the customer Id");
                             location = sc.next();
-                            if (carEntity.getCurrentOutlet().getCars().contains(carEntity)){
+                            if (carEntity.getCurrentOutlet().getCars().contains(carEntity)) {
                                 carEntity.getCurrentOutlet().getCars().remove(carEntity);
                             }
                             carEntity.setCurrentOutlet(null);
-                        } else if (locationOption == 2){
+                        } else if (locationOption == 2) {
                             System.out.println("Please key in the outlet name");
                             location = sc.next();
                             try {
                                 updateOutlet = outletSessionBeanRemote.retrieveOutletEntityByOutletName(location);
                                 carEntity.setCurrentOutlet(updateOutlet);
-                                if (!updateOutlet.getCars().contains(carEntity)){
+                                if (!updateOutlet.getCars().contains(carEntity)) {
                                     updateOutlet.getCars().add(carEntity);
                                 }
-                            } catch (OutletNotFoundException e){
+                            } catch (OutletNotFoundException e) {
                                 System.out.println(e.getMessage());
                             }
                         }
-                        if (location != null){
+                        if (location != null) {
                             carEntity.setLocation(location);
                         }
                         outletSessionBeanRemote.updateOutletEntity(updateOutlet);
@@ -592,16 +654,16 @@ public class SalesManagementModule {
                         String make = sc.next();
                         System.out.println("Please key in the model");
                         String model = sc.next();
-                        try{
+                        try {
                             carModel = carSessionBeanRemote.retrieveCarModelEntityByMakeAndModel(make, model);
-                            if (carEntity.getCarModel().getCars().contains(carEntity)){
+                            if (carEntity.getCarModel().getCars().contains(carEntity)) {
                                 carEntity.getCarModel().getCars().remove(carEntity);
                             }
                             carEntity.setCarModel(carModel);
-                            if (!carEntity.getCarModel().getCars().contains(carEntity)){
+                            if (!carEntity.getCarModel().getCars().contains(carEntity)) {
                                 carEntity.getCarModel().getCars().add(carEntity);
-                            }          
-                        } catch (CarModelNotFoundException e){
+                            }
+                        } catch (CarModelNotFoundException e) {
                             System.out.println(e.getMessage());
                         }
                         break;
@@ -610,14 +672,14 @@ public class SalesManagementModule {
                         String name = sc.next();
                         try {
                             updateOutlet = outletSessionBeanRemote.retrieveOutletEntityByOutletName(name);
-                            if (carEntity.getCurrentOutlet().getCars().contains(carEntity)){
+                            if (carEntity.getCurrentOutlet().getCars().contains(carEntity)) {
                                 carEntity.getCurrentOutlet().getCars().remove(carEntity);
                             }
                             carEntity.setCurrentOutlet(updateOutlet);
-                            if (!updateOutlet.getCars().contains(carEntity)){
+                            if (!updateOutlet.getCars().contains(carEntity)) {
                                 updateOutlet.getCars().add(carEntity);
                             }
-                        } catch (OutletNotFoundException e){
+                        } catch (OutletNotFoundException e) {
                             System.out.println(e.getMessage());
                         }
                         outletSessionBeanRemote.updateOutletEntity(updateOutlet);
@@ -628,49 +690,49 @@ public class SalesManagementModule {
                         try {
                             OutletEntity returnOutlet = outletSessionBeanRemote.retrieveOutletEntityByOutletName(returnName);
                             carEntity.setReturnOutlet(returnOutlet);
-                        } catch (OutletNotFoundException e){
+                        } catch (OutletNotFoundException e) {
                             System.out.println(e.getMessage());
                         }
                         break;
                     case 8:
                         carSessionBeanRemote.updateCarEntity(carEntity);
-                        if (outletEntity != null){
-                        outletSessionBeanRemote.updateOutletEntity(updateOutlet);
+                        if (updateOutlet != null) {
+                            outletSessionBeanRemote.updateOutletEntity(updateOutlet);
                         }
-                        if (carModel != null){
-                        carSessionBeanRemote.updateCarModelEntity(carModel);
+                        if (carModel != null) {
+                            carSessionBeanRemote.updateCarModelEntity(carModel);
                         }
                         break;
                 }
             }
-        } catch (CarNotFoundException e){
+        } catch (CarNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void doDeleteCar() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Delete a car*****");
         System.out.println("*****Please key in the license plate of the car*****");
         String licensePlate = sc.next();
-        
+
         carSessionBeanRemote.deleteCarEntity(licensePlate);
     }
-    
+
     public void transitDriverMenu() {
         Scanner sc = new Scanner(System.in);
         int option = 0;
-        
-        while (option != 4){
+
+        while (option != 4) {
             System.out.println("*****Select scenario to access*****");
             System.out.println("1 : View Transit Driver Dispatch Records for Current Day Reservations");
             System.out.println("2 : Assign Transit Driver");
             System.out.println("3 : Update Transit as Completed");
             System.out.println("4 : Exit");
-            
+
             option = sc.nextInt();
-            
-            switch(option) {
+
+            switch (option) {
                 case 1:
                     doViewTransitDriverRecordsForCurrentDayReservations();
                     break;
@@ -683,65 +745,65 @@ public class SalesManagementModule {
             }
         }
     }
-    
-    public void doViewTransitDriverRecordsForCurrentDayReservations(){
+
+    public void doViewTransitDriverRecordsForCurrentDayReservations() {
         System.out.println("*****View Transit Driver Records For Current Day Reservations*****");
         List<DispatchEntity> dispatches = dispatchSessionBeanRemote.retrieveDispatchesByDateFromOutlet(currentDate, outletEntity);
-        
-        for (DispatchEntity dispatchEntity : dispatches){
+
+        for (DispatchEntity dispatchEntity : dispatches) {
             System.out.println(dispatchEntity);
         }
-        
+
     }
-    
+
     public void doAssignTransitDriver() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Assign Transit Driver*****");
         System.out.println("*****Please key in the dispatch id*****");
         long dispatchId = sc.nextLong();
-        
+
         try {
             DispatchEntity dispatchEntity = dispatchSessionBeanRemote.retrieveDispatchEntityByDispatchId(dispatchId);
             System.out.println("*****Please key in the employee id for dispatch*****");
             long employeeId = sc.nextLong();
             EmployeeEntity dispatchEmployee = employeeSessionBeanRemote.retrieveEmployeeEntityByEmployeeId(employeeId);
-            if (dispatchEntity.getTransitDriver() != null && dispatchEntity.getTransitDriver().getDispatches().contains(dispatchEntity)){
+            if (dispatchEntity.getTransitDriver() != null && dispatchEntity.getTransitDriver().getDispatches().contains(dispatchEntity)) {
                 dispatchEntity.getTransitDriver().getDispatches().remove(dispatchEntity);
             }
             dispatchEntity.setTransitDriver(dispatchEmployee);
-            if (!employeeEntity.getDispatches().contains(dispatchEntity)){
+            if (!employeeEntity.getDispatches().contains(dispatchEntity)) {
                 employeeEntity.getDispatches().add(dispatchEntity);
             }
             System.out.println("Employee with ID: " + dispatchEmployee.getEmployeeId() + " has been assigned to Dispatch with ID: " + dispatchEntity.getDispatchId());
-        } catch (DispatchNotFoundException | EmployeeNotFoundException e){
+        } catch (DispatchNotFoundException | EmployeeNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        
+
     }
-    
+
     public void doUpdateTransitAsCompleted() {
         Scanner sc = new Scanner(System.in);
         System.out.println("*****Update Transit as Completed*****");
         System.out.println("*****Please key in the dispatch id*****");
         long dispatchId = sc.nextLong();
-        
+
         try {
             DispatchEntity dispatchEntity = dispatchSessionBeanRemote.retrieveDispatchEntityByDispatchId(dispatchId);
             dispatchEntity.setIsComplete(true);
             dispatchEntity.getCar().setCurrentOutlet(outletEntity);
-            if (!outletEntity.getCars().contains(dispatchEntity.getCar())){
+            if (!outletEntity.getCars().contains(dispatchEntity.getCar())) {
                 outletEntity.getCars().add(dispatchEntity.getCar());
                 outletSessionBeanRemote.updateOutletEntity(outletEntity);
             }
             dispatchSessionBeanRemote.updateDispatchEntity(dispatchEntity);
             carSessionBeanRemote.updateCarEntity(dispatchEntity.getCar());
-            
-        } catch (DispatchNotFoundException e){
+
+        } catch (DispatchNotFoundException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("*****Transit is updated as completed, car is now recorded as within this outlet*****");
     }
-    
+
 //    public void allocateCarsToCurrentDayReservationsAndGenerateDispatch() throws NoReservationsException{
 //        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByDate(currentDate);
 //        
@@ -759,5 +821,4 @@ public class SalesManagementModule {
 //            throw new NoReservationsException("No reservations found for the day");
 //        }
 //    }
-        
 }

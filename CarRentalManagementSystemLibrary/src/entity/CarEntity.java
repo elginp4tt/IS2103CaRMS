@@ -35,13 +35,13 @@ public class CarEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long carId;
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, unique = true, length = 10)
     private String licensePlate;
-    @Column(nullable = false, length = 16)
+    @Column(nullable = true, length = 16)
     private String colour;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private CarStatusEnum status = CarStatusEnum.INOUTLET;
+    private CarStatusEnum status = CarStatusEnum.AVAILABLE;
     @Column(nullable = false, length = 64)
     private String location;
     @Column(nullable = true)
@@ -77,10 +77,9 @@ public class CarEntity implements Serializable {
         this.reservations = new ArrayList<>();
     }
 
-    public CarEntity(String licensePlate, String colour, CarModelEntity carModel, OutletEntity currentOutlet) {
+    public CarEntity(String licensePlate, CarModelEntity carModel, OutletEntity currentOutlet) {
         this();
         this.licensePlate = licensePlate;
-        this.colour = colour;
         this.carModel = carModel;
         this.currentOutlet = currentOutlet;
         this.location = currentOutlet.getName();
@@ -116,7 +115,7 @@ public class CarEntity implements Serializable {
 
     @Override
     public String toString() {
-        return ("Car Id: " + carId + " " + licensePlate + " " + colour + " " + status + " " + location + "/n" + carModel + " " + currentOutlet);
+        return ("Car Id: " + carId + " " + licensePlate + " " + colour + " " + status + " " + location + "/n" + carModel + " " + currentOutlet.getName());
     }
 
     /**

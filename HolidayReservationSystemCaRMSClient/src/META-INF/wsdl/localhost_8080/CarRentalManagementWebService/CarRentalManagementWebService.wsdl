@@ -10,9 +10,6 @@
 <message name="cancelReservationResponse">
 <part name="parameters" element="tns:cancelReservationResponse"/>
 </message>
-<message name="searchForAvailableCars">
-<part name="parameters" element="tns:searchForAvailableCars"/>
-</message>
 <message name="searchForAvailableCarsResponse">
 <part name="parameters" element="tns:searchForAvailableCarsResponse"/>
 </message>

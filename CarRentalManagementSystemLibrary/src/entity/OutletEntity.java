@@ -7,8 +7,6 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,11 +27,11 @@ public class OutletEntity implements Serializable {
     private Long outletId;
     @Column(nullable = false, length = 64)
     private String name;
-    @Column(nullable = false, unique = true, length = 216)
+    @Column(nullable = true, unique = true, length = 216)
     private String address;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String openingTime;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String closingTime;
     
     @OneToMany(mappedBy = "currentOutlet")
@@ -49,6 +47,13 @@ public class OutletEntity implements Serializable {
         this.cars = new ArrayList<>();
         this.employees = new ArrayList<>();
         this.dispatches = new ArrayList<>();
+    }
+    
+    public OutletEntity(String name, String openingTime, String closingTime) {
+        this();
+        this.name = name;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
     }
 
     public OutletEntity(String name, String address, String openingTime, String closingTime) {
@@ -193,5 +198,5 @@ public class OutletEntity implements Serializable {
     public void setClosingTime(String closingTime) {
         this.closingTime = closingTime;
     }
-    
+
 }

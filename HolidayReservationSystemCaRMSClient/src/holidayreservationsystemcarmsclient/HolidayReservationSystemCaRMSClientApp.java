@@ -5,16 +5,25 @@
  */
 package holidayreservationsystemcarmsclient;
 
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import ws.client.CarCategoryEntity;
+import ws.client.CarModelEntity;
 import ws.client.CustomerEntity;
 import ws.client.CustomerNotFoundException_Exception;
 import ws.client.InvalidLoginException_Exception;
+import ws.client.NoCarsException;
 import ws.client.NoCarsException_Exception;
+import ws.client.NoRentalRatesFoundException;
 import ws.client.NoRentalRatesFoundException_Exception;
+import ws.client.OutletEntity;
 import ws.client.PartnerEntity;
 import ws.client.ReservationEntity;
 import ws.client.ReservationNotFoundException_Exception;
@@ -71,11 +80,6 @@ public class HolidayReservationSystemCaRMSClientApp {
         switch (option) {
             case 1:
             {
-                try {
-                    searchForAvailableCars(partnerEntity, customerEntity);
-                } catch (NoCarsException_Exception | NoRentalRatesFoundException_Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
             }
                 break;
 
@@ -148,4 +152,5 @@ public class HolidayReservationSystemCaRMSClientApp {
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
         return port.retrieveCustomerEntityByEmail(arg0);
     }
+    
 }

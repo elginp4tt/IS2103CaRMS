@@ -117,7 +117,7 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     public List<CarEntity> retrieveAvailableCarsByCarModelId(long carModelId){
         Query query = em.createQuery("SELECT c FROM CarEntity c WHERE c.carModel.carModelId = :inCarModel AND c.status = :inStatus");
         query.setParameter("inCarModel", carModelId);
-        query.setParameter("inStatus", CarStatusEnum.INOUTLET);
+        query.setParameter("inStatus", CarStatusEnum.AVAILABLE);
         List<CarEntity> cars = query.getResultList();
         
             return cars;
@@ -136,7 +136,7 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     public List<CarEntity> retrieveAvailableCarsByCarModelIdInOutlet(long carModelId, long outletId){
         Query query = em.createQuery("SELECT c FROM CarEntity c WHERE c.carModel.carModelId = :inCarModel AND c.status = :inStatus AND c.currentOutlet.outletId = :inOutlet AND c.disabled = false");
         query.setParameter("inCarModel", carModelId);
-        query.setParameter("inStatus", CarStatusEnum.INOUTLET);
+        query.setParameter("inStatus", CarStatusEnum.AVAILABLE);
         query.setParameter("inOutlet", outletId);
         List<CarEntity> cars = query.getResultList();
         
@@ -147,7 +147,7 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     public List<CarEntity> retrieveAvailableCarsByCarModelIdNotInOutlet(long carModelId, long outletId){
         Query query = em.createQuery("SELECT c FROM CarEntity c WHERE c.carModel.carModelId = :inCarModel AND c.status = :inStatus AND c.currentOutlet.outletId <> :inOutlet AND c.disabled = false");
         query.setParameter("inCarModel", carModelId);
-        query.setParameter("inStatus", CarStatusEnum.INOUTLET);
+        query.setParameter("inStatus", CarStatusEnum.AVAILABLE);
         query.setParameter("inOutlet", outletId);
         List<CarEntity> cars = query.getResultList();
         

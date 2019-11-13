@@ -134,7 +134,7 @@ public class CustomerServiceModule {
             
             CarEntity carEntity = reservationEntity.getCar();
             carEntity.setLocation(outletEntity.getName());
-            carEntity.setStatus(CarStatusEnum.INOUTLET);
+            carEntity.setStatus(CarStatusEnum.AVAILABLE);
             carEntity.setCurrentReservation(null);
             carSessionBeanRemote.updateCarEntity(carEntity);
             

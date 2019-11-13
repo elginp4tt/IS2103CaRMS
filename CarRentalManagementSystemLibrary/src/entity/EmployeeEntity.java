@@ -31,6 +31,8 @@ public class EmployeeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeId;
+    @Column(nullable = true, length = 16)
+    private String name;
     @Column(nullable = false, unique = true, length = 16)
     private String username;
     @Column(nullable = false, length = 16)
@@ -50,8 +52,9 @@ public class EmployeeEntity implements Serializable {
         this.dispatches = new ArrayList<>();
     }
 
-    public EmployeeEntity(String username, String password, EmployeeAccessRightEnum accessRight, OutletEntity outlet) {
+    public EmployeeEntity(String name, String username, String password, EmployeeAccessRightEnum accessRight, OutletEntity outlet) {
         this();
+        this.name = name;
         this.username = username;
         this.password = password;
         this.accessRight = accessRight;
@@ -160,6 +163,20 @@ public class EmployeeEntity implements Serializable {
      */
     public void setDispatches(ArrayList<DispatchEntity> dispatches) {
         this.dispatches = dispatches;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
     
 }
