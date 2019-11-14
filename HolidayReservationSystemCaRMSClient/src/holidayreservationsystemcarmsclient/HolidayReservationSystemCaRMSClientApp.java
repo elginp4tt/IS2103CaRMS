@@ -475,12 +475,6 @@ public class HolidayReservationSystemCaRMSClientApp {
         }
     }
 
-    private static java.util.List<ws.client.RentalRateEntity> calculateTotalRentalRate(ws.client.CarCategoryEntity arg0, javax.xml.datatype.XMLGregorianCalendar arg1, javax.xml.datatype.XMLGregorianCalendar arg2) throws NoRentalRatesFoundException_Exception {
-        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
-        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
-        return port.calculateTotalRentalRate(arg0, arg1, arg2);
-    }
-
     private static PartnerEntity doLogin(java.lang.String arg0, java.lang.String arg1) throws InvalidLoginException_Exception {
         ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
@@ -587,6 +581,12 @@ public class HolidayReservationSystemCaRMSClientApp {
         ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
         return port.retrieveCarModelByReservationId(arg0);
+    }
+
+    private static java.util.List<ws.client.RentalRateEntity> calculateTotalRentalRate(ws.client.CarCategoryEntity arg0, javax.xml.datatype.XMLGregorianCalendar arg1, javax.xml.datatype.XMLGregorianCalendar arg2) throws NoRentalRatesFoundException_Exception {
+        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
+        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
+        return port.calculateTotalRentalRate(arg0, arg1, arg2);
     }
 
 }

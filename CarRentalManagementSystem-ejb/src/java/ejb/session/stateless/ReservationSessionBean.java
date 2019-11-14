@@ -430,6 +430,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         startCalendar.setTime(startDate);
         Calendar endCalendar = new GregorianCalendar();
         endCalendar.setTime(endDate);
+        
         ArrayList<RentalRateEntity> rentalRates = new ArrayList<RentalRateEntity>();
         List<RentalRateEntity> carCategoryRates = rentalRateSessionBeanLocal.retrieveAllRentalRatesByCarCategoryId(carCategory.getCarCategoryId());
 
