@@ -486,7 +486,8 @@ public class MainApp {
             System.out.println("Car Make: " + reservationEntity.getCarModel().getMake());
             System.out.println("Car Pick up location: " + reservationEntity.getPickupOutlet().getName());
             System.out.println("Car Return location: " + reservationEntity.getReturnOutlet().getName());
-
+            System.out.println("Cancelled : " + reservationEntity.isCancelled());
+            
         } catch (ReservationNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
@@ -504,7 +505,7 @@ public class MainApp {
             } else {
                 System.out.println("Car Category: " + reservation.getCarCategory().getCarCategory() + " Car Model: " + reservation.getCarModel().getMake() + " " + reservation.getCarModel().getModel());
             }
-            System.out.println("Pickup Outlet: " + reservation.getPickupOutlet().getName() + " Return Outlet: " + reservation.getReturnOutlet().getName() + "| Status: " + reservation.isCancelled());
+            System.out.println("Pickup Outlet: " + reservation.getPickupOutlet().getName() + " Return Outlet: " + reservation.getReturnOutlet().getName() + "| Cancelled: " + reservation.isCancelled());
         }
     }
 

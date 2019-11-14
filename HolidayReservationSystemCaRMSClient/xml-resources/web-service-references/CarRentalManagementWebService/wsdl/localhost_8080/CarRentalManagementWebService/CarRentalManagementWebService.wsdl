@@ -124,6 +124,24 @@
 <message name="InvalidLoginException">
 <part name="fault" element="tns:InvalidLoginException"/>
 </message>
+<message name="retrieveCarCategoryByReservationId">
+<part name="parameters" element="tns:retrieveCarCategoryByReservationId"/>
+</message>
+<message name="retrieveCarCategoryByReservationIdResponse">
+<part name="parameters" element="tns:retrieveCarCategoryByReservationIdResponse"/>
+</message>
+<message name="NoCarsException">
+<part name="fault" element="tns:NoCarsException"/>
+</message>
+<message name="retrieveCarModelByReservationId">
+<part name="parameters" element="tns:retrieveCarModelByReservationId"/>
+</message>
+<message name="retrieveCarModelByReservationIdResponse">
+<part name="parameters" element="tns:retrieveCarModelByReservationIdResponse"/>
+</message>
+<message name="NoCarModelsException">
+<part name="fault" element="tns:NoCarModelsException"/>
+</message>
 <message name="setRentalRateAsUsed">
 <part name="parameters" element="tns:setRentalRateAsUsed"/>
 </message>
@@ -203,6 +221,16 @@
 <input wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/doLoginRequest" message="tns:doLogin"/>
 <output wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/doLoginResponse" message="tns:doLoginResponse"/>
 <fault message="tns:InvalidLoginException" name="InvalidLoginException" wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/doLogin/Fault/InvalidLoginException"/>
+</operation>
+<operation name="retrieveCarCategoryByReservationId">
+<input wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/retrieveCarCategoryByReservationIdRequest" message="tns:retrieveCarCategoryByReservationId"/>
+<output wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/retrieveCarCategoryByReservationIdResponse" message="tns:retrieveCarCategoryByReservationIdResponse"/>
+<fault message="tns:NoCarsException" name="NoCarsException" wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/retrieveCarCategoryByReservationId/Fault/NoCarsException"/>
+</operation>
+<operation name="retrieveCarModelByReservationId">
+<input wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/retrieveCarModelByReservationIdRequest" message="tns:retrieveCarModelByReservationId"/>
+<output wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/retrieveCarModelByReservationIdResponse" message="tns:retrieveCarModelByReservationIdResponse"/>
+<fault message="tns:NoCarModelsException" name="NoCarModelsException" wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/retrieveCarModelByReservationId/Fault/NoCarModelsException"/>
 </operation>
 <operation name="setRentalRateAsUsed">
 <input wsam:Action="http://ws.session.ejb/CarRentalManagementWebService/setRentalRateAsUsedRequest" message="tns:setRentalRateAsUsed"/>
@@ -380,6 +408,30 @@
 </output>
 <fault name="InvalidLoginException">
 <soap:fault name="InvalidLoginException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveCarCategoryByReservationId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="NoCarsException">
+<soap:fault name="NoCarsException" use="literal"/>
+</fault>
+</operation>
+<operation name="retrieveCarModelByReservationId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="NoCarModelsException">
+<soap:fault name="NoCarModelsException" use="literal"/>
 </fault>
 </operation>
 <operation name="setRentalRateAsUsed">

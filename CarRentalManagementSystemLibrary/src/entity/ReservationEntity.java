@@ -195,6 +195,7 @@ public class ReservationEntity implements Serializable {
     /**
      * @return the customer
      */
+    @XmlTransient
     public CustomerEntity getCustomer() {
         return customer;
     }
@@ -279,6 +280,7 @@ public class ReservationEntity implements Serializable {
     /**
      * @return the carCategory
      */
+    @XmlTransient
     public CarCategoryEntity getCarCategory() {
         return carCategory;
     }
@@ -293,6 +295,7 @@ public class ReservationEntity implements Serializable {
     /**
      * @return the carModel
      */
+    @XmlTransient
     public CarModelEntity getCarModel() {
         return carModel;
     }
@@ -307,6 +310,7 @@ public class ReservationEntity implements Serializable {
     /**
      * @return the partner
      */
+    @XmlTransient
     public PartnerEntity getPartner() {
         return partner;
     }

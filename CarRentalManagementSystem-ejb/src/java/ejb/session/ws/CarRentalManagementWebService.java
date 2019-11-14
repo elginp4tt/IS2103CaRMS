@@ -22,6 +22,8 @@ import exception.CarCategoryNotFoundException;
 import exception.CarModelNotFoundException;
 import exception.CustomerNotFoundException;
 import exception.InvalidLoginException;
+import exception.NoCarModelsException;
+import exception.NoCarsException;
 import exception.NoRentalRatesFoundException;
 import exception.OutletNotFoundException;
 import exception.RentalRateNotFoundException;
@@ -136,13 +138,23 @@ public class CarRentalManagementWebService {
     }
     
     @WebMethod
-    public long createReservationEntity(@WebParam ReservationEntity reservationEntity){
-        return reservationSessionBean.createReservationEntity(reservationEntity);
-    }
-    
-    @WebMethod
     public void setRentalRateAsUsed(@WebParam long rentalRateId){
         rentalRateSessionBean.setRentalRateAsUsed(rentalRateId);
     }
+    
+    @WebMethod
+    public long createReservationEntity(@WebParam boolean paid, @WebParam String creditCardNumber, @WebParam String cvv, @WebParam Date startDate, @WebParam Date endDate, @WebParam CustomerEntity customer, @WebParam OutletEntity pickupOutlet, @WebParam OutletEntity returnOutlet, @WebParam double price, @WebParam PartnerEntity partner, @WebParam CarCategoryEntity carCategory, @WebParam CarModelEntity carModel){
+        return reservationSessionBean.createReservationEntity(paid, creditCardNumber, cvv, startDate, endDate, customer, pickupOutlet, returnOutlet, price, partner, carCategory, carModel);
+    }
+    
+    @WebMethod
+    public CarModelEntity retrieveCarModelByReservationId(long reservationId) throws NoCarModelsException{
+        return reservationSessionBean.retrieveCarModelByReservationId(reservationId);
+    };
+
+    @WebMethod
+    public CarCategoryEntity retrieveCarCategoryByReservationId(long reservationId) throws NoCarsException{
+        return reservationSessionBean.retrieveCarCategoryByReservationId(reservationId);
+    };
 }
 

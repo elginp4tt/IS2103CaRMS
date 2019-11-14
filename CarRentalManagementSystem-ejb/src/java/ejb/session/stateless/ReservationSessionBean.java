@@ -8,8 +8,10 @@ package ejb.session.stateless;
 import entity.CarCategoryEntity;
 import entity.CarEntity;
 import entity.CarModelEntity;
+import entity.CustomerEntity;
 import entity.DispatchEntity;
 import entity.OutletEntity;
+import entity.PartnerEntity;
 import entity.RentalRateEntity;
 import entity.ReservationEntity;
 import exception.NoCarModelsException;
@@ -30,6 +32,8 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
@@ -62,6 +66,43 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         em.flush();
 
         return reservationEntity.getReservationId();
+    }
+
+    @Override
+    public CarCategoryEntity retrieveCarCategoryByReservationId(long reservationId) throws NoCarsException {
+        Query query = em.createQuery("SELECT r.carCategory FROM ReservationEntity r WHERE r.reservationId = :inReservation");
+        query.setParameter("inReservation", reservationId);
+
+        try {
+            return (CarCategoryEntity) query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e) {
+            throw new NoCarsException("Car Category is Not Found");
+        }
+    }
+
+    @Override
+    public CarModelEntity retrieveCarModelByReservationId(long reservationId) throws NoCarModelsException {
+        Query query = em.createQuery("SELECT r.carModel FROM ReservationEntity r WHERE r.reservationId = :inReservation");
+        query.setParameter("inReservation", reservationId);
+
+        try {
+            return (CarModelEntity) query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e) {
+            throw new NoCarModelsException("Car Model is Not Found");
+        }
+    }
+
+    @Override
+    public long createReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, double price, PartnerEntity partner, CarCategoryEntity carCategory, CarModelEntity carModel) {
+        ReservationEntity reservationEntity = new ReservationEntity(paid, creditCardNumber, cvv, startDate, endDate, customer, pickupOutlet, returnOutlet, price);
+        reservationEntity.setPartner(partner);
+        reservationEntity.setCarCategory(carCategory);
+
+        if (carModel != null) {
+            reservationEntity.setCarModel(carModel);
+        }
+
+        return createReservationEntity(reservationEntity);
     }
 
     @Override
@@ -101,7 +142,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         query.setParameter("inDate", date, TemporalType.DATE);
         return query.getResultList();
     }
-    
+
     @Override
     public List<ReservationEntity> retrieveReservationsBetweenDates(Date startDate, Date endDate) {
         Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.startDate >= :inStartDate AND r.startDate <= :inEndDate");
@@ -142,11 +183,11 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         CarModelEntity carModel = reservationEntity.getCarModel();
 
         Date date = reservationEntity.getStartDate();
-        
+
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.HOUR_OF_DAY, -2);
-        
+
         Date twoHoursBefore = c.getTime();
 
         List<CarEntity> cars = new ArrayList<CarEntity>();
