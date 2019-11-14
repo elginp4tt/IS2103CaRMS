@@ -21,6 +21,7 @@ import exception.NoCarsException;
 import exception.NoReservationsException;
 import exception.NullCurrentOutletException;
 import exception.ReservationNoModelNoCategoryException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -167,9 +168,9 @@ public class MainApp {
         switch (option) {
             case 1:
                 System.out.println("Please enter current year");
-                int year = sc.nextInt();
+                int year = sc.nextInt() - 1900;
                 System.out.println("Please enter current month");
-                int month = sc.nextInt();
+                int month = sc.nextInt() - 1;
                 System.out.println("Please enter current day (numerical)");
                 int day = sc.nextInt();
                 currentDate = new Date(year, month, day);
@@ -187,25 +188,31 @@ public class MainApp {
         System.out.println("Key in the year (YYYY)");
         int year = sc.nextInt() - 1900;
         System.out.println("Key in the month (1-12)");
-        int month = sc.nextInt();
+        int month = sc.nextInt() - 1;
         System.out.println("Key in the day (1-31)");
         int day = sc.nextInt();
-
-        Date date = new Date(year, month, day);
-        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByDate(date);
+        
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date(year, month, day));
+        c.add(Calendar.DATE, 1);
+        Date nextDay = c.getTime();
+        
+        Date currentDate = new Date(year, month, day, 2, 0);
+        
+        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsBetweenDates(currentDate, nextDay);
 
         if (!reservations.isEmpty()) {
             for (ReservationEntity reservationEntity : reservations) {
-                if (reservationEntity.getCar() != null && !reservationEntity.isCancelled()) {
+                if (reservationEntity.getCar() == null && !reservationEntity.isCancelled()) {
                     try {
-                        reservationSessionBeanRemote.autoAllocateCarToReservation(reservationEntity);
+                        reservationSessionBeanRemote.autoAllocateCarToReservation(reservationEntity, currentDate);
                     } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e) {
                         System.out.println(e.getMessage());
                     }
                 }
             }
         } else {
-            //if this happens, this might be ebcause retrieveReservationsByDate may not be working properly
+            //if this happens, this might be because retrieveReservationsByDate may not be working properly
             throw new NoReservationsException("No reservations found for the day");
         }
     }

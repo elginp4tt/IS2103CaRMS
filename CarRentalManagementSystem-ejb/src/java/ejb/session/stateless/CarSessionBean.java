@@ -237,8 +237,8 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
         Query query = em.createQuery("SELECT c FROM CarEntity c WHERE c.carModel.carModelId = :inCarModel AND c.status = :inStatus AND c.returnOutlet.outletId = :inReturnOutlet AND c.returnTime <= :inReturnTime AND c.disabled = false");
         query.setParameter("inCarModel", carModelId);
         query.setParameter("inStatus", CarStatusEnum.ONRENTAL);
-        query.setParameter("returnOutlet", outletId);
-        query.setParameter("returnTime", date, TemporalType.TIMESTAMP);
+        query.setParameter("inReturnOutlet", outletId);
+        query.setParameter("inReturnTime", date, TemporalType.TIMESTAMP);
         
         List<CarEntity> cars = query.getResultList();
         

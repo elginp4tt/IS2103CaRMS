@@ -117,6 +117,14 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         query.setParameter("inDate", date, TemporalType.DATE);
         return query.getResultList();
     }
+    
+    @Override
+    public List<ReservationEntity> retrieveReservationsBetweenDates(Date startDate, Date endDate) {
+        Query query = em.createQuery("SELECT r FROM ReservationEntity r WHERE r.startDate >= :inStartDate AND r.startDate <= :inEndDate");
+        query.setParameter("inStartDate", startDate, TemporalType.TIMESTAMP);
+        query.setParameter("inEndDate", endDate, TemporalType.TIMESTAMP);
+        return query.getResultList();
+    }
 
     @Override
     public List<CarEntity> getCarsForReservation(ReservationEntity reservationEntity, OutletEntity outletEntity) throws ReservationNoModelNoCategoryException {
@@ -145,13 +153,17 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     }
 
     @Override
-    public List<CarEntity> getBackupCarsForReservation(ReservationEntity reservationEntity, OutletEntity outletEntity) throws ReservationNoModelNoCategoryException {
+    public List<CarEntity> getBackupCarsForReservation(ReservationEntity reservationEntity, OutletEntity outletEntity, Date currentDate) throws ReservationNoModelNoCategoryException {
         CarCategoryEntity carCategory = reservationEntity.getCarCategory();
         CarModelEntity carModel = reservationEntity.getCarModel();
 
         Date date = reservationEntity.getStartDate();
-        Date currentDate = new Date();
-        Date twoHoursBefore = new Date(date.getYear(), date.getMonth(), date.getHours() - 2);
+        
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.HOUR_OF_DAY, -2);
+        
+        Date twoHoursBefore = c.getTime();
 
         List<CarEntity> cars = new ArrayList<CarEntity>();
 
@@ -452,13 +464,13 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     }
 
     @Override
-    public void autoAllocateCarToReservation(ReservationEntity reservationEntity) throws ReservationNoModelNoCategoryException, NullCurrentOutletException, NoCarsException {
+    public void autoAllocateCarToReservation(ReservationEntity reservationEntity, Date currentDate) throws ReservationNoModelNoCategoryException, NullCurrentOutletException, NoCarsException {
         List<CarEntity> cars = getCarsForReservation(reservationEntity, reservationEntity.getPickupOutlet());
         for (CarEntity carEntity : cars) {
             if (carEntity.getCurrentReservation() == null) {
                 reservationEntity.setCar(carEntity);
                 carEntity.setCurrentReservation(reservationEntity);
-                carEntity.setReturnOutlet(reservationEntity.getCarReturn().getOutlet());
+                carEntity.setReturnOutlet(reservationEntity.getReturnOutlet());
                 carEntity.setUsed(true);
 
                 updateReservationEntity(reservationEntity);
@@ -471,9 +483,9 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         }
 
         if (reservationEntity.getCar() == null) {
-            List<CarEntity> backupCars = getBackupCarsForReservation(reservationEntity, reservationEntity.getPickupOutlet());
+            List<CarEntity> backupCars = getBackupCarsForReservation(reservationEntity, reservationEntity.getPickupOutlet(), currentDate);
             for (CarEntity carEntity : backupCars) {
-                if (carEntity.getCurrentReservation() != null) {
+                if (carEntity.getCurrentReservation() == null) {
                     reservationEntity.setCar(carEntity);
                     carEntity.setCurrentReservation(reservationEntity);
                     carEntity.setReturnOutlet(reservationEntity.getCarReturn().getOutlet());

@@ -32,9 +32,9 @@ public interface ReservationSessionBeanRemote {
 
     public List<CarEntity> getCarsForReservation(ReservationEntity reservationEntity, OutletEntity outletEntity) throws ReservationNoModelNoCategoryException;
 
-    public void autoAllocateCarToReservation(ReservationEntity reservationEntity) throws ReservationNoModelNoCategoryException, NullCurrentOutletException, NoCarsException;
+    public void autoAllocateCarToReservation(ReservationEntity reservationEntity, Date currentDate) throws ReservationNoModelNoCategoryException, NullCurrentOutletException, NoCarsException;
 
-    public List<CarEntity> getBackupCarsForReservation(ReservationEntity reservationEntity, OutletEntity outletEntity) throws ReservationNoModelNoCategoryException;
+    public List<CarEntity> getBackupCarsForReservation(ReservationEntity reservationEntity, OutletEntity outletEntity, Date currentDate) throws ReservationNoModelNoCategoryException;
 
     public HashMap<CarCategoryEntity, Integer> retrieveCarCategoriesWithCarQuantity();
 
@@ -51,4 +51,6 @@ public interface ReservationSessionBeanRemote {
     public List<ReservationEntity> retrieveReservationsByPartnerId(Long partnerId);
     
     public List<RentalRateEntity> calculateTotalRentalRate(CarCategoryEntity carCategory, Date startDate, Date endDate) throws NoRentalRatesFoundException;
+    
+    public List<ReservationEntity> retrieveReservationsBetweenDates(Date startDate, Date endDate);
 }

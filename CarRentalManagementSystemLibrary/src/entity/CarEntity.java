@@ -75,6 +75,7 @@ public class CarEntity implements Serializable {
 
     public CarEntity() {
         this.reservations = new ArrayList<>();
+        this.currentReservation = null;
     }
 
     public CarEntity(String licensePlate, CarModelEntity carModel, OutletEntity currentOutlet) {

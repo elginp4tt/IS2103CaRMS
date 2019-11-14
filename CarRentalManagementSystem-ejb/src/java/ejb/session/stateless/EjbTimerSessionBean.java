@@ -10,6 +10,7 @@ import exception.NoCarsException;
 import exception.NoReservationsException;
 import exception.NullCurrentOutletException;
 import exception.ReservationNoModelNoCategoryException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -29,20 +30,25 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanRemote, EjbTimerS
     @Schedule(dayOfMonth = "*", hour = "0", info = "allocateCarsToCurrentDayReservationsAndGenerateDispatch")
     public void allocateCarsToCurrentDayReservationsAndGenerateDispatch() throws NoReservationsException{
         Date currentDate = new Date();
-        List<ReservationEntity> reservations = reservationSessionBean.retrieveReservationsByDate(currentDate);
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date(currentDate.getYear(), currentDate.getMonth(), currentDate.getDay()));
+        c.add(Calendar.DATE, 1);
+        Date nextDay = c.getTime();
         
-        if (!reservations.isEmpty()){
-            for (ReservationEntity reservationEntity : reservations){
-                if (reservationEntity.getCar() != null && !reservationEntity.isCancelled()){
+        List<ReservationEntity> reservations = reservationSessionBean.retrieveReservationsBetweenDates(currentDate, nextDay);
+        
+        if (!reservations.isEmpty()) {
+            for (ReservationEntity reservationEntity : reservations) {
+                if (reservationEntity.getCar() == null && !reservationEntity.isCancelled()) {
                     try {
-                        reservationSessionBean.autoAllocateCarToReservation(reservationEntity);
-                    } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e){
+                        reservationSessionBean.autoAllocateCarToReservation(reservationEntity, currentDate);
+                    } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e) {
                         System.out.println(e.getMessage());
                     }
                 }
             }
         } else {
-            //if this happens, this might be ebcause retrieveReservationsByDate may not be working properly
+            //if this happens, this might be because retrieveReservationsByDate may not be working properly
             throw new NoReservationsException("No reservations found for the day");
         }
     }
