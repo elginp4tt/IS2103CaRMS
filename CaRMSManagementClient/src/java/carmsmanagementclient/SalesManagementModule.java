@@ -121,6 +121,7 @@ public class SalesManagementModule {
             System.out.println("6 : Exit");
 
             option = sc.nextInt();
+            sc.nextLine();
 
             switch (option) {
                 case 1:
@@ -147,7 +148,7 @@ public class SalesManagementModule {
         System.out.println("*****Create a new rental rate*****");
         System.out.println("*****Enter the name for the new rental rate*****");
         String name = sc.nextLine();
-        
+
         System.out.println("*****Enter the name of the car category for the new rental rate*****");
         String carCategory = sc.nextLine();
 
@@ -264,12 +265,10 @@ public class SalesManagementModule {
                         String carCategory = sc.nextLine();
                         try {
                             carCategoryEntity = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategory);
-                            rentalRateEntity.getCarCategory().getRentalRates().size();
                             if (rentalRateEntity.getCarCategory().getRentalRates().contains(rentalRateEntity)) {
                                 rentalRateEntity.getCarCategory().getRentalRates().remove(rentalRateEntity);
                             }
                             rentalRateEntity.setCarCategory(carCategoryEntity);
-                            carCategoryEntity.getRentalRates().size();
                             carCategoryEntity.getRentalRates().add(rentalRateEntity);
                         } catch (CarCategoryNotFoundException e) {
                             System.out.println(e.getMessage());
@@ -292,7 +291,7 @@ public class SalesManagementModule {
                         int hour = sc.nextInt();
                         System.out.println("*****Enter rental rate starting minute (0-59)*****");
                         int minute = sc.nextInt();
-                        
+
                         Date date = new Date(year, month, day, hour, minute);
                         rentalRateEntity.setStartDate(date);
                         break;
@@ -308,7 +307,7 @@ public class SalesManagementModule {
                         int hourEnd = sc.nextInt();
                         System.out.println("*****Enter rental rate starting minute (0-59)*****");
                         int minuteEnd = sc.nextInt();
-                        
+
                         Date endDate = new Date(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd);
                         rentalRateEntity.setStartDate(endDate);
                         break;
@@ -350,6 +349,7 @@ public class SalesManagementModule {
             System.out.println("5 : Exit");
 
             option = sc.nextInt();
+            sc.nextLine();
 
             switch (option) {
                 case 1:
@@ -434,12 +434,10 @@ public class SalesManagementModule {
                         String carCategoryString = sc.nextLine();
                         try {
                             CarCategoryEntity carCategory = carSessionBeanRemote.retrieveCarCategoryEntityByCarCategory(carCategoryString);
-                            carModelEntity.getCarCategory().getCarModels().size();
                             if (carModelEntity.getCarCategory().getCarModels().contains(carModelEntity)) {
                                 carModelEntity.getCarCategory().getCarModels().remove(carModelEntity);
                             }
                             carModelEntity.setCarCategory(carCategory);
-                            carModelEntity.getCarCategory().getCarModels().size();
                             carModelEntity.getCarCategory().getCarModels().add(carModelEntity);
                         } catch (CarCategoryNotFoundException e) {
                             System.out.println(e.getMessage());
@@ -487,6 +485,7 @@ public class SalesManagementModule {
             System.out.println("6 : Exit");
 
             option = sc.nextInt();
+            sc.nextLine();
 
             switch (option) {
                 case 1:
@@ -531,7 +530,6 @@ public class SalesManagementModule {
                 CarEntity carEntity = new CarEntity(licensePlate, carModel, outletEntity);
                 carEntity.setColour(colour);
                 carSessionBeanRemote.createCarEntity(carEntity);
-                outletEntity.getCars().size();
                 outletEntity.getCars().add(carEntity);
                 outletSessionBeanRemote.updateOutletEntity(outletEntity);
             } else {
@@ -586,6 +584,7 @@ public class SalesManagementModule {
                 System.out.println("7: Return Outlet");
                 System.out.println("8: Exit and Update");
                 option = sc.nextInt();
+                sc.nextLine();
 
                 switch (option) {
                     case 1:
@@ -614,8 +613,6 @@ public class SalesManagementModule {
                             case 3:
                                 carEntity.setStatus(CarStatusEnum.REPAIR);
                                 break;
-                            default:
-                                break;
                         }
                         break;
 
@@ -628,7 +625,6 @@ public class SalesManagementModule {
                         if (locationOption == 1) {
                             System.out.println("Please key in the customer Id");
                             location = sc.next();
-                            carEntity.getCurrentOutlet().getCars().size();
                             if (carEntity.getCurrentOutlet().getCars().contains(carEntity)) {
                                 carEntity.getCurrentOutlet().getCars().remove(carEntity);
                             }
@@ -639,7 +635,6 @@ public class SalesManagementModule {
                             try {
                                 updateOutlet = outletSessionBeanRemote.retrieveOutletEntityByOutletName(location);
                                 carEntity.setCurrentOutlet(updateOutlet);
-                                updateOutlet.getCars().size();
                                 if (!updateOutlet.getCars().contains(carEntity)) {
                                     updateOutlet.getCars().add(carEntity);
                                 }
@@ -660,7 +655,6 @@ public class SalesManagementModule {
                         String model = sc.next();
                         try {
                             carModel = carSessionBeanRemote.retrieveCarModelEntityByMakeAndModel(make, model);
-                            carEntity.getCarModel().getCars().size();
                             if (carEntity.getCarModel().getCars().contains(carEntity)) {
                                 carEntity.getCarModel().getCars().remove(carEntity);
                             }
@@ -677,7 +671,6 @@ public class SalesManagementModule {
                         String name = sc.next();
                         try {
                             updateOutlet = outletSessionBeanRemote.retrieveOutletEntityByOutletName(name);
-                            carEntity.getCurrentOutlet().getCars().size();
                             if (carEntity.getCurrentOutlet().getCars().contains(carEntity)) {
                                 carEntity.getCurrentOutlet().getCars().remove(carEntity);
                             }
@@ -738,6 +731,7 @@ public class SalesManagementModule {
             System.out.println("4 : Exit");
 
             option = sc.nextInt();
+            sc.nextLine();
 
             switch (option) {
                 case 1:
@@ -774,12 +768,10 @@ public class SalesManagementModule {
             System.out.println("*****Please key in the employee id for dispatch*****");
             long employeeId = sc.nextLong();
             EmployeeEntity dispatchEmployee = employeeSessionBeanRemote.retrieveEmployeeEntityByEmployeeId(employeeId);
-            dispatchEntity.getTransitDriver().getDispatches().size();
             if (dispatchEntity.getTransitDriver() != null && dispatchEntity.getTransitDriver().getDispatches().contains(dispatchEntity)) {
                 dispatchEntity.getTransitDriver().getDispatches().remove(dispatchEntity);
             }
             dispatchEntity.setTransitDriver(dispatchEmployee);
-            employeeEntity.getDispatches().size();
             if (!employeeEntity.getDispatches().contains(dispatchEntity)) {
                 employeeEntity.getDispatches().add(dispatchEntity);
             }
@@ -800,7 +792,7 @@ public class SalesManagementModule {
             DispatchEntity dispatchEntity = dispatchSessionBeanRemote.retrieveDispatchEntityByDispatchId(dispatchId);
             dispatchEntity.setIsComplete(true);
             dispatchEntity.getCar().setCurrentOutlet(outletEntity);
-            outletEntity.getCars().size();
+            dispatchEntity.getCar().setLocation(outletEntity.getName());
             if (!outletEntity.getCars().contains(dispatchEntity.getCar())) {
                 outletEntity.getCars().add(dispatchEntity.getCar());
                 outletSessionBeanRemote.updateOutletEntity(outletEntity);
@@ -813,22 +805,4 @@ public class SalesManagementModule {
         }
         System.out.println("*****Transit is updated as completed, car is now recorded as within this outlet*****");
     }
-
-//    public void allocateCarsToCurrentDayReservationsAndGenerateDispatch() throws NoReservationsException{
-//        List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByDate(currentDate);
-//        
-//        if (!reservations.isEmpty()){
-//            for (ReservationEntity reservationEntity : reservations){
-//                if (reservationEntity.getCar() != null && !reservationEntity.isCancelled()){
-//                    try {
-//                    reservationSessionBeanRemote.autoAllocateCarToReservation(reservationEntity);
-//                    } catch (ReservationNoModelNoCategoryException | NullCurrentOutletException | NoCarsException e){
-//                        System.out.println(e.getMessage());
-//                    }
-//                }
-//            }
-//        } else {
-//            throw new NoReservationsException("No reservations found for the day");
-//        }
-//    }
 }

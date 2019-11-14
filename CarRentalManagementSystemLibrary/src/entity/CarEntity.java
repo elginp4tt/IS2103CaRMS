@@ -65,7 +65,7 @@ public class CarEntity implements Serializable {
     private List<ReservationEntity> reservations;
     
     @ManyToOne(optional = true)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private OutletEntity currentOutlet;
     
     @ManyToOne(optional = true)

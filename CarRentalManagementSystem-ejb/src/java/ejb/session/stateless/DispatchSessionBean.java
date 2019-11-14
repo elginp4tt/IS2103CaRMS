@@ -79,9 +79,9 @@ public class DispatchSessionBean implements DispatchSessionBeanRemote, DispatchS
     
     @Override
     public List<DispatchEntity> retrieveDispatchesByDateFromOutlet(Date date, OutletEntity outletEntity) {
-        Query query = em.createQuery("SELECT d FROM DispatchEntity d JOIN ReservationEntity r WHERE d.reservation = r AND r.startDate = :inDate AND d.currentOutlet = :inOutlet");
+        Query query = em.createQuery("SELECT d FROM DispatchEntity d WHERE d.reservation.startDate = :inDate AND d.currentOutlet = :inOutlet");
         query.setParameter("inDate", date, TemporalType.DATE);
-        query.setParameter("inoutlet", outletEntity.getOutletId());
+        query.setParameter("inOutlet", outletEntity.getOutletId());
         
         List<DispatchEntity> dispatches = query.getResultList();
         

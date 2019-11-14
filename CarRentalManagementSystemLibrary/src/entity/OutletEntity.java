@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +35,7 @@ public class OutletEntity implements Serializable {
     @Column(nullable = true)
     private String closingTime;
     
-    @OneToMany(mappedBy = "currentOutlet")
+    @OneToMany(mappedBy = "currentOutlet", fetch = FetchType.EAGER)
     private ArrayList<CarEntity> cars;
     
     @OneToMany(mappedBy = "outlet")

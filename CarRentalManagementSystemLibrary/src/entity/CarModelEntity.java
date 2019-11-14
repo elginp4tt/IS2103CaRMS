@@ -36,7 +36,7 @@ public class CarModelEntity implements Serializable {
     @Column(nullable = false)
     private boolean disabled = false;
     
-    @OneToMany(mappedBy = "carModel")
+    @OneToMany(mappedBy = "carModel", fetch = FetchType.EAGER)
     private ArrayList<CarEntity> cars;
     
     @ManyToOne(optional = false)
