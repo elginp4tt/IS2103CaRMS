@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,13 +29,13 @@ public class CarCategoryEntity implements Serializable {
     @Column(nullable = false)
     private String carCategory;
 
-    @OneToMany(mappedBy = "carCategory")
+    @OneToMany(mappedBy = "carCategory", fetch = FetchType.EAGER)
     private ArrayList<CarModelEntity> carModels;
 
-    @OneToMany(mappedBy = "carCategory")
+    @OneToMany(mappedBy = "carCategory", fetch = FetchType.EAGER)
     private ArrayList<RentalRateEntity> rentalRates;
 
-    @OneToMany(mappedBy = "carCategory")
+    @OneToMany(mappedBy = "carCategory", fetch = FetchType.EAGER)
     private ArrayList<ReservationEntity> reservations;
 
     public CarCategoryEntity() {

@@ -16,7 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlTransient;
@@ -47,8 +46,7 @@ public class ReservationEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date endDate;
     
-    @OneToMany
-    private List<RentalRateEntity> rentalRates;
+    private List<Long> rentalRates;
     
     @OneToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -93,7 +91,7 @@ public class ReservationEntity implements Serializable {
         this.rentalRates = new ArrayList<>();
     }
 
-    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, List<RentalRateEntity> rentalRates) {
+    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, List<Long> rentalRates) {
         this();
         this.paid = paid;
         this.creditCardNumber = creditCardNumber;
@@ -321,21 +319,7 @@ public class ReservationEntity implements Serializable {
     public void setPartner(PartnerEntity partner) {
         this.partner = partner;
     }
-
-    /**
-     * @return the rentalRates
-     */
-    public List<RentalRateEntity> getRentalRates() {
-        return rentalRates;
-    }
-
-    /**
-     * @param rentalRates the rentalRates to set
-     */
-    public void setRentalRates(List<RentalRateEntity> rentalRates) {
-        this.rentalRates = rentalRates;
-    }
-
+    
     /**
      * @return the pickupOutlet
      */
@@ -376,6 +360,20 @@ public class ReservationEntity implements Serializable {
      */
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
+    }
+
+    /**
+     * @return the rentalRates
+     */
+    public List<Long> getRentalRates() {
+        return rentalRates;
+    }
+
+    /**
+     * @param rentalRates the rentalRates to set
+     */
+    public void setRentalRates(List<Long> rentalRates) {
+        this.rentalRates = rentalRates;
     }
     
 }

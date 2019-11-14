@@ -89,7 +89,6 @@ public class HolidayReservationSystemCaRMSClientApp {
             try {
                 datatypeFactory = DatatypeFactory.newInstance();
                 XMLGregorianCalendar now = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
-                cancelReservation(now);
             } catch (DatatypeConfigurationException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -121,12 +120,6 @@ public class HolidayReservationSystemCaRMSClientApp {
         ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
         return port.doLogin(arg0, arg1);
-    }
-
-    private static void cancelReservation(javax.xml.datatype.XMLGregorianCalendar arg0) {
-        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
-        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
-        port.cancelReservation(arg0);
     }
 
     private static ReservationEntity retrieveReservationEntityByReservationId(java.lang.Long arg0) throws ReservationNotFoundException_Exception {

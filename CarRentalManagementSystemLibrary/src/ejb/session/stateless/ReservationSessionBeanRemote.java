@@ -45,13 +45,9 @@ public interface ReservationSessionBeanRemote {
     public HashMap<CarModelEntity, Integer> retrieveCarModelsWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet, CarCategoryEntity carCategory);
 
     public long createReservationEntity(ReservationEntity reservationEntity);
-
-    public void reserveAvailableCar(CarCategoryEntity carCategory, CarModelEntity carModel, Date startDate, Date endDate, CustomerEntity customerEntity, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet, PartnerEntity partnerEntity) throws NoRentalRatesFoundException;
     
     public List<ReservationEntity> retrieveReservationsByCustomerId(Long customerId);
-    
-    public void cancelReservation(Date currentDate);
-    
+
     public List<ReservationEntity> retrieveReservationsByPartnerId(Long partnerId);
     
     public List<RentalRateEntity> calculateTotalRentalRate(CarCategoryEntity carCategory, Date startDate, Date endDate) throws NoRentalRatesFoundException;

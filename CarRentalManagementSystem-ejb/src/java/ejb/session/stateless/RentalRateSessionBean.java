@@ -69,4 +69,11 @@ public class RentalRateSessionBean implements RentalRateSessionBeanRemote, Renta
         
         return query.getResultList();
     }
+    
+    @Override
+    public List<RentalRateEntity> retrieveAllRentalRatesByCarCategoryId(long carCategoryId){
+        Query query = em.createQuery("SELECT r FROM RentalRateEntity r WHERE r.carCategory.carCategoryId = :inCarCategory");
+        query.setParameter("inCarCategory", carCategoryId);
+        return query.getResultList();
+    }
 }

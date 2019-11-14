@@ -20,5 +20,7 @@ public interface RentalRateSessionBeanLocal {
     public void updateRentalRateEntity(RentalRateEntity rentalRateEntity);
 
     public void deleteRentalRateEntity(long rentalRateId) throws RentalRateNotFoundException;
+
+    public List<RentalRateEntity> retrieveAllRentalRatesByCarCategoryId(long carCategoryId);
     
 }

@@ -71,11 +71,6 @@ public class CarRentalManagementWebService {
     }
     
     @WebMethod
-    public void cancelReservation(@WebParam Date currentDate){
-        reservationSessionBean.cancelReservation(currentDate);
-    }
-    
-    @WebMethod
     public OutletEntity retrieveOutletEntityByName(@WebParam String outletName) throws OutletNotFoundException {
         return outletSessionBean.retrieveOutletEntityByName(outletName);
     }
@@ -113,11 +108,6 @@ public class CarRentalManagementWebService {
     @WebMethod
     public CarModelEntity retrieveCarModelEntityByCarModelId(@WebParam long carModelId)throws CarModelNotFoundException{
         return carSessionBean.retrieveCarModelEntityByCarModelId(carModelId);
-    }
-    
-    @WebMethod
-    public void reserveAvailableCar(@WebParam CarCategoryEntity carCategory, @WebParam CarModelEntity carModel, @WebParam Date startDate, @WebParam Date endDate, @WebParam CustomerEntity customerEntity, @WebParam OutletEntity incPickupOutlet, @WebParam OutletEntity incReturnOutlet, @WebParam PartnerEntity partnerEntity) throws NoRentalRatesFoundException {
-        reservationSessionBean.reserveAvailableCar(carCategory, carModel, startDate, endDate, customerEntity, incPickupOutlet, incReturnOutlet, partnerEntity);
     }
     
     @WebMethod
