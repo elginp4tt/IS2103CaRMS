@@ -22,19 +22,13 @@ import exception.InvalidLoginException;
 import exception.NoCarsException;
 import exception.NoRentalRatesFoundException;
 import exception.OutletNotFoundException;
-import exception.RentalRateNotFoundException;
 import exception.ReservationNotFoundException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.EJB;
 
 /**
  *
@@ -288,7 +282,7 @@ public class MainApp {
                     carRentalRate = carRentalRate + rentalRate.getDailyRate();
                 }
                 carCategoryPrice.put(carCategoryEntity, carRentalRate);
-                System.out.println("ID: " + carCategoryEntity.getCarCategoryId() + "Category: " + carCategoryEntity.getCarCategory() + " Total Rental Price: " + carRentalRate);
+                System.out.println("ID: " + carCategoryEntity.getCarCategoryId() + " Category: " + carCategoryEntity.getCarCategory() + " Total Rental Price: " + carRentalRate);
             } catch (NoRentalRatesFoundException e) {
                 //System.out.println(e.getMessage());
                 //System.out.println("No rental rates found for " + entry.getKey().getCarCategory());
@@ -311,14 +305,14 @@ public class MainApp {
             throw new NoCarsException("No cars are available at this time for your selected timeframe");
         }
 
-        System.out.println("Press 1 to select a specific model and any other number to skip");
+        System.out.println("Press 1 to view available models for the selected car category and any other number to skip");
         int option = sc.nextInt();
 
         if (option == 1) {
             List<CarModelEntity> availableCarModels = reservationSessionBeanRemote.retrieveCarModelsWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet, carCategory);
 
             for (CarModelEntity carModelEntity : availableCarModels) {
-                System.out.println("ID: " + carModelEntity.getCarModelId() + "Model: " + carModelEntity.getMake() + " " + carModelEntity.getModel());
+                System.out.println("ID: " + carModelEntity.getCarModelId() + " Model: " + carModelEntity.getMake() + " " + carModelEntity.getModel());
             }
 
             System.out.println("Enter ID of car model to reserve, or enter -1 to only select car category");
@@ -500,7 +494,7 @@ public class MainApp {
     }
 
     private void doViewAllMyReservations() {
-        System.out.print("Viewing all past reservations");
+        System.out.println("Viewing all past reservations");
         List<ReservationEntity> reservations = reservationSessionBeanRemote.retrieveReservationsByCustomerId(customerEntity.getCustomerId());
 
         for (ReservationEntity reservation : reservations) {

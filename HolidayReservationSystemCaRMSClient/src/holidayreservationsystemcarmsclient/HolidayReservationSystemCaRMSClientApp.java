@@ -113,7 +113,7 @@ public class HolidayReservationSystemCaRMSClientApp {
                 break;
 
             case 4:
-                System.out.print("Viewing all past reservations");
+                System.out.println("Viewing all past reservations");
                 List<ReservationEntity> reservations = retrieveReservationsByPartnerId(partnerEntity.getPartnerId());
 
                 for (ReservationEntity reservation : reservations) {
@@ -252,7 +252,7 @@ public class HolidayReservationSystemCaRMSClientApp {
                         carRentalRate = carRentalRate + rentalRate.getDailyRate();
                     }
                     carCategoryPrice.put(carCategoryEntity, carRentalRate);
-                    System.out.println("ID: " + carCategoryEntity.getCarCategoryId() + "Category: " + carCategoryEntity.getCarCategory() + " Total Rental Price: " + carRentalRate);
+                    System.out.println("ID: " + carCategoryEntity.getCarCategoryId() + " Category: " + carCategoryEntity.getCarCategory() + " Total Rental Price: " + carRentalRate);
                 } catch (NoRentalRatesFoundException_Exception e) {
                     //System.out.println(e.getMessage());
                     //System.out.println("No rental rates found for " + entry.getKey().getCarCategory());
@@ -282,7 +282,7 @@ public class HolidayReservationSystemCaRMSClientApp {
                 List<CarModelEntity> availableCarModels = retrieveCarModelsWithConditions(xmlStartDate, xmlEndDate, incPickupOutlet, incReturnOutlet, carCategory);
 
                 for (CarModelEntity carModelEntity : availableCarModels) {
-                    System.out.println("ID: " + carModelEntity.getCarModelId() + "Model: " + carModelEntity.getMake() + " " + carModelEntity.getModel());
+                    System.out.println("ID: " + carModelEntity.getCarModelId() + " Model: " + carModelEntity.getMake() + " " + carModelEntity.getModel());
                 }
 
                 System.out.println("Enter ID of car model to reserve, or enter -1 to only select car category");

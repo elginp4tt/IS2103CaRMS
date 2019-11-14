@@ -220,33 +220,28 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
                 if (!reservation.isCancelled()) {
                     OutletEntity returnOutlet = reservation.getReturnOutlet();
                     OutletEntity pickupOutlet = reservation.getPickupOutlet();
-                    //Case 1: Incoming reservation starts before but ends during existing reservation
+                        //Case 1: Incoming reservation starts before but ends during existing reservation
                     if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate()) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
                         counter--;
                         System.out.println("Case 1");
-                    }
-                    //Case 2: Incoming reservation starts during and ends during existing reservation
-                    else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
+                        //Case 2: Incoming reservation starts during and ends during existing reservation
+                    } else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
                         counter--;
                         System.out.println("Case 2");
-                    }
-                    //Case 3: Incoming reservation starts before but ends after existing reservation
-                    else if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate())) {
+                        //Case 3: Incoming reservation starts before but ends after existing reservation
+                    } else if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate())) {
                         counter--;
                         System.out.println("Case 3");
-                    }
-                    //Case 4: Incoming reservation starts during but ends during exising reservation
-                    else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && startDate.before(reservation.getEndDate())) {
+                        //Case 4: Incoming reservation starts during but ends during exising reservation
+                    } else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && startDate.before(reservation.getEndDate())) {
                         counter--;
                         System.out.println("Case 4");
-                    }
-                    //Case 5: Incoming reservation starts after existing reservation but different outlet and less than 2 hours apart
-                    else if (!returnOutlet.equals(incPickupOutlet) && startDateMinusTwoHours.before(reservation.getEndDate()) && startDateMinusTwoHours.after(reservation.getStartDate())) {
+                        //Case 5: Incoming reservation starts after existing reservation but different outlet and less than 2 hours apart
+                    } else if (!returnOutlet.equals(incPickupOutlet) && startDateMinusTwoHours.before(reservation.getEndDate()) && startDateMinusTwoHours.after(reservation.getStartDate())) {
                         counter--;
                         System.out.println("Case 5");
-                    }
-                    //Case 6: Incoming reservation starts before existing reservation but different outlet and less than 2 hours apart
-                    else if (!pickupOutlet.equals(incReturnOutlet) && endDatePlusTwoHours.after(reservation.getStartDate()) && endDatePlusTwoHours.before(reservation.getEndDate())) {
+                        //Case 6: Incoming reservation starts before existing reservation but different outlet and less than 2 hours apart
+                    } else if (!pickupOutlet.equals(incReturnOutlet) && endDatePlusTwoHours.after(reservation.getStartDate()) && endDatePlusTwoHours.before(reservation.getEndDate())) {
                         counter--;
                         System.out.println("Case 6");
                     }
@@ -282,7 +277,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     @Override
     public List<CarModelEntity> retrieveCarModelsWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet, CarCategoryEntity carCategory) {
         HashMap<CarModelEntity, Integer> availableCars = retrieveCarModelsForCarCategoryWithCarQuantity(carCategory);
-        List<CarModelEntity> availableCategories = new ArrayList<CarModelEntity>();
+        List<CarModelEntity> availableModels = new ArrayList<CarModelEntity>();
         Date startDateMinusTwoHours;
         Date endDatePlusTwoHours;
         Calendar c = Calendar.getInstance();
@@ -298,50 +293,45 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
 
         for (Map.Entry<CarModelEntity, Integer> entry : availableCars.entrySet()) {
             CarModelEntity carModelEntity = entry.getKey();
-            counter = 0;
+            counter = entry.getValue();
             for (ReservationEntity reservation : carModelEntity.getReservations()) {
                 if (!reservation.isCancelled()) {
                     OutletEntity returnOutlet = reservation.getReturnOutlet();
                     OutletEntity pickupOutlet = reservation.getPickupOutlet();
-                    //Case 1: Incoming reservation starts before but ends during existing reservation
+                        //Case 1: Incoming reservation starts before but ends during existing reservation
                     if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate()) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
                         counter--;
                         System.out.println("Case 1");
-                    }
-                    //Case 2: Incoming reservation starts during and ends during existing reservation
-                    else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
+                        //Case 2: Incoming reservation starts during and ends during existing reservation
+                    } else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
                         counter--;
                         System.out.println("Case 2");
-                    }
-                    //Case 3: Incoming reservation starts before but ends after existing reservation
-                    else if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate())) {
+                        //Case 3: Incoming reservation starts before but ends after existing reservation
+                    } else if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate())) {
                         counter--;
                         System.out.println("Case 3");
-                    }
-                    //Case 4: Incoming reservation starts during but ends during exising reservation
-                    else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && startDate.before(reservation.getEndDate())) {
+                        //Case 4: Incoming reservation starts during but ends during exising reservation
+                    } else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && startDate.before(reservation.getEndDate())) {
                         counter--;
                         System.out.println("Case 4");
-                    }
-                    //Case 5: Incoming reservation starts after existing reservation but different outlet and less than 2 hours apart
-                    else if (!returnOutlet.equals(incPickupOutlet) && startDateMinusTwoHours.before(reservation.getEndDate()) && startDateMinusTwoHours.after(reservation.getStartDate())) {
+                        //Case 5: Incoming reservation starts after existing reservation but different outlet and less than 2 hours apart
+                    } else if (!returnOutlet.equals(incPickupOutlet) && startDateMinusTwoHours.before(reservation.getEndDate()) && startDateMinusTwoHours.after(reservation.getStartDate())) {
                         counter--;
                         System.out.println("Case 5");
-                    }
-                    //Case 6: Incoming reservation starts before existing reservation but different outlet and less than 2 hours apart
-                    else if (!pickupOutlet.equals(incReturnOutlet) && endDatePlusTwoHours.after(reservation.getStartDate()) && endDatePlusTwoHours.before(reservation.getEndDate())) {
+                        //Case 6: Incoming reservation starts before existing reservation but different outlet and less than 2 hours apart
+                    } else if (!pickupOutlet.equals(incReturnOutlet) && endDatePlusTwoHours.after(reservation.getStartDate()) && endDatePlusTwoHours.before(reservation.getEndDate())) {
                         counter--;
                         System.out.println("Case 6");
                     }
                 }
             }
             if (counter > 0) {
-                availableCategories.add(entry.getKey());
+                availableModels.add(entry.getKey());
             }
-            System.out.println("Available Count of " + carModelEntity.getMake() + " " + carModelEntity.getModel() + " is " + counter);
+            System.out.println("Available Count of " + carModelEntity.getCarCategory() + " is " + counter);
         }
 
-        return availableCategories;
+        return availableModels;
     }
     
     @Override
