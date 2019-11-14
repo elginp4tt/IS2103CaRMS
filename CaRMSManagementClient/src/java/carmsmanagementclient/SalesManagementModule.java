@@ -531,7 +531,6 @@ public class SalesManagementModule {
                 carEntity.setColour(colour);
                 carSessionBeanRemote.createCarEntity(carEntity);
                 outletEntity.getCars().add(carEntity);
-                outletSessionBeanRemote.updateOutletEntity(outletEntity);
             } else {
                 throw new CarModelIsDisabledException("Car model is disabled");
             }

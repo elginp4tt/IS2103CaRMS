@@ -8,6 +8,8 @@ package ejb.session.stateless;
 import entity.RentalRateEntity;
 import exception.RentalRateNotFoundException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -75,5 +77,17 @@ public class RentalRateSessionBean implements RentalRateSessionBeanRemote, Renta
         Query query = em.createQuery("SELECT r FROM RentalRateEntity r WHERE r.carCategory.carCategoryId = :inCarCategory");
         query.setParameter("inCarCategory", carCategoryId);
         return query.getResultList();
+    }
+    
+    @Override
+    public void setRentalRateAsUsed(long rentalRateId){
+        
+        try {
+            RentalRateEntity rentalRateEntity = retrieveRentalRateEntityByRentalRateId(rentalRateId);
+            rentalRateEntity.setUsed(true);
+            updateRentalRateEntity(rentalRateEntity);
+        } catch (RentalRateNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }

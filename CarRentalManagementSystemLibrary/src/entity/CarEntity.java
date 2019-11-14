@@ -60,10 +60,6 @@ public class CarEntity implements Serializable {
     @JoinColumn(nullable = true)
     private ReservationEntity currentReservation;
     
-    @OneToMany
-    @JoinColumn(nullable = true)
-    private List<ReservationEntity> reservations;
-    
     @ManyToOne(optional = true)
     @JoinColumn(nullable = true)
     private OutletEntity currentOutlet;
@@ -74,7 +70,6 @@ public class CarEntity implements Serializable {
     
 
     public CarEntity() {
-        this.reservations = new ArrayList<>();
         this.currentReservation = null;
     }
 
@@ -273,20 +268,6 @@ public class CarEntity implements Serializable {
      */
     public void setUsed(boolean used) {
         this.used = used;
-    }
-
-    /**
-     * @return the reservations
-     */
-    public List<ReservationEntity> getReservations() {
-        return reservations;
-    }
-
-    /**
-     * @param reservations the reservations to set
-     */
-    public void setReservations(List<ReservationEntity> reservations) {
-        this.reservations = reservations;
     }
 
 }

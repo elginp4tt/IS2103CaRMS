@@ -22,4 +22,6 @@ public interface RentalRateSessionBeanRemote {
     public void deleteRentalRateEntity(long rentalRateId) throws RentalRateNotFoundException;
     
     public List<RentalRateEntity> retrieveAllRentalRatesByCarCategoryId(long carCategoryId);
+    
+    public void setRentalRateAsUsed(long rentalRateId);
 }

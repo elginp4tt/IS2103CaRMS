@@ -8,19 +8,14 @@ package ejb.session.stateless;
 import entity.CarCategoryEntity;
 import entity.CarEntity;
 import entity.CarModelEntity;
-import entity.CustomerEntity;
 import entity.DispatchEntity;
 import entity.OutletEntity;
-import entity.PartnerEntity;
 import entity.RentalRateEntity;
 import entity.ReservationEntity;
-import exception.CarCategoryNotFoundException;
-import exception.CarModelNotFoundException;
 import exception.NoCarModelsException;
 import exception.NoCarsException;
 import exception.NoRentalRatesFoundException;
 import exception.NullCurrentOutletException;
-import exception.OutletNotFoundException;
 import exception.ReservationNoModelNoCategoryException;
 import exception.ReservationNotFoundException;
 import java.util.ArrayList;
@@ -28,10 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -59,15 +52,6 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
 
     @EJB
     private DispatchSessionBeanLocal dispatchSessionBeanLocal;
-
-    @EJB
-    private OutletSessionBeanLocal outletSessionBeanLocal;
-
-    @EJB
-    private CustomerSessionBeanLocal customerSessionBeanLocal;
-
-    @EJB
-    private PartnerSessionBeanLocal partnerSessionBeanLocal;
 
     @EJB
     private RentalRateSessionBeanLocal rentalRateSessionBeanLocal;

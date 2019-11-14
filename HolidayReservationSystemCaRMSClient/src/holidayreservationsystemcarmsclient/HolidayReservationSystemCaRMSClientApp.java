@@ -5,15 +5,12 @@
  */
 package holidayreservationsystemcarmsclient;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -104,8 +101,8 @@ public class HolidayReservationSystemCaRMSClientApp {
                     System.out.println("Car Category: " + reservationEntity.getCarCategory().getCarCategory());
                     System.out.println("Car Model: " + reservationEntity.getCarModel().getModel());
                     System.out.println("Car Make: " + reservationEntity.getCarModel().getMake());
-                    System.out.println("Car Pick up location: " + reservationEntity.getPickupOutlet().getAddress());
-                    System.out.println("Car Return location: " + reservationEntity.getReturnOutlet().getAddress());
+                    System.out.println("Car Pick up location: " + reservationEntity.getPickupOutlet().getName());
+                    System.out.println("Car Return location: " + reservationEntity.getReturnOutlet().getName());
 
                 } catch (ReservationNotFoundException_Exception ex) {
                     System.out.println(ex.getMessage());
@@ -121,9 +118,9 @@ public class HolidayReservationSystemCaRMSClientApp {
                     if (reservation.getCarModel() == null) {
                         System.out.println("Car Category: " + reservation.getCarCategory().getCarCategory());
                     } else {
-                        System.out.println("Car Category: " + reservation.getCarCategory().getCarCategory() + " Car Model: " + reservation.getCarModel().getMake() + " " + reservation.getCarModel().getModel());
+                        System.out.println("Car Category: " + reservation.getCarCategory().getCarCategory() + "| Car Model: " + reservation.getCarModel().getMake() + " " + reservation.getCarModel().getModel());
                     }
-                    System.out.println("Pickup Outlet: " + reservation.getPickupOutlet().getName() + " Return Outlet: " + reservation.getReturnOutlet().getName());
+                    System.out.println("Pickup Outlet: " + reservation.getPickupOutlet().getName() + "| Return Outlet: " + reservation.getReturnOutlet().getName() + "| Status: " + reservation.isCancelled());
                 }
                 break;
 
@@ -301,14 +298,40 @@ public class HolidayReservationSystemCaRMSClientApp {
             }
 
             while (true) {
-                System.out.println("Please enter customer email");
-                String email = sc.next();
-                sc.nextLine();
-                try {
-                    customerEntity = retrieveCustomerEntityByEmail(email);
-                    break;
-                } catch (CustomerNotFoundException_Exception ex) {
-                    System.out.println(ex.getMessage());
+                System.out.println("Press 1 to book for an existing customer, and 2 for a new customer");
+
+                int response = sc.nextInt();
+
+                if (response == 1) {
+                    System.out.println("Please enter customer email");
+                    String email = sc.next();
+                    sc.nextLine();
+                    try {
+                        customerEntity = retrieveCustomerEntityByEmail(email);
+                        break;
+                    } catch (CustomerNotFoundException_Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                } else if (response == 2) {
+                    System.out.print("Enter their username: ");
+                    String username = sc.nextLine().trim();
+                    System.out.print("Enter their password: ");
+                    String password = sc.nextLine().trim();
+                    System.out.print("Enter their email: ");
+                    String email = sc.nextLine().trim();
+                    System.out.print("Enter their phone Nnumber: ");
+                    String phoneNum = sc.nextLine().trim();
+                    System.out.print("Enter their passport number: ");
+                    String passportNum = sc.nextLine().trim();
+                    customerEntity = new CustomerEntity();
+                    customerEntity.setUsername(username);
+                    customerEntity.setPassword(password);
+                    customerEntity.setEmail(email);
+                    customerEntity.setMobilePhoneNumber(phoneNum);
+                    customerEntity.setPassportNumber(passportNum);
+                    createCustomerEntity(customerEntity);
+                    
+                    partnerEntity.getCustomers().add(customerEntity);
                 }
             }
 
@@ -345,16 +368,15 @@ public class HolidayReservationSystemCaRMSClientApp {
                     for (RentalRateEntity rentalRateEntity : rentalRates) {
                         price = price + rentalRateEntity.getDailyRate();
                     }
-                    
+
                     ReservationEntity reservation = new ReservationEntity();
-                    reservation = new ReservationEntity();
                     reservation.setPaid(paid);
                     reservation.setCreditCardNumber(creditCardNumber);
                     reservation.setCvv(cvv);
                     reservation.setStartDate(xmlStartDate);
                     reservation.setEndDate(xmlEndDate);
                     reservation.setCustomer(customerEntity);
-                    reservation.setPickupOutlet(incReturnOutlet);
+                    reservation.setPickupOutlet(incPickupOutlet);
                     reservation.setReturnOutlet(incReturnOutlet);
                     reservation.setCarCategory(carCategory);
                     reservation.setPartner(partnerEntity);
@@ -366,8 +388,7 @@ public class HolidayReservationSystemCaRMSClientApp {
                     long reservationId = createReservationEntity(reservation);
 
                     for (RentalRateEntity rentalRate : rentalRates) {
-                        rentalRate.setUsed(true);
-                        updateRentalRateEntity(rentalRate);
+                        setRentalRateAsUsed(rentalRate.getRentalRateId());
                     }
 
                     if (!carCategory.getReservations().contains(reservation)) {
@@ -506,12 +527,6 @@ public class HolidayReservationSystemCaRMSClientApp {
         return port.retrieveCustomerEntityByEmail(arg0);
     }
 
-    private static OutletEntity retrieveOutletEntityByName(java.lang.String arg0) throws OutletNotFoundException_Exception {
-        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
-        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
-        return port.retrieveOutletEntityByName(arg0);
-    }
-
     private static RentalRateEntity retrieveRentalRateEntityByRentalRateId(long arg0) throws RentalRateNotFoundException_Exception {
         ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
@@ -540,6 +555,24 @@ public class HolidayReservationSystemCaRMSClientApp {
         ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
         port.updateReservationEntity(arg0);
+    }
+
+    private static OutletEntity retrieveOutletEntityByName(java.lang.String arg0) throws OutletNotFoundException_Exception {
+        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
+        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
+        return port.retrieveOutletEntityByName(arg0);
+    }
+
+    private static long createCustomerEntity(ws.client.CustomerEntity arg0) {
+        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
+        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
+        return port.createCustomerEntity(arg0);
+    }
+
+    private static void setRentalRateAsUsed(long arg0) {
+        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
+        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
+        port.setRentalRateAsUsed(arg0);
     }
 
 }

@@ -32,7 +32,6 @@ public class PartnerEntity implements Serializable {
     @Column(nullable = false, length = 64)
     private String name;
     
-    @OneToMany(mappedBy = "partner")
     private ArrayList<CustomerEntity> customers;
     
     @OneToMany(mappedBy = "partner")

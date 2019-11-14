@@ -20,6 +20,10 @@
 
 <xs:element name="calculateTotalRentalRateResponse" type="tns:calculateTotalRentalRateResponse"/>
 
+<xs:element name="createCustomerEntity" type="tns:createCustomerEntity"/>
+
+<xs:element name="createCustomerEntityResponse" type="tns:createCustomerEntityResponse"/>
+
 <xs:element name="createReservationEntity" type="tns:createReservationEntity"/>
 
 <xs:element name="createReservationEntityResponse" type="tns:createReservationEntityResponse"/>
@@ -67,6 +71,10 @@
 <xs:element name="retrieveReservationsByPartnerId" type="tns:retrieveReservationsByPartnerId"/>
 
 <xs:element name="retrieveReservationsByPartnerIdResponse" type="tns:retrieveReservationsByPartnerIdResponse"/>
+
+<xs:element name="setRentalRateAsUsed" type="tns:setRentalRateAsUsed"/>
+
+<xs:element name="setRentalRateAsUsedResponse" type="tns:setRentalRateAsUsedResponse"/>
 
 <xs:element name="updateRentalRateEntity" type="tns:updateRentalRateEntity"/>
 
@@ -163,7 +171,6 @@
 <xs:element name="disabled" type="xs:boolean"/>
 <xs:element name="licensePlate" type="xs:string" minOccurs="0"/>
 <xs:element name="location" type="xs:string" minOccurs="0"/>
-<xs:element name="reservations" type="tns:reservationEntity" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
 <xs:element name="returnOutlet" type="tns:outletEntity" minOccurs="0"/>
 <xs:element name="returnTime" type="xs:dateTime" minOccurs="0"/>
 <xs:element name="status" type="tns:carStatusEnum" minOccurs="0"/>
@@ -206,6 +213,7 @@
 
 <xs:complexType name="rentalRateEntity">
 <xs:sequence>
+<xs:element name="carCategory" type="tns:carCategoryEntity" minOccurs="0"/>
 <xs:element name="dailyRate" type="xs:double"/>
 <xs:element name="disabled" type="xs:boolean"/>
 <xs:element name="endDate" type="xs:dateTime" minOccurs="0"/>
@@ -324,6 +332,21 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="retrieveCarCategoriesWithConditions">
+<xs:sequence>
+<xs:element name="arg0" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="arg1" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="arg2" type="tns:outletEntity" minOccurs="0"/>
+<xs:element name="arg3" type="tns:outletEntity" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveCarCategoriesWithConditionsResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:carCategoryEntity" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="retrieveCarModelEntityByCarModelId">
 <xs:sequence>
 <xs:element name="arg0" type="xs:long"/>
@@ -339,21 +362,6 @@
 <xs:complexType name="CarModelNotFoundException">
 <xs:sequence>
 <xs:element name="message" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="retrieveCarCategoriesWithConditions">
-<xs:sequence>
-<xs:element name="arg0" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="arg1" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="arg2" type="tns:outletEntity" minOccurs="0"/>
-<xs:element name="arg3" type="tns:outletEntity" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="retrieveCarCategoriesWithConditionsResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:carCategoryEntity" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -450,6 +458,28 @@
 <xs:complexType name="retrieveCarModelsWithConditionsResponse">
 <xs:sequence>
 <xs:element name="return" type="tns:carModelEntity" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setRentalRateAsUsed">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setRentalRateAsUsedResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="createCustomerEntity">
+<xs:sequence>
+<xs:element name="arg0" type="tns:customerEntity" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createCustomerEntityResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long"/>
 </xs:sequence>
 </xs:complexType>
 

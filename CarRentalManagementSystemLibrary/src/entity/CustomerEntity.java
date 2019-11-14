@@ -42,10 +42,6 @@ public class CustomerEntity implements Serializable {
     
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private ArrayList<ReservationEntity> reservations;
-    
-    @ManyToOne(optional = true)
-    @JoinColumn(nullable = true)
-    private PartnerEntity partner;
 
     public CustomerEntity() {
         this.reservations = new ArrayList<>();
@@ -175,20 +171,5 @@ public class CustomerEntity implements Serializable {
      */
     public void setReservations(ArrayList<ReservationEntity> reservations) {
         this.reservations = reservations;
-    }
-
-    /**
-     * @return the partner
-     */
-    @XmlTransient
-    public PartnerEntity getPartner() {
-        return partner;
-    }
-
-    /**
-     * @param partner the partner to set
-     */
-    public void setPartner(PartnerEntity partner) {
-        this.partner = partner;
     }
 }

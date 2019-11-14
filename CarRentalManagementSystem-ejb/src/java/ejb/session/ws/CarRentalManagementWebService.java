@@ -22,16 +22,12 @@ import exception.CarCategoryNotFoundException;
 import exception.CarModelNotFoundException;
 import exception.CustomerNotFoundException;
 import exception.InvalidLoginException;
-import exception.NoCarsException;
 import exception.NoRentalRatesFoundException;
 import exception.OutletNotFoundException;
 import exception.RentalRateNotFoundException;
 import exception.ReservationNotFoundException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -64,6 +60,10 @@ public class CarRentalManagementWebService {
     @EJB
     private ReservationSessionBeanLocal reservationSessionBean;
     
+    @WebMethod
+    public long createCustomerEntity(@WebParam CustomerEntity customerEntity){
+        return customerSessionBean.createCustomerEntity(customerEntity);
+    }
     
     @WebMethod
     public PartnerEntity doLogin(@WebParam String username, @WebParam String password) throws InvalidLoginException {
@@ -138,6 +138,11 @@ public class CarRentalManagementWebService {
     @WebMethod
     public long createReservationEntity(@WebParam ReservationEntity reservationEntity){
         return reservationSessionBean.createReservationEntity(reservationEntity);
+    }
+    
+    @WebMethod
+    public void setRentalRateAsUsed(@WebParam long rentalRateId){
+        rentalRateSessionBean.setRentalRateAsUsed(rentalRateId);
     }
 }
 
