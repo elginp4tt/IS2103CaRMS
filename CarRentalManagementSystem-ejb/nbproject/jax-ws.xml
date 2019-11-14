@@ -4,9 +4,6 @@
     <service name="CarRentalManagementWebService">
       <implementation-class>ejb.session.ws.CarRentalManagementWebService</implementation-class>
     </service>
-    <service name="CarRMSWebService">
-      <implementation-class>ejb.session.ws.CarRMSWebService</implementation-class>
-    </service>
   </services>
   <clients/>
 </jax-ws>

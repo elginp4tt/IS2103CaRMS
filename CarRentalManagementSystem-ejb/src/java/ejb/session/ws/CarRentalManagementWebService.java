@@ -25,9 +25,11 @@ import exception.NoCarsException;
 import exception.NoRentalRatesFoundException;
 import exception.OutletNotFoundException;
 import exception.ReservationNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -78,35 +80,46 @@ public class CarRentalManagementWebService {
         return outletSessionBean.retrieveOutletEntityByName(outletName);
     }
     
-//    @WebMethod
-//    public HashMap<CarCategoryEntity, Integer> retrieveCarCategoriesWithConditions(@WebParam Date startDate, @WebParam Date endDate, @WebParam OutletEntity incPickupOutlet, @WebParam OutletEntity incReturnOutlet){
-//        return reservationSessionBean.retrieveCarCategoriesWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet);
-//    }
-//    
-//    @WebMethod
-//    public List<RentalRateEntity> calculateTotalRentalRate(@WebParam CarCategoryEntity carCategory, @WebParam Date startDate, @WebParam Date endDate) throws NoRentalRatesFoundException{
-//        return reservationSessionBean.calculateTotalRentalRate(carCategory, startDate, endDate);
-//    }
-//    
-//    @WebMethod
-//    public CarCategoryEntity retrieveCarCategoryEntityByCarCategoryId(@WebParam long carCategoryId)throws CarCategoryNotFoundException{
-//        return carSessionBean.retrieveCarCategoryEntityByCarCategoryId(carCategoryId);
-//    }
-//    @WebMethod
-//    public HashMap<CarModelEntity, Integer> retrieveCarModelsWithConditions(@WebParam Date startDate, @WebParam Date endDate, @WebParam OutletEntity incPickupOutlet, @WebParam OutletEntity incReturnOutlet, @WebParam CarCategoryEntity carCategory){
-//        return reservationSessionBean.retrieveCarModelsWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet, carCategory);
-//    }
-//    
-//    @WebMethod
-//    public CarModelEntity retrieveCarModelEntityByCarModelId(@WebParam long carModelId)throws CarModelNotFoundException{
-//        return carSessionBean.retrieveCarModelEntityByCarModelId(carModelId);
-//    }
-//    
-//    @WebMethod
-//    public void reserveAvailableCar(@WebParam CarCategoryEntity carCategory, @WebParam CarModelEntity carModel, @WebParam Date startDate, @WebParam Date endDate, @WebParam CustomerEntity customerEntity, @WebParam OutletEntity incPickupOutlet, @WebParam OutletEntity incReturnOutlet, @WebParam PartnerEntity partnerEntity) throws NoRentalRatesFoundException {
-//        reservationSessionBean.reserveAvailableCar(carCategory, carModel, startDate, endDate, customerEntity, incPickupOutlet, incReturnOutlet, partnerEntity);
-//    }
-//    
+    @WebMethod
+    public List<CarCategoryEntity> retrieveCarCategoriesWithConditions(@WebParam Date startDate, @WebParam Date endDate, @WebParam OutletEntity incPickupOutlet, @WebParam OutletEntity incReturnOutlet){
+        HashMap<CarCategoryEntity, Integer> hashmap = reservationSessionBean.retrieveCarCategoriesWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet);
+        List<CarCategoryEntity> cars = new ArrayList<CarCategoryEntity>();
+        for (CarCategoryEntity carCategoryEntity : hashmap.keySet()){
+            cars.add(carCategoryEntity);
+        }
+        return cars;
+    }
+    
+    @WebMethod
+    public List<RentalRateEntity> calculateTotalRentalRate(@WebParam CarCategoryEntity carCategory, @WebParam Date startDate, @WebParam Date endDate) throws NoRentalRatesFoundException{
+        return reservationSessionBean.calculateTotalRentalRate(carCategory, startDate, endDate);
+    }
+    
+    @WebMethod
+    public CarCategoryEntity retrieveCarCategoryEntityByCarCategoryId(@WebParam long carCategoryId)throws CarCategoryNotFoundException{
+        return carSessionBean.retrieveCarCategoryEntityByCarCategoryId(carCategoryId);
+    }
+    
+    @WebMethod
+    public List<CarModelEntity> retrieveCarModelsWithConditions(@WebParam Date startDate, @WebParam Date endDate, @WebParam OutletEntity incPickupOutlet, @WebParam OutletEntity incReturnOutlet, @WebParam CarCategoryEntity carCategory){
+        HashMap<CarModelEntity, Integer> hashmap = reservationSessionBean.retrieveCarModelsWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet, carCategory);
+        List<CarModelEntity> cars = new ArrayList<CarModelEntity>();
+        for (CarModelEntity carModelEntity : hashmap.keySet()){
+            cars.add(carModelEntity);
+        }
+        return cars;
+    }
+    
+    @WebMethod
+    public CarModelEntity retrieveCarModelEntityByCarModelId(@WebParam long carModelId)throws CarModelNotFoundException{
+        return carSessionBean.retrieveCarModelEntityByCarModelId(carModelId);
+    }
+    
+    @WebMethod
+    public void reserveAvailableCar(@WebParam CarCategoryEntity carCategory, @WebParam CarModelEntity carModel, @WebParam Date startDate, @WebParam Date endDate, @WebParam CustomerEntity customerEntity, @WebParam OutletEntity incPickupOutlet, @WebParam OutletEntity incReturnOutlet, @WebParam PartnerEntity partnerEntity) throws NoRentalRatesFoundException {
+        reservationSessionBean.reserveAvailableCar(carCategory, carModel, startDate, endDate, customerEntity, incPickupOutlet, incReturnOutlet, partnerEntity);
+    }
+    
     @WebMethod
     public List<ReservationEntity> retrieveReservationsByPartnerId(@WebParam Long partnerId){
         return reservationSessionBean.retrieveReservationsByPartnerId(partnerId);
