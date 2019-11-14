@@ -46,7 +46,8 @@ public class ReservationEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date endDate;
     
-    private List<Long> rentalRates;
+    @Column(nullable = true)
+    private double price;
     
     @OneToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -88,10 +89,9 @@ public class ReservationEntity implements Serializable {
     private CarReturnEntity carReturn;
 
     public ReservationEntity() {
-        this.rentalRates = new ArrayList<>();
     }
 
-    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, List<Long> rentalRates) {
+    public ReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, double price) {
         this();
         this.paid = paid;
         this.creditCardNumber = creditCardNumber;
@@ -101,7 +101,7 @@ public class ReservationEntity implements Serializable {
         this.customer = customer;
         this.pickupOutlet = pickupOutlet;
         this.returnOutlet = returnOutlet;
-        this.rentalRates = rentalRates;
+        this.price = price;
     }
 
     public Long getReservationId() {
@@ -363,17 +363,17 @@ public class ReservationEntity implements Serializable {
     }
 
     /**
-     * @return the rentalRates
+     * @return the price
      */
-    public List<Long> getRentalRates() {
-        return rentalRates;
+    public double getPrice() {
+        return price;
     }
 
     /**
-     * @param rentalRates the rentalRates to set
+     * @param price the price to set
      */
-    public void setRentalRates(List<Long> rentalRates) {
-        this.rentalRates = rentalRates;
+    public void setPrice(double price) {
+        this.price = price;
     }
     
 }

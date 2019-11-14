@@ -38,11 +38,11 @@ public interface ReservationSessionBeanRemote {
 
     public HashMap<CarCategoryEntity, Integer> retrieveCarCategoriesWithCarQuantity();
 
-    public HashMap<CarCategoryEntity, Integer> retrieveCarCategoriesWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet);
+    public List<CarCategoryEntity> retrieveCarCategoriesWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet);
 
     public HashMap<CarModelEntity, Integer> retrieveCarModelsForCarCategoryWithCarQuantity(CarCategoryEntity carCategory);
 
-    public HashMap<CarModelEntity, Integer> retrieveCarModelsWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet, CarCategoryEntity carCategory);
+    public List<CarModelEntity> retrieveCarModelsWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet, CarCategoryEntity carCategory);
 
     public long createReservationEntity(ReservationEntity reservationEntity);
     

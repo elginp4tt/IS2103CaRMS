@@ -197,8 +197,9 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     }
 
     @Override
-    public HashMap<CarCategoryEntity, Integer> retrieveCarCategoriesWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet) {
+    public List<CarCategoryEntity> retrieveCarCategoriesWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet) {
         HashMap<CarCategoryEntity, Integer> availableCars = retrieveCarCategoriesWithCarQuantity();
+        List<CarCategoryEntity> availableCategories = new ArrayList<CarCategoryEntity>();
         Date startDateMinusTwoHours;
         Date endDatePlusTwoHours;
         Calendar c = Calendar.getInstance();
@@ -210,51 +211,54 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         c.add(Calendar.HOUR_OF_DAY, 2);
         endDatePlusTwoHours = c.getTime();
 
+        int counter;
+
         for (Map.Entry<CarCategoryEntity, Integer> entry : availableCars.entrySet()) {
             CarCategoryEntity carCategoryEntity = entry.getKey();
-
+            counter = entry.getValue();
             for (ReservationEntity reservation : carCategoryEntity.getReservations()) {
                 if (!reservation.isCancelled()) {
                     OutletEntity returnOutlet = reservation.getReturnOutlet();
                     OutletEntity pickupOutlet = reservation.getPickupOutlet();
                     //Case 1: Incoming reservation starts before but ends during existing reservation
                     if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate()) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
-                        availableCars.replace(carCategoryEntity, availableCars.get(carCategoryEntity) - 1);
+                        counter--;
+                        System.out.println("Case 1");
                     }
                     //Case 2: Incoming reservation starts during and ends during existing reservation
                     if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
-                        availableCars.replace(carCategoryEntity, availableCars.get(carCategoryEntity) - 1);
+                        counter--;
+                        System.out.println("Case 2");
                     }
                     //Case 3: Incoming reservation starts before but ends after existing reservation
                     if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate())) {
-                        availableCars.replace(carCategoryEntity, availableCars.get(carCategoryEntity) - 1);
+                        counter--;
+                        System.out.println("Case 3");
                     }
                     //Case 4: Incoming reservation starts during but ends during exising reservation
                     if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && startDate.before(reservation.getEndDate())) {
-                        availableCars.replace(carCategoryEntity, availableCars.get(carCategoryEntity) - 1);
+                        counter--;
+                        System.out.println("Case 4");
                     }
                     //Case 5: Incoming reservation starts after existing reservation but different outlet and less than 2 hours apart
                     if (!returnOutlet.equals(incPickupOutlet) && startDateMinusTwoHours.before(reservation.getEndDate()) && startDateMinusTwoHours.after(reservation.getStartDate())) {
-                        availableCars.replace(carCategoryEntity, availableCars.get(carCategoryEntity) - 1);
+                        counter--;
+                        System.out.println("Case 5");
                     }
                     //Case 6: Incoming reservation starts before existing reservation but different outlet and less than 2 hours apart
                     if (!pickupOutlet.equals(incReturnOutlet) && endDatePlusTwoHours.after(reservation.getStartDate()) && endDatePlusTwoHours.before(reservation.getEndDate())) {
-                        availableCars.replace(carCategoryEntity, availableCars.get(carCategoryEntity) - 1);
+                        counter--;
+                        System.out.println("Case 6");
                     }
                 }
             }
-        }
-
-        Iterator it = availableCars.entrySet().iterator();
-
-        while (it.hasNext()) {
-            Map.Entry<CarCategoryEntity, Integer> entry = (Map.Entry<CarCategoryEntity, Integer>) it.next();
-            if (entry.getValue() <= 0) {
-                it.remove();
+            if (counter > 0) {
+                availableCategories.add(entry.getKey());
             }
+            System.out.println("Available Count of " + carCategoryEntity.getCarCategory() + " is " + counter);
         }
 
-        return availableCars;
+        return availableCategories;
     }
 
     @Override
@@ -276,8 +280,9 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     }
 
     @Override
-    public HashMap<CarModelEntity, Integer> retrieveCarModelsWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet, CarCategoryEntity carCategory) {
+    public List<CarModelEntity> retrieveCarModelsWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet, CarCategoryEntity carCategory) {
         HashMap<CarModelEntity, Integer> availableCars = retrieveCarModelsForCarCategoryWithCarQuantity(carCategory);
+        List<CarModelEntity> availableCategories = new ArrayList<CarModelEntity>();
         Date startDateMinusTwoHours;
         Date endDatePlusTwoHours;
         Calendar c = Calendar.getInstance();
@@ -289,51 +294,54 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         c.add(Calendar.HOUR_OF_DAY, 2);
         endDatePlusTwoHours = c.getTime();
 
+        int counter;
+
         for (Map.Entry<CarModelEntity, Integer> entry : availableCars.entrySet()) {
             CarModelEntity carModelEntity = entry.getKey();
-
+            counter = 0;
             for (ReservationEntity reservation : carModelEntity.getReservations()) {
                 if (!reservation.isCancelled()) {
                     OutletEntity returnOutlet = reservation.getReturnOutlet();
                     OutletEntity pickupOutlet = reservation.getPickupOutlet();
                     //Case 1: Incoming reservation starts before but ends during existing reservation
                     if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate()) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
-                        availableCars.replace(carModelEntity, availableCars.get(carModelEntity) - 1);
+                        counter--;
+                        System.out.println("Case 1");
                     }
                     //Case 2: Incoming reservation starts during and ends during existing reservation
                     if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
-                        availableCars.replace(carModelEntity, availableCars.get(carModelEntity) - 1);
+                        counter--;
+                        System.out.println("Case 2");
                     }
                     //Case 3: Incoming reservation starts before but ends after existing reservation
                     if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate())) {
-                        availableCars.replace(carModelEntity, availableCars.get(carModelEntity) - 1);
+                        counter--;
+                        System.out.println("Case 3");
                     }
                     //Case 4: Incoming reservation starts during but ends during exising reservation
                     if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && startDate.before(reservation.getEndDate())) {
-                        availableCars.replace(carModelEntity, availableCars.get(carModelEntity) - 1);
+                        counter--;
+                        System.out.println("Case 4");
                     }
                     //Case 5: Incoming reservation starts after existing reservation but different outlet and less than 2 hours apart
                     if (!returnOutlet.equals(incPickupOutlet) && startDateMinusTwoHours.before(reservation.getEndDate()) && startDateMinusTwoHours.after(reservation.getStartDate())) {
-                        availableCars.replace(carModelEntity, availableCars.get(carModelEntity) - 1);
+                        counter--;
+                        System.out.println("Case 5");
                     }
                     //Case 6: Incoming reservation starts before existing reservation but different outlet and less than 2 hours apart
                     if (!pickupOutlet.equals(incReturnOutlet) && endDatePlusTwoHours.after(reservation.getStartDate()) && endDatePlusTwoHours.before(reservation.getEndDate())) {
-                        availableCars.replace(carModelEntity, availableCars.get(carModelEntity) - 1);
+                        counter--;
+                        System.out.println("Case 6");
                     }
                 }
             }
-        }
-
-        Iterator it = availableCars.entrySet().iterator();
-
-        while (it.hasNext()) {
-            Map.Entry<CarModelEntity, Integer> entry = (Map.Entry<CarModelEntity, Integer>) it.next();
-            if (entry.getValue() <= 0) {
-                it.remove();
+            if (counter > 0) {
+                availableCategories.add(entry.getKey());
             }
+            System.out.println("Available Count of " + carModelEntity.getMake() + " " + carModelEntity.getModel() + " is " + counter);
         }
 
-        return availableCars;
+        return availableCategories;
     }
 
 //    @Override

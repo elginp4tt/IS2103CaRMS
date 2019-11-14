@@ -277,18 +277,18 @@ public class MainApp {
                 System.out.println("Please try again, no outlet with that name is found");
             }
         }
-        HashMap<CarCategoryEntity, Integer> availableCarCategories = reservationSessionBeanRemote.retrieveCarCategoriesWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet);
+        List<CarCategoryEntity> availableCarCategories = reservationSessionBeanRemote.retrieveCarCategoriesWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet);
         HashMap<CarCategoryEntity, Double> carCategoryPrice = new HashMap<CarCategoryEntity, Double>();
 
-        for (Map.Entry<CarCategoryEntity, Integer> entry : availableCarCategories.entrySet()) {
+        for (CarCategoryEntity carCategoryEntity : availableCarCategories) {
             try {
-                List<RentalRateEntity> rentalRates = reservationSessionBeanRemote.calculateTotalRentalRate(entry.getKey(), startDate, endDate);
+                List<RentalRateEntity> rentalRates = reservationSessionBeanRemote.calculateTotalRentalRate(carCategoryEntity, startDate, endDate);
                 double carRentalRate = 0;
                 for (RentalRateEntity rentalRate : rentalRates) {
                     carRentalRate = carRentalRate + rentalRate.getDailyRate();
                 }
-                carCategoryPrice.put(entry.getKey(), carRentalRate);
-                System.out.println("ID: " + entry.getKey().getCarCategoryId() + "Category: " + entry.getKey().getCarCategory() + ", Available Cars: " + entry.getValue() + " Total Rental Price: " + carRentalRate);
+                carCategoryPrice.put(carCategoryEntity, carRentalRate);
+                System.out.println("ID: " + carCategoryEntity.getCarCategoryId() + "Category: " + carCategoryEntity.getCarCategory() + " Total Rental Price: " + carRentalRate);
             } catch (NoRentalRatesFoundException e) {
                 //System.out.println(e.getMessage());
                 //System.out.println("No rental rates found for " + entry.getKey().getCarCategory());
@@ -315,10 +315,10 @@ public class MainApp {
         int option = sc.nextInt();
 
         if (option == 1) {
-            HashMap<CarModelEntity, Integer> availableCarModels = reservationSessionBeanRemote.retrieveCarModelsWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet, carCategory);
+            List<CarModelEntity> availableCarModels = reservationSessionBeanRemote.retrieveCarModelsWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet, carCategory);
 
-            for (Map.Entry<CarModelEntity, Integer> entry : availableCarModels.entrySet()) {
-                System.out.println("ID: " + entry.getKey().getCarModelId() + "Model: " + entry.getKey().getMake() + " " + entry.getKey().getModel() + ", Available Cars: " + entry.getValue());
+            for (CarModelEntity carModelEntity : availableCarModels) {
+                System.out.println("ID: " + carModelEntity.getCarModelId() + "Model: " + carModelEntity.getMake() + " " + carModelEntity.getModel());
             }
 
             System.out.println("Enter ID of car model to reserve, or enter -1 to only select car category");
@@ -366,12 +366,12 @@ public class MainApp {
                     System.out.println("Less than 3 days before pickup – 70% penalty");
                     System.out.println("Please hold on as your reservation is being created and confirmed");
 
-                    List<Long> rentalRatesLong = new ArrayList<Long>();
+                    double price = 0;
                     for (RentalRateEntity rentalRateEntity : rentalRates) {
-                        rentalRatesLong.add(rentalRateEntity.getRentalRateId());
+                        price = price + rentalRateEntity.getDailyRate();
                     }
 
-                    ReservationEntity reservation = new ReservationEntity(paid, creditCardNumber, cvv, startDate, endDate, customerEntity, incPickupOutlet, incReturnOutlet, rentalRatesLong);
+                    ReservationEntity reservation = new ReservationEntity(paid, creditCardNumber, cvv, startDate, endDate, customerEntity, incPickupOutlet, incReturnOutlet, price);
                     reservation.setCarCategory(carCategory);
                     if (carModel != null) {
                         reservation.setCarModel(carModel);
@@ -409,18 +409,10 @@ public class MainApp {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please key in the reservation ID you would like to cancel");
         long reservationId = sc.nextLong();
-        double cost = 0;
 
         try {
             ReservationEntity reservationEntity = reservationSessionBeanRemote.retrieveReservationEntityByReservationId(reservationId);
-            List<Long> rentalRates = reservationEntity.getRentalRates();
-            for (Long rentalRateId : rentalRates) {
-                try {
-                    cost = cost + rentalRateSessionBeanRemote.retrieveRentalRateEntityByRentalRateId(rentalRateId).getDailyRate();
-                } catch (RentalRateNotFoundException ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
+            double cost = reservationEntity.getPrice();
             boolean paid = reservationEntity.isPaid();
 
             Calendar reservationC = new GregorianCalendar();

@@ -9,6 +9,7 @@ import ejb.session.stateless.CarSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.OutletSessionBeanLocal;
 import ejb.session.stateless.PartnerSessionBeanLocal;
+import ejb.session.stateless.RentalRateSessionBeanLocal;
 import ejb.session.stateless.ReservationSessionBeanLocal;
 import entity.CarCategoryEntity;
 import entity.CarModelEntity;
@@ -24,6 +25,7 @@ import exception.InvalidLoginException;
 import exception.NoCarsException;
 import exception.NoRentalRatesFoundException;
 import exception.OutletNotFoundException;
+import exception.RentalRateNotFoundException;
 import exception.ReservationNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +45,9 @@ import javax.ejb.Stateless;
 @WebService(serviceName = "CarRentalManagementWebService")
 @Stateless()
 public class CarRentalManagementWebService {
+
+    @EJB
+    private RentalRateSessionBeanLocal rentalRateSessionBean;
 
     @EJB
     private CarSessionBeanLocal carSessionBean;
@@ -77,12 +82,7 @@ public class CarRentalManagementWebService {
     
     @WebMethod
     public List<CarCategoryEntity> retrieveCarCategoriesWithConditions(@WebParam Date startDate, @WebParam Date endDate, @WebParam OutletEntity incPickupOutlet, @WebParam OutletEntity incReturnOutlet){
-        HashMap<CarCategoryEntity, Integer> hashmap = reservationSessionBean.retrieveCarCategoriesWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet);
-        List<CarCategoryEntity> cars = new ArrayList<CarCategoryEntity>();
-        for (CarCategoryEntity carCategoryEntity : hashmap.keySet()){
-            cars.add(carCategoryEntity);
-        }
-        return cars;
+        return reservationSessionBean.retrieveCarCategoriesWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet);
     }
     
     @WebMethod
@@ -97,12 +97,7 @@ public class CarRentalManagementWebService {
     
     @WebMethod
     public List<CarModelEntity> retrieveCarModelsWithConditions(@WebParam Date startDate, @WebParam Date endDate, @WebParam OutletEntity incPickupOutlet, @WebParam OutletEntity incReturnOutlet, @WebParam CarCategoryEntity carCategory){
-        HashMap<CarModelEntity, Integer> hashmap = reservationSessionBean.retrieveCarModelsWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet, carCategory);
-        List<CarModelEntity> cars = new ArrayList<CarModelEntity>();
-        for (CarModelEntity carModelEntity : hashmap.keySet()){
-            cars.add(carModelEntity);
-        }
-        return cars;
+        return reservationSessionBean.retrieveCarModelsWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet, carCategory);
     }
     
     @WebMethod
@@ -124,10 +119,25 @@ public class CarRentalManagementWebService {
     public CustomerEntity retrieveCustomerEntityByEmail(@WebParam String email) throws CustomerNotFoundException{
         return customerSessionBean.retrieveCustomerEntityByEmail(email);
     }
+    
+    @WebMethod
+    public RentalRateEntity retrieveRentalRateEntityByRentalRateId(@WebParam long rentalRateId) throws RentalRateNotFoundException{
+        return rentalRateSessionBean.retrieveRentalRateEntityByRentalRateId(rentalRateId);
+    }
+    
+    @WebMethod
+    public void updateReservationEntity(@WebParam ReservationEntity reservationEntity){
+        reservationSessionBean.updateReservationEntity(reservationEntity);
+    }
+    
+    @WebMethod
+    public void updateRentalRateEntity(@WebParam RentalRateEntity rentalRateEntity){
+        rentalRateSessionBean.updateRentalRateEntity(rentalRateEntity);
+    }
+    
+    @WebMethod
+    public long createReservationEntity(@WebParam ReservationEntity reservationEntity){
+        return reservationSessionBean.createReservationEntity(reservationEntity);
+    }
 }
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
