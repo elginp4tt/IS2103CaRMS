@@ -88,6 +88,10 @@
 
 <xs:element name="setRentalRateAsUsedResponse" type="tns:setRentalRateAsUsedResponse"/>
 
+<xs:element name="setReservationToCancelledByReservationId" type="tns:setReservationToCancelledByReservationId"/>
+
+<xs:element name="setReservationToCancelledByReservationIdResponse" type="tns:setReservationToCancelledByReservationIdResponse"/>
+
 <xs:element name="updateRentalRateEntity" type="tns:updateRentalRateEntity"/>
 
 <xs:element name="updateRentalRateEntityResponse" type="tns:updateRentalRateEntityResponse"/>
@@ -383,6 +387,16 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="setReservationToCancelledByReservationId">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setReservationToCancelledByReservationIdResponse">
+<xs:sequence/>
+</xs:complexType>
+
 <xs:complexType name="retrieveReservationEntityByReservationId">
 <xs:sequence>
 <xs:element name="arg0" type="xs:long" minOccurs="0"/>
@@ -469,18 +483,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="retrieveCustomerEntityByCustomerId">
-<xs:sequence>
-<xs:element name="arg0" type="xs:long" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="retrieveCustomerEntityByCustomerIdResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:customerEntity" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="retrieveCarModelByReservationId">
 <xs:sequence>
 <xs:element name="arg0" type="xs:long"/>
@@ -496,6 +498,18 @@
 <xs:complexType name="NoCarModelsException">
 <xs:sequence>
 <xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveCustomerEntityByCustomerId">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveCustomerEntityByCustomerIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:customerEntity" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 

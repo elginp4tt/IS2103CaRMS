@@ -27,6 +27,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -134,6 +136,21 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     @Override
     public void updateReservationEntity(ReservationEntity reservationEntity) {
         em.merge(reservationEntity);
+    }
+    
+    
+    @Override
+    public void setReservationToCancelledByReservationId(long reservationId) {
+
+        try {
+            ReservationEntity reservationEntity;
+            reservationEntity = retrieveReservationEntityByReservationId(reservationId);
+            reservationEntity.setCancelled(true);
+            updateReservationEntity(reservationEntity);
+            
+        } catch (ReservationNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Override
@@ -460,27 +477,27 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
             startCalendar.add(Calendar.DATE, 1);
         }
 
-        if ((startDate.getHours() * 60 + startDate.getMinutes()) <= (endDate.getHours() * 60 + endDate.getMinutes())) {
-            double cheapestRateOfDay = -1337;
-            RentalRateEntity chosenRentalRate = null;
-            boolean isFound = false;
-            for (RentalRateEntity rentalRate : carCategoryRates) {
-                Date rentalRateStartDate = rentalRate.getStartDate();
-                Date rentalRateEndDate = rentalRate.getEndDate();
-                if (rentalRateStartDate == null && rentalRateStartDate == null || (rentalRateStartDate.before(endDate) || rentalRateStartDate.equals(endDate)) && (rentalRateEndDate.after(endDate)) || rentalRateEndDate.equals(endDate)) {
-                    if (rentalRate.isDisabled() == false && (cheapestRateOfDay == -1337 || rentalRate.getDailyRate() < cheapestRateOfDay)) {
-                        cheapestRateOfDay = rentalRate.getDailyRate();
-                        chosenRentalRate = rentalRate;
-                        isFound = true;
-                    }
-                }
-            }
-            if (isFound) {
-                rentalRates.add(chosenRentalRate);
-            } else {
-                throw new NoRentalRatesFoundException("Rental Rates not found for current date and category");
-            }
-        }
+//        if ((startDate.getHours() * 60 + startDate.getMinutes()) <= (endDate.getHours() * 60 + endDate.getMinutes())) {
+//            double cheapestRateOfDay = -1337;
+//            RentalRateEntity chosenRentalRate = null;
+//            boolean isFound = false;
+//            for (RentalRateEntity rentalRate : carCategoryRates) {
+//                Date rentalRateStartDate = rentalRate.getStartDate();
+//                Date rentalRateEndDate = rentalRate.getEndDate();
+//                if (rentalRateStartDate == null && rentalRateStartDate == null || (rentalRateStartDate.before(endDate) || rentalRateStartDate.equals(endDate)) && (rentalRateEndDate.after(endDate)) || rentalRateEndDate.equals(endDate)) {
+//                    if (rentalRate.isDisabled() == false && (cheapestRateOfDay == -1337 || rentalRate.getDailyRate() < cheapestRateOfDay)) {
+//                        cheapestRateOfDay = rentalRate.getDailyRate();
+//                        chosenRentalRate = rentalRate;
+//                        isFound = true;
+//                    }
+//                }
+//            }
+//            if (isFound) {
+//                rentalRates.add(chosenRentalRate);
+//            } else {
+//                throw new NoRentalRatesFoundException("Rental Rates not found for current date and category");
+//            }
+//        }
 
         if (!rentalRates.isEmpty()) {
             return rentalRates;

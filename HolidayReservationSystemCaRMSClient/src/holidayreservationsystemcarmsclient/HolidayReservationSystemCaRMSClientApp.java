@@ -11,8 +11,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -112,7 +110,7 @@ public class HolidayReservationSystemCaRMSClientApp {
                     System.out.println("Car Return location: " + reservationEntity.getReturnOutlet().getName());
                     System.out.println("Cancelled : " + reservationEntity.isCancelled());
 
-                } catch (ReservationNotFoundException_Exception | NoCarsException_Exception | NoCarModelsException_Exception ex) {
+                } catch (ReservationNotFoundException_Exception | NoCarsException_Exception | NoCarModelsException_Exception | NullPointerException ex) {
                     System.out.println(ex.getMessage());
                 }
                 break;
@@ -328,6 +326,7 @@ public class HolidayReservationSystemCaRMSClientApp {
                         System.out.println(ex.getMessage());
                     }
                 } else if (response == 2) {
+                    sc.nextLine();
                     System.out.print("Enter their username: ");
                     String username = sc.nextLine().trim();
                     System.out.print("Enter their password: ");
@@ -467,8 +466,7 @@ public class HolidayReservationSystemCaRMSClientApp {
             } else {
                 System.out.println("You will not be charged for your reservation");
             }
-            reservationEntity.setCancelled(true);
-            updateReservationEntity(reservationEntity);
+                setReservationToCancelledByReservationId(reservationEntity.getReservationId());
             System.out.println("Reservation with Id: " + reservationEntity.getReservationId() + " has been cancelled");
         } catch (ReservationNotFoundException_Exception ex) {
             System.out.println(ex.getMessage());
@@ -587,6 +585,12 @@ public class HolidayReservationSystemCaRMSClientApp {
         ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
         return port.calculateTotalRentalRate(arg0, arg1, arg2);
+    }
+
+    private static void setReservationToCancelledByReservationId(long arg0) {
+        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
+        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
+        port.setReservationToCancelledByReservationId(arg0);
     }
 
 }

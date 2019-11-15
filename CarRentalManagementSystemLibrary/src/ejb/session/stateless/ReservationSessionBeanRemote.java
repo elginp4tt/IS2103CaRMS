@@ -46,18 +46,20 @@ public interface ReservationSessionBeanRemote {
     public List<CarModelEntity> retrieveCarModelsWithConditions(Date startDate, Date endDate, OutletEntity incPickupOutlet, OutletEntity incReturnOutlet, CarCategoryEntity carCategory);
 
     public long createReservationEntity(ReservationEntity reservationEntity);
-    
+
     public List<ReservationEntity> retrieveReservationsByCustomerId(Long customerId);
 
     public List<ReservationEntity> retrieveReservationsByPartnerId(Long partnerId);
-    
+
     public List<RentalRateEntity> calculateTotalRentalRate(CarCategoryEntity carCategory, Date startDate, Date endDate) throws NoRentalRatesFoundException;
-    
+
     public List<ReservationEntity> retrieveReservationsBetweenDates(Date startDate, Date endDate);
-    
+
     public long createReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, double price, PartnerEntity partner, CarCategoryEntity carCategory, CarModelEntity carModel);
-    
+
     public CarModelEntity retrieveCarModelByReservationId(long reservationId) throws NoCarModelsException;
 
     public CarCategoryEntity retrieveCarCategoryByReservationId(long reservationId) throws NoCarsException;
+
+    public void setReservationToCancelledByReservationId(long reservationId);
 }

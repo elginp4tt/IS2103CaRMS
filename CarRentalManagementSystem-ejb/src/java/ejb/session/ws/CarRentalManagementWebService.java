@@ -148,13 +148,19 @@ public class CarRentalManagementWebService {
     }
     
     @WebMethod
-    public CarModelEntity retrieveCarModelByReservationId(long reservationId) throws NoCarModelsException{
+    public CarModelEntity retrieveCarModelByReservationId(@WebParam long reservationId) throws NoCarModelsException{
+        reservationId = Long.parseLong(""+reservationId);
         return reservationSessionBean.retrieveCarModelByReservationId(reservationId);
-    };
+    }
 
     @WebMethod
-    public CarCategoryEntity retrieveCarCategoryByReservationId(long reservationId) throws NoCarsException{
+    public CarCategoryEntity retrieveCarCategoryByReservationId(@WebParam long reservationId) throws NoCarsException{
         return reservationSessionBean.retrieveCarCategoryByReservationId(reservationId);
-    };
+    }
+    
+    @WebMethod
+        public void setReservationToCancelledByReservationId(@WebParam long reservationId) {
+        reservationSessionBean.setReservationToCancelledByReservationId(reservationId);
+    }
 }
 
