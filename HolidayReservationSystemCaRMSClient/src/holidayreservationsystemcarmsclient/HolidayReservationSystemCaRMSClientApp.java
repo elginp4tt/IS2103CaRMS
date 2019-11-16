@@ -249,7 +249,9 @@ public class HolidayReservationSystemCaRMSClientApp {
         XMLGregorianCalendar xmlEndDate;
         try {
             xmlStartDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(startCalendar);
+            System.out.println("Year: " + xmlStartDate.getYear() + " Month: " + xmlStartDate.getMonth() + " Day: " + xmlStartDate.getDay() + " Hour: " + xmlStartDate.getHour());
             xmlEndDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(endCalendar);
+            System.out.println("Year: " + xmlEndDate.getYear() + " Month: " + xmlEndDate.getMonth() + " Day: " + xmlEndDate.getDay() + " Hour: " + xmlEndDate.getHour());
             List<CarCategoryEntity> availableCarCategories = retrieveCarCategoriesWithConditions(xmlStartDate, xmlEndDate, incPickupOutlet, incReturnOutlet);
 
             HashMap<CarCategoryEntity, Double> carCategoryPrice = new HashMap<CarCategoryEntity, Double>();

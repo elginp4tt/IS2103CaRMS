@@ -183,7 +183,6 @@
 <xs:element name="disabled" type="xs:boolean"/>
 <xs:element name="licensePlate" type="xs:string" minOccurs="0"/>
 <xs:element name="location" type="xs:string" minOccurs="0"/>
-<xs:element name="returnOutlet" type="tns:outletEntity" minOccurs="0"/>
 <xs:element name="returnTime" type="xs:dateTime" minOccurs="0"/>
 <xs:element name="status" type="tns:carStatusEnum" minOccurs="0"/>
 <xs:element name="used" type="xs:boolean"/>
@@ -194,7 +193,6 @@
 <xs:sequence>
 <xs:element name="car" type="tns:carEntity" minOccurs="0"/>
 <xs:element name="dispatchId" type="xs:long" minOccurs="0"/>
-<xs:element name="endOutlet" type="tns:outletEntity" minOccurs="0"/>
 <xs:element name="isComplete" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
@@ -471,18 +469,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="retrieveReservationsByPartnerId">
-<xs:sequence>
-<xs:element name="arg0" type="xs:long" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="retrieveReservationsByPartnerIdResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:reservationEntity" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="retrieveCarModelByReservationId">
 <xs:sequence>
 <xs:element name="arg0" type="xs:long"/>
@@ -498,6 +484,18 @@
 <xs:complexType name="NoCarModelsException">
 <xs:sequence>
 <xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveReservationsByPartnerId">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveReservationsByPartnerIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:reservationEntity" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 

@@ -185,6 +185,7 @@ public class CarEntity implements Serializable {
     /**
      * @return the currentReservation
      */
+    @XmlTransient
     public ReservationEntity getCurrentReservation() {
         return currentReservation;
     }
