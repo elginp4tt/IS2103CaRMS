@@ -242,14 +242,18 @@ public class HolidayReservationSystemCaRMSClientApp {
         }
         GregorianCalendar startCalendar = new GregorianCalendar();
         startCalendar.setTime(startDate);
+        //System.out.println(startCalendar.getTime());
         XMLGregorianCalendar xmlStartDate;
 
         GregorianCalendar endCalendar = new GregorianCalendar();
-        startCalendar.setTime(endDate);
+        endCalendar.setTime(endDate);
+        //System.out.println(endCalendar.getTime());
         XMLGregorianCalendar xmlEndDate;
+        
         try {
             xmlStartDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(startCalendar);
             System.out.println("Year: " + xmlStartDate.getYear() + " Month: " + xmlStartDate.getMonth() + " Day: " + xmlStartDate.getDay() + " Hour: " + xmlStartDate.getHour());
+            
             xmlEndDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(endCalendar);
             System.out.println("Year: " + xmlEndDate.getYear() + " Month: " + xmlEndDate.getMonth() + " Day: " + xmlEndDate.getDay() + " Hour: " + xmlEndDate.getHour());
             List<CarCategoryEntity> availableCarCategories = retrieveCarCategoriesWithConditions(xmlStartDate, xmlEndDate, incPickupOutlet, incReturnOutlet);
