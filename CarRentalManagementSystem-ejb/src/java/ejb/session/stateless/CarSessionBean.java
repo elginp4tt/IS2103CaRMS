@@ -340,7 +340,8 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
     @Override
     public void deleteCarModelEntity(String make, String model) throws CarModelNotFoundException{
         CarModelEntity carModelEntity = retrieveCarModelEntityByMakeAndModel(make, model);
-            if (carModelEntity.getCars().isEmpty()){
+        List<CarEntity> carList = retrieveCarEntitiesByCarModelId(carModelEntity.getCarModelId());
+            if (carList.isEmpty()){
                 em.remove(carModelEntity);
                 System.out.println("*****Car Model has been deleted*****");
             } else {
@@ -348,6 +349,14 @@ public class CarSessionBean implements CarSessionBeanRemote, CarSessionBeanLocal
                 updateCarModelEntity(carModelEntity);
                 System.out.println("*****Car Model has updated to disabled*****");
             }
+    }
+    
+    @Override
+    public List<CarEntity> retrieveCarEntitiesByCarModelId(long carModelId){
+        Query query = em.createQuery("SELECT c FROM CarEntity c WHERE c.carModel.carModelId = :inCarModel");
+        query.setParameter("inCarModel", carModelId);
+        
+        return query.getResultList();
     }
 
     @Override

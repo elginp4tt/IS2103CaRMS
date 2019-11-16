@@ -155,6 +155,7 @@ public class DispatchEntity implements Serializable {
     /**
      * @return the endOutlet
      */
+    @XmlTransient
     public OutletEntity getEndOutlet() {
         return endOutlet;
     }

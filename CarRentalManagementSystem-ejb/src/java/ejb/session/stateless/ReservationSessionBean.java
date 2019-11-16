@@ -137,8 +137,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     public void updateReservationEntity(ReservationEntity reservationEntity) {
         em.merge(reservationEntity);
     }
-    
-    
+
     @Override
     public void setReservationToCancelledByReservationId(long reservationId) {
 
@@ -147,7 +146,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
             reservationEntity = retrieveReservationEntityByReservationId(reservationId);
             reservationEntity.setCancelled(true);
             updateReservationEntity(reservationEntity);
-            
+
         } catch (ReservationNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
@@ -279,19 +278,20 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
                     Date re = reservation.getEndDate();
 
                     if (startDate.before(re) && endDate.after(rs)) {
-                        //Case 1: Incoming reservation startDate <= RS and endDate <= RE
-                        if ((startDate.before(rs) || startDate.equals(rs)) && (endDate.before(re) || endDate.equals(re))) {
-                            counter--;
-                            //Case 2: Incoming reservation startDate => RS and endDate <= RE
-                        } else if ((startDate.after(rs) || startDate.equals(rs)) && (endDate.before(re) || endDate.equals(re))) {
-                            counter--;
-                            //Case 3: Incoming reservation startDate => RS and endDate => RE
-                        } else if ((startDate.after(rs) || startDate.equals(rs)) && (endDate.after(re) || endDate.equals(re))) {
-                            counter--;
-                            //Case 4: Incoming reservation startDate <= RS and endDate => RE
-                        } else if ((startDate.before(rs) || startDate.equals(rs)) && (endDate.after(re) || endDate.equals(re))) {
-                            counter--;
-                        }
+                        counter--;
+//                        //Case 1: Incoming reservation startDate <= RS and endDate <= RE
+//                        if ((startDate.before(rs) || startDate.equals(rs)) && (endDate.before(re) || endDate.equals(re))) {
+//                            counter--;
+//                            //Case 2: Incoming reservation startDate => RS and endDate <= RE
+//                        } else if ((startDate.after(rs) || startDate.equals(rs)) && (endDate.before(re) || endDate.equals(re))) {
+//                            counter--;
+//                            //Case 3: Incoming reservation startDate => RS and endDate => RE
+//                        } else if ((startDate.after(rs) || startDate.equals(rs)) && (endDate.after(re) || endDate.equals(re))) {
+//                            counter--;
+//                            //Case 4: Incoming reservation startDate <= RS and endDate => RE
+//                        } else if ((startDate.before(rs) || startDate.equals(rs)) && (endDate.after(re) || endDate.equals(re))) {
+//                            counter--;
+//                        }
                         //Case 5: Incoming reservation is before RS & RE, returnOutlet != RpickupOutlet
                     } else if (incReturnOutlet != pickupOutlet && (endDatePlusTwoHours.after(rs) || endDatePlusTwoHours.equals(rs))) {
                         counter--;
@@ -299,32 +299,6 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
                     } else if (incPickupOutlet != returnOutlet && (startDateMinusTwoHours.before(re) || startDateMinusTwoHours.equals(re))) {
                         counter--;
                     }
-
-//                        //Case 1: Incoming reservation starts before but ends during existing reservation
-//                    if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate()) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
-//                        counter--;
-//                        System.out.println("Case 1");
-//                        //Case 2: Incoming reservation starts during and ends during existing reservation
-//                    } else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
-//                        counter--;
-//                        System.out.println("Case 2");
-//                        //Case 3: Incoming reservation starts before but ends after existing reservation
-//                    } else if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate())) {
-//                        counter--;
-//                        System.out.println("Case 3");
-//                        //Case 4: Incoming reservation starts during but ends during exising reservation
-//                    } else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && startDate.before(reservation.getEndDate())) {
-//                        counter--;
-//                        System.out.println("Case 4");
-//                        //Case 5: Incoming reservation starts after existing reservation but different outlet and less than 2 hours apart
-//                    } else if (!returnOutlet.equals(incPickupOutlet) && startDateMinusTwoHours.before(reservation.getEndDate()) && startDateMinusTwoHours.after(reservation.getStartDate())) {
-//                        counter--;
-//                        System.out.println("Case 5");
-//                        //Case 6: Incoming reservation starts before existing reservation but different outlet and less than 2 hours apart
-//                    } else if (!pickupOutlet.equals(incReturnOutlet) && endDatePlusTwoHours.after(reservation.getStartDate()) && endDatePlusTwoHours.before(reservation.getEndDate())) {
-//                        counter--;
-//                        System.out.println("Case 6");
-//                    }
                 }
             }
             if (counter > 0) {
@@ -343,7 +317,9 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         HashMap<CarModelEntity, Integer> availableCars = new HashMap<CarModelEntity, Integer>();
         for (CarModelEntity carModelEntity : carModels) {
             List<CarEntity> carList = carSessionBeanLocal.retrieveAvailableCarsByCarModelId(carModelEntity.getCarModelId());
-            allCars.put(carModelEntity, carList.size());
+            if (!carModelEntity.isDisabled()) {
+                allCars.put(carModelEntity, carList.size());
+            }
         }
         //Now we have a list of all cars of each category
         for (Map.Entry<CarModelEntity, Integer> entry : allCars.entrySet()) {
@@ -383,19 +359,20 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
                     Date re = reservation.getEndDate();
 
                     if (startDate.before(re) && endDate.after(rs)) {
-                        //Case 1: Incoming reservation startDate <= RS and endDate <= RE
-                        if ((startDate.before(rs) || startDate.equals(rs)) && (endDate.before(re) || endDate.equals(re))) {
-                            counter--;
-                            //Case 2: Incoming reservation startDate => RS and endDate <= RE
-                        } else if ((startDate.after(rs) || startDate.equals(rs)) && (endDate.before(re) || endDate.equals(re))) {
-                            counter--;
-                            //Case 3: Incoming reservation startDate => RS and endDate => RE
-                        } else if ((startDate.after(rs) || startDate.equals(rs)) && (endDate.after(re) || endDate.equals(re))) {
-                            counter--;
-                            //Case 4: Incoming reservation startDate <= RS and endDate => RE
-                        } else if ((startDate.before(rs) || startDate.equals(rs)) && (endDate.after(re) || endDate.equals(re))) {
-                            counter--;
-                        }
+                        counter--;
+//                        //Case 1: Incoming reservation startDate <= RS and endDate <= RE
+//                        if ((startDate.before(rs) || startDate.equals(rs)) && (endDate.before(re) || endDate.equals(re))) {
+//                            counter--;
+//                            //Case 2: Incoming reservation startDate => RS and endDate <= RE
+//                        } else if ((startDate.after(rs) || startDate.equals(rs)) && (endDate.before(re) || endDate.equals(re))) {
+//                            counter--;
+//                            //Case 3: Incoming reservation startDate => RS and endDate => RE
+//                        } else if ((startDate.after(rs) || startDate.equals(rs)) && (endDate.after(re) || endDate.equals(re))) {
+//                            counter--;
+//                            //Case 4: Incoming reservation startDate <= RS and endDate => RE
+//                        } else if ((startDate.before(rs) || startDate.equals(rs)) && (endDate.after(re) || endDate.equals(re))) {
+//                            counter--;
+//                        }
                         //Case 5: Incoming reservation is before RS & RE, returnOutlet != RpickupOutlet
                     } else if (incReturnOutlet != pickupOutlet && (endDatePlusTwoHours.after(rs) || endDatePlusTwoHours.equals(rs))) {
                         counter--;
@@ -403,31 +380,6 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
                     } else if (incPickupOutlet != returnOutlet && (startDateMinusTwoHours.before(re) || startDateMinusTwoHours.equals(re))) {
                         counter--;
                     }
-//                    //Case 1: Incoming reservation starts before but ends during existing reservation
-//                    if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate()) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
-//                        counter--;
-//                        System.out.println("Case 1");
-//                        //Case 2: Incoming reservation starts during and ends during existing reservation
-//                    } else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && (endDate.before(reservation.getEndDate()) || endDate.equals(reservation.getEndDate()))) {
-//                        counter--;
-//                        System.out.println("Case 2");
-//                        //Case 3: Incoming reservation starts before but ends after existing reservation
-//                    } else if ((startDate.before(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && endDate.after(reservation.getStartDate())) {
-//                        counter--;
-//                        System.out.println("Case 3");
-//                        //Case 4: Incoming reservation starts during but ends during exising reservation
-//                    } else if ((startDate.after(reservation.getStartDate()) || startDate.equals(reservation.getStartDate())) && startDate.before(reservation.getEndDate())) {
-//                        counter--;
-//                        System.out.println("Case 4");
-//                        //Case 5: Incoming reservation starts after existing reservation but different outlet and less than 2 hours apart
-//                    } else if (!returnOutlet.equals(incPickupOutlet) && startDateMinusTwoHours.before(reservation.getEndDate()) && startDateMinusTwoHours.after(reservation.getStartDate())) {
-//                        counter--;
-//                        System.out.println("Case 5");
-//                        //Case 6: Incoming reservation starts before existing reservation but different outlet and less than 2 hours apart
-//                    } else if (!pickupOutlet.equals(incReturnOutlet) && endDatePlusTwoHours.after(reservation.getStartDate()) && endDatePlusTwoHours.before(reservation.getEndDate())) {
-//                        counter--;
-//                        System.out.println("Case 6");
-//                    }
                 }
             }
             if (counter > 0) {
@@ -447,7 +399,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         startCalendar.setTime(startDate);
         Calendar endCalendar = new GregorianCalendar();
         endCalendar.setTime(endDate);
-        
+
         ArrayList<RentalRateEntity> rentalRates = new ArrayList<RentalRateEntity>();
         List<RentalRateEntity> carCategoryRates = rentalRateSessionBeanLocal.retrieveAllRentalRatesByCarCategoryId(carCategory.getCarCategoryId());
 
@@ -498,7 +450,6 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
 //                throw new NoRentalRatesFoundException("Rental Rates not found for current date and category");
 //            }
 //        }
-
         if (!rentalRates.isEmpty()) {
             return rentalRates;
         } else {

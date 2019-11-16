@@ -78,4 +78,6 @@ public interface CarSessionBeanRemote {
     public List<CarModelEntity> retrieveAllCarModelEntitiesByCarCategory(long carCategoryId);
     
     public List<CarEntity> retrieveAvailableCarsByCarModelIdNotDisabled(long carModelId);
+    
+    public List<CarEntity> retrieveCarEntitiesByCarModelId(long carModelId);
 }
