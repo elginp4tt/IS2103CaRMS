@@ -18,6 +18,8 @@ import entity.RentalRateEntity;
 import entity.ReservationEntity;
 import exception.CarCategoryNotFoundException;
 import exception.CarModelNotFoundException;
+import exception.CustomerAlreadyExistsException;
+import exception.CustomerNotFoundException;
 import exception.InvalidLoginException;
 import exception.NoCarsException;
 import exception.NoRentalRatesFoundException;
@@ -29,6 +31,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -67,8 +71,13 @@ public class MainApp {
 
             switch (option) {
                 case 1:
-                    registerCustomer();
+                    try {
+                        registerCustomer();
+                    } catch (CustomerAlreadyExistsException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                     break;
+
                 case 2:
                     try {
                         customerLogin();
@@ -92,7 +101,7 @@ public class MainApp {
         }
     }
 
-    private void registerCustomer() {
+    private void registerCustomer() throws CustomerAlreadyExistsException {
         Scanner sc = new Scanner(System.in);
         String username;
         String password;
@@ -114,8 +123,14 @@ public class MainApp {
         currCust.setPassportNumber(passportNum);
         currCust.setMobilePhoneNumber(phoneNum);
 
-        long custId = customerSessionBeanRemote.createCustomerEntity(currCust);
-        System.out.println("Customer has been created with id: " + custId);
+        try {
+            customerSessionBeanRemote.retrieveCustomerEntityByUsername(username);
+            customerSessionBeanRemote.retrieveCustomerEntityByEmail(email);
+            throw new CustomerAlreadyExistsException("Customer with your username/email already exists");
+        } catch (CustomerNotFoundException ex) {
+            long custId = customerSessionBeanRemote.createCustomerEntity(currCust);
+            System.out.println("Customer has been created with id: " + custId);
+        }
     }
 
     private void customerLogin() throws InvalidLoginException {

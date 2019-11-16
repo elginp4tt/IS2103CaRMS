@@ -23,4 +23,6 @@ public interface CustomerSessionBeanLocal {
 
     public CustomerEntity doLogin(String email, String password) throws InvalidLoginException;
 
+    public CustomerEntity retrieveCustomerEntityByUsername(String username) throws CustomerNotFoundException;
+
 }

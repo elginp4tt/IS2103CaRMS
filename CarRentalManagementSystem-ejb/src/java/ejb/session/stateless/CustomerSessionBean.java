@@ -57,6 +57,17 @@ public class CustomerSessionBean implements CustomerSessionBeanRemote, CustomerS
     }
 
     @Override
+    public CustomerEntity retrieveCustomerEntityByUsername(String username) throws CustomerNotFoundException {
+        Query query = em.createQuery("SELECT c FROM CustomerEntity c WHERE c.username = :inUsername");
+        query.setParameter("inUsername", username);
+        try {
+            return (CustomerEntity) query.getSingleResult();
+        } catch (Exception e) {
+            throw new CustomerNotFoundException("Customer not found");
+        }
+    }
+
+    @Override
     public void updateCustomerEntity(CustomerEntity customerEntity) {
         em.merge(customerEntity);
     }
