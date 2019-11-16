@@ -217,6 +217,7 @@ public class CarEntity implements Serializable {
     /**
      * @return the returnOutlet
      */
+    @XmlTransient
     public OutletEntity getReturnOutlet() {
         return returnOutlet;
     }
