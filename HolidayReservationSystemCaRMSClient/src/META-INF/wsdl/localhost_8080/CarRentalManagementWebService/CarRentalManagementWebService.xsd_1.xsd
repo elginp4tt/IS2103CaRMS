@@ -36,6 +36,10 @@
 
 <xs:element name="doLoginResponse" type="tns:doLoginResponse"/>
 
+<xs:element name="evictCache" type="tns:evictCache"/>
+
+<xs:element name="evictCacheResponse" type="tns:evictCacheResponse"/>
+
 <xs:element name="retrieveCarCategoriesWithConditions" type="tns:retrieveCarCategoriesWithConditions"/>
 
 <xs:element name="retrieveCarCategoriesWithConditionsResponse" type="tns:retrieveCarCategoriesWithConditionsResponse"/>
@@ -213,6 +217,14 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="evictCache">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="evictCacheResponse">
+<xs:sequence/>
+</xs:complexType>
+
 <xs:complexType name="retrieveRentalRateEntityByRentalRateId">
 <xs:sequence>
 <xs:element name="arg0" type="xs:long"/>
@@ -330,6 +342,21 @@
 <xs:sequence/>
 </xs:complexType>
 
+<xs:complexType name="retrieveCarCategoriesWithConditions">
+<xs:sequence>
+<xs:element name="arg0" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="arg1" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="arg2" type="tns:outletEntity" minOccurs="0"/>
+<xs:element name="arg3" type="tns:outletEntity" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveCarCategoriesWithConditionsResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:carCategoryEntity" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="retrieveCarModelEntityByCarModelId">
 <xs:sequence>
 <xs:element name="arg0" type="xs:long"/>
@@ -345,21 +372,6 @@
 <xs:complexType name="CarModelNotFoundException">
 <xs:sequence>
 <xs:element name="message" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="retrieveCarCategoriesWithConditions">
-<xs:sequence>
-<xs:element name="arg0" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="arg1" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="arg2" type="tns:outletEntity" minOccurs="0"/>
-<xs:element name="arg3" type="tns:outletEntity" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="retrieveCarCategoriesWithConditionsResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:carCategoryEntity" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 

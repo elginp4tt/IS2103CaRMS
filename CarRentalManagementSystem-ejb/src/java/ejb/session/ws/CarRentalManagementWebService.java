@@ -152,5 +152,10 @@ public class CarRentalManagementWebService {
         public void setReservationToCancelledByReservationId(@WebParam long reservationId) {
         reservationSessionBean.setReservationToCancelledByReservationId(reservationId);
     }
+    
+    @WebMethod
+    public void evictCache() {
+        reservationSessionBean.evictCache();
+    }
 }
 

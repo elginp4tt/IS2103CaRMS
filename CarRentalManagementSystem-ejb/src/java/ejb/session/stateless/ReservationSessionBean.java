@@ -97,7 +97,7 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
     }
 
     @Override
-    public long createReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, double price, PartnerEntity partner, CarCategoryEntity carCategory, long carModelId) throws CarModelNotFoundException{
+    public long createReservationEntity(boolean paid, String creditCardNumber, String cvv, Date startDate, Date endDate, CustomerEntity customer, OutletEntity pickupOutlet, OutletEntity returnOutlet, double price, PartnerEntity partner, CarCategoryEntity carCategory, long carModelId) throws CarModelNotFoundException {
 
         ReservationEntity reservationEntity = new ReservationEntity(paid, creditCardNumber, cvv, startDate, endDate, customer, pickupOutlet, returnOutlet, price);
         reservationEntity.setPartner(partner);
@@ -523,10 +523,10 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
         }
 
     }
-    
+
     @Override
-    public void evictCache(){
-    Cache cache = em.getEntityManagerFactory().getCache();
-    cache.evictAll();
+    public void evictCache() {
+        Cache cache = em.getEntityManagerFactory().getCache();
+        cache.evictAll();
     }
 }

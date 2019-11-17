@@ -251,6 +251,8 @@ public class HolidayReservationSystemCaRMSClientApp {
         XMLGregorianCalendar xmlEndDate;
 
         try {
+            evictCache();
+            
             xmlStartDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(startCalendar);
             //System.out.println("Year: " + xmlStartDate.getYear() + " Month: " + xmlStartDate.getMonth() + " Day: " + xmlStartDate.getDay() + " Hour: " + xmlStartDate.getHour());
 
@@ -567,6 +569,12 @@ public class HolidayReservationSystemCaRMSClientApp {
         ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
         return port.createReservationEntity(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
+    }
+
+    private static void evictCache() {
+        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
+        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
+        port.evictCache();
     }
 
 }
