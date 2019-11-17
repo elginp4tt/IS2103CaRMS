@@ -63,4 +63,6 @@ public interface ReservationSessionBeanRemote {
     public CarCategoryEntity retrieveCarCategoryByReservationId(long reservationId) throws NoCarsException;
 
     public void setReservationToCancelledByReservationId(long reservationId);
+    
+    public void evictCache();
 }

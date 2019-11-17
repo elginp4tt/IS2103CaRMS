@@ -31,8 +31,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -286,6 +284,9 @@ public class MainApp {
                 System.out.println("Please try again, no outlet with that name is found");
             }
         }
+        
+        reservationSessionBeanRemote.evictCache();
+        
         List<CarCategoryEntity> availableCarCategories = reservationSessionBeanRemote.retrieveCarCategoriesWithConditions(startDate, endDate, incPickupOutlet, incReturnOutlet);
         HashMap<CarCategoryEntity, Double> carCategoryPrice = new HashMap<CarCategoryEntity, Double>();
 
@@ -394,17 +395,14 @@ public class MainApp {
 
                     if (!carCategory.getReservations().contains(reservation)) {
                         carCategory.getReservations().add(reservation);
-//                        carSessionBeanRemote.updateCarCategoryEntity(carCategory);
                     }
 
                     if (carModel != null && !carModel.getReservations().contains(reservation)) {
                         carModel.getReservations().add(reservation);
-//                        carSessionBeanRemote.updateCarModelEntity(carModel);
                     }
 
                     if (!customerEntity.getReservations().contains(reservation)) {
                         customerEntity.getReservations().add(reservation);
-//                        customerSessionBeanRemote.updateCustomerEntity(customerEntity);
                     }
                     
                     System.out.println("Reservation with ID: " + reservationId + " has been successfully created");

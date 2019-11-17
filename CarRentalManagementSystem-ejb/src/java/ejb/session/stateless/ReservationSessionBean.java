@@ -34,6 +34,7 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.persistence.Cache;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -521,5 +522,11 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
             throw new NoCarsException("No car that satisfies the conditions have been found for reservation " + reservationEntity.getReservationId());
         }
 
+    }
+    
+    @Override
+    public void evictCache(){
+    Cache cache = em.getEntityManagerFactory().getCache();
+    cache.evictAll();
     }
 }
