@@ -128,16 +128,6 @@ public class CarRentalManagementWebService {
     }
     
     @WebMethod
-    public void updateReservationEntity(@WebParam ReservationEntity reservationEntity){
-        reservationSessionBean.updateReservationEntity(reservationEntity);
-    }
-    
-    @WebMethod
-    public void updateRentalRateEntity(@WebParam RentalRateEntity rentalRateEntity){
-        rentalRateSessionBean.updateRentalRateEntity(rentalRateEntity);
-    }
-    
-    @WebMethod
     public void setRentalRateAsUsed(@WebParam long rentalRateId){
         rentalRateSessionBean.setRentalRateAsUsed(rentalRateId);
     }

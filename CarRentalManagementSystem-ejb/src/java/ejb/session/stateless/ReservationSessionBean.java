@@ -27,6 +27,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -102,7 +104,21 @@ public class ReservationSessionBean implements ReservationSessionBeanRemote, Res
             reservationEntity.setCarModel(carModel);
         }
 
-        return createReservationEntity(reservationEntity);
+        long reservationId = createReservationEntity(reservationEntity);
+
+        if (!carCategory.getReservations().contains(reservationEntity)) {
+            carCategory.getReservations().add(reservationEntity);
+        }
+
+        if (carModel != null && !carModel.getReservations().contains(reservationEntity)) {
+            carModel.getReservations().add(reservationEntity);
+        }
+
+        if (!customer.getReservations().contains(reservationEntity)) {
+            customer.getReservations().add(reservationEntity);
+        }
+
+        return reservationId;
     }
 
     @Override
