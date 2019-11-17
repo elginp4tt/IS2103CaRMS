@@ -133,8 +133,8 @@ public class CarRentalManagementWebService {
     }
     
     @WebMethod
-    public long createReservationEntity(@WebParam boolean paid, @WebParam String creditCardNumber, @WebParam String cvv, @WebParam Date startDate, @WebParam Date endDate, @WebParam CustomerEntity customer, @WebParam OutletEntity pickupOutlet, @WebParam OutletEntity returnOutlet, @WebParam double price, @WebParam PartnerEntity partner, @WebParam CarCategoryEntity carCategory, @WebParam CarModelEntity carModel){
-        return reservationSessionBean.createReservationEntity(paid, creditCardNumber, cvv, startDate, endDate, customer, pickupOutlet, returnOutlet, price, partner, carCategory, carModel);
+    public long createReservationEntity(@WebParam boolean paid, @WebParam String creditCardNumber, @WebParam String cvv, @WebParam Date startDate, @WebParam Date endDate, @WebParam CustomerEntity customer, @WebParam OutletEntity pickupOutlet, @WebParam OutletEntity returnOutlet, @WebParam double price, @WebParam PartnerEntity partner, @WebParam CarCategoryEntity carCategory, @WebParam long carModelId) throws CarModelNotFoundException{
+        return reservationSessionBean.createReservationEntity(paid, creditCardNumber, cvv, startDate, endDate, customer, pickupOutlet, returnOutlet, price, partner, carCategory, carModelId);
     }
     
     @WebMethod

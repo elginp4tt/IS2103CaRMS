@@ -389,7 +389,7 @@ public class HolidayReservationSystemCaRMSClientApp {
                         price = price + rentalRateEntity.getDailyRate();
                     }
 
-                    long reservationId = createReservationEntity(paid, creditCardNumber, cvv, xmlStartDate, xmlEndDate, customerEntity, incPickupOutlet, incReturnOutlet, price, partnerEntity, carCategory, carModel);
+                    long reservationId = createReservationEntity(paid, creditCardNumber, cvv, xmlStartDate, xmlEndDate, customerEntity, incPickupOutlet, incReturnOutlet, price, partnerEntity, carCategory, carModel.getCarModelId());
 
                     for (RentalRateEntity rentalRate : rentalRates) {
                         setRentalRateAsUsed(rentalRate.getRentalRateId());
@@ -398,7 +398,7 @@ public class HolidayReservationSystemCaRMSClientApp {
                     System.out.println("Reservation with ID: " + reservationId + " has been successfully created");
                 }
             }
-        } catch (DatatypeConfigurationException ex) {
+        } catch (DatatypeConfigurationException | CarModelNotFoundException_Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -539,12 +539,6 @@ public class HolidayReservationSystemCaRMSClientApp {
         port.setRentalRateAsUsed(arg0);
     }
 
-    private static long createReservationEntity(boolean arg0, java.lang.String arg1, java.lang.String arg2, javax.xml.datatype.XMLGregorianCalendar arg3, javax.xml.datatype.XMLGregorianCalendar arg4, ws.client.CustomerEntity arg5, ws.client.OutletEntity arg6, ws.client.OutletEntity arg7, double arg8, ws.client.PartnerEntity arg9, ws.client.CarCategoryEntity arg10, ws.client.CarModelEntity arg11) {
-        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
-        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
-        return port.createReservationEntity(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
-    }
-
     private static CarCategoryEntity retrieveCarCategoryByReservationId(long arg0) throws NoCarsException_Exception {
         ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
@@ -567,6 +561,12 @@ public class HolidayReservationSystemCaRMSClientApp {
         ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
         ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
         port.setReservationToCancelledByReservationId(arg0);
+    }
+
+    private static long createReservationEntity(boolean arg0, java.lang.String arg1, java.lang.String arg2, javax.xml.datatype.XMLGregorianCalendar arg3, javax.xml.datatype.XMLGregorianCalendar arg4, ws.client.CustomerEntity arg5, ws.client.OutletEntity arg6, ws.client.OutletEntity arg7, double arg8, ws.client.PartnerEntity arg9, ws.client.CarCategoryEntity arg10, long arg11) throws CarModelNotFoundException_Exception {
+        ws.client.CarRentalManagementWebService_Service service = new ws.client.CarRentalManagementWebService_Service();
+        ws.client.CarRentalManagementWebService port = service.getCarRentalManagementWebServicePort();
+        return port.createReservationEntity(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
     }
 
 }
